@@ -7,7 +7,7 @@ from celery import shared_task
 
 @shared_task
 def notify_user(telegram_id, text):
-    return telegram.Bot(token=settings.TELEGRAM_TOKEN).send_message(
+    telegram.Bot(token=settings.TELEGRAM_TOKEN).send_message(
         chat_id=telegram_id,
         text=text,
         parse_mode='HTML',
