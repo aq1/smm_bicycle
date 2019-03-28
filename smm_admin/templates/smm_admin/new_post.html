@@ -1,0 +1,247 @@
+{% extends 'smm_admin/base.html' %}
+
+{% block title %}Post{% endblock %}
+
+{% block content %}
+    <div class="container" id="app">
+        <div class="row">
+            <div class="col s8 offset-s2">
+                <div class="card" style="margin-top: 100px;">
+                    <div class="card-content">
+                        <div class="row">
+                            <div class="col s12">
+                                <h5>Artist info</h5>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s6 m6">
+                                <input v-model="post.name_en" id="name_en" type="text"
+                                       v-bind:class="{invalid: post_errors.name_en}">
+                                <span class="helper-text" v-bind:data-error="post_errors.name_en"></span>
+                                <label for="name_en">Name in English</label>
+                            </div>
+                            <div class="input-field col s6 m6">
+                                <input v-model="post.name_ru" id="name_ru" type="text"
+                                       v-bind:class="{invalid: post_errors.name_en}">
+                                <label for="name_ru">Name in Russian</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col s12 m12">
+                                <span>Social links</span>
+                                <div class="input-field" v-for="(link, index) in post.links">
+                                    <label>URL</label>
+                                    <input
+                                            v-model="link.value"
+                                            type="text"
+                                            @input="linksInputChanged(index)"
+                                            @blur="linksInputChanged(index)"
+                                            v-bind:class="{invalid: post_errors.links}"
+                                    >
+                                    <span class="helper-text" v-bind:data-error="post_errors.links"
+                                          v-show="index === 0"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col s12 m12">
+                                <div class="input-field">
+                                    <div id="tags" class="chips chips-autocomplete"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12 m8 offset-m2">
+                <div class="card">
+                    <div class="card-content">
+                        <div class="row">
+                            <div class="col s12 m6">
+                                <div class="row">
+                                    <div class="input-field col s12 m12">
+                                        <textarea v-model="post.text_en" id="text_en"
+                                                  class="materialize-textarea"></textarea>
+                                        <label for="text_en">Text in English</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col s12 m6">
+                                <div class="row">
+                                    <div class="input-field col s12 m12">
+                                        <textarea v-model="post.text_ru" id="text_ru"
+                                                  class="materialize-textarea"></textarea>
+                                        <label for="text_ru">Text in Russian</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12 m8 offset-m2">
+                <div class="card">
+                    <div class="card-content">
+                        <div class="row">
+                            <div class="col s12 m12">
+                                <span>Old work</span>
+                                <div class="input-field">
+                                    <label for="old-work-year">Year</label>
+                                    <input v-model="post.old_work.year" id="old-work-year" type="text"
+                                           v-bind:class="{invalid: post_errors.old_work.year}">
+                                    <span class="helper-text" v-bind:data-error="post_errors.old_work.year"></span>
+                                </div>
+                                <div>
+                                    <div class="file-field input-field">
+                                        <div class="btn">
+                                            <span>File</span>
+                                            <input type="file" accept="image/*"
+                                                   @change="setFile($event, 'old_work')">
+                                        </div>
+                                        <div class="file-path-wrapper">
+                                            <input class="file-path validate" type="text"
+                                                   placeholder="click to upload">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="input-field">
+                                    <label for="old-work-url">or URL</label>
+                                    <input v-model="post.old_work.url" id="old-work-url" type="text"
+                                           v-bind:class="{invalid: post_errors.old_work.url}">
+                                    <span class="helper-text" v-bind:data-error="post_errors.old_work.url"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12 m8 offset-m2">
+                <div class="card">
+                    <div class="card-content">
+                        <div class="row">
+                            <div class="col s12 m12">
+                                <span>New work</span>
+                                <div class="input-field">
+                                    <label for="new-work-year">Year</label>
+                                    <input v-model="post.new_work.year" id="new-work-year" type="text"
+                                           v-bind:class="{invalid: post_errors.new_work.year}">
+                                    <span class="helper-text" v-bind:data-error="post_errors.new_work.year"></span>
+                                </div>
+                                <div>
+                                    <div class="file-field input-field">
+                                        <div class="btn">
+                                            <span>File</span>
+                                            <input type="file" accept="image/*"
+                                                   @change="setFile($event, 'new_work')">
+                                        </div>
+                                        <div class="file-path-wrapper">
+                                            <input class="file-path validate"
+                                                   type="text" placeholder="click to upload">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="input-field">
+                                    <label for="new-work-url">or URL</label>
+                                    <input v-model="post.new_work.url" id="new-work-url" type="text"
+                                           v-bind:class="{invalid: post_errors.new_work.url}">
+                                    <span class="helper-text" v-bind:data-error="post_errors.new_work.url"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12 m8 offset-m2">
+                <div class="card">
+                    <div class="card-content">
+                        <div class="row">
+                            <div class="col s12">
+                                <h5>Set schedule</h5>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col s6 input-field">
+                                <input
+                                        id="schedule_date"
+                                        type="text"
+                                        class="datepicker"
+                                        v-bind:class="{invalid: post_errors.date}">
+                                <label for="schedule_date">Date</label>
+                            </div>
+                            <div class="col s6 input-field">
+                                <input
+                                        id="schedule_time"
+                                        type="text"
+                                        class="timepicker"
+                                        v-bind:class="{invalid: post_errors.time}">
+                                <label for="schedule_time">Time</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12 m8 offset-m2">
+                <div class="row">
+                    <div class="col s12">
+                        <button class="btn" @click="submit()">Save</button>
+                        <button class="btn" @click="submit(true)">Save and edit image</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block static %}
+    {{ block.super }}
+    {% load staticfiles %}
+    <link rel="stylesheet" href="{% static 'smm_admin/lib/material-icons.css' %}">
+    <script src="{% static 'smm_admin/lib/vue.js' %}"></script>
+    <script src="{% static 'smm_admin/js/new_post.js' %}"></script>
+
+    <script>
+        window.csrf_token = "{{ csrf_token }}";
+        var now = new Date();
+        M.Datepicker.init(document.querySelectorAll('.datepicker'), {
+            autoClose: true,
+            firstDay: 1,
+            defaultDate: now,
+            minDate: now,
+            showClearBtn: true
+        });
+
+        M.Timepicker.init(document.querySelectorAll('.timepicker'), {
+            showClearBtn: true,
+            autoClose: true,
+            twelveHour: false
+        });
+
+        M.Chips.init(document.querySelectorAll('.chips'), {
+            data: [
+                {tag: 'cg'},
+                {tag: '10khourslater'},
+                {tag: 'art'},
+                {tag: 'artwork'},
+                {tag: 'progress'},
+                {tag: '2d'},
+                {tag: '10khourslater_2d'},
+                {tag: '3d'},
+                {tag: 'motivation'},
+                {tag: '10khourslater_3d'}
+            ],
+            placeholder: 'Tags',
+            secondaryPlaceholder: 'Tags'
+        });
+    </script>
+    <script type="text/javascript" src="{% static 'smm_admin/lib/axios.min.js' %}"></script>
+{% endblock %}

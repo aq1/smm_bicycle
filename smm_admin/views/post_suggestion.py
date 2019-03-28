@@ -28,8 +28,8 @@ class PostSuggestionView(views.View):
                 links=[link['value'] for link in data['links'] if link['value']],
                 name_en=data['name'],
                 old_work_year=data['old_work']['year'],
-                old_work_url=data['old_work'].get('url', ''),
                 new_work_year=data['new_work']['year'],
+                old_work_url=data['old_work'].get('url', ''),
                 new_work_url=data['new_work'].get('url', ''),
                 text=data.get('text', ''),
             )
@@ -67,9 +67,9 @@ def post_suggestion_file_upload(request, post_id):
     if not files:
         return http.HttpResponse(status=400)
 
-    post.old_work_image = files.get('old_work')
-    post.new_work_image = files.get('new_work')
-    if not (post.old_work_image or post.new_work_image):
+    post.old_work = files.get('old_work')
+    post.new_work = files.get('new_work')
+    if not (post.old_work or post.new_work):
         return http.HttpResponse(status=400)
 
     try:
@@ -99,7 +99,7 @@ def post_suggestion_view(request):
 def create_post_from_suggested(request, post_id, redirect_to_image_edit=False):
     suggested = get_object_or_404(PostSuggestion, id=post_id)
 
-    if not (suggested.old_work_image and suggested.new_work_image):
+    if not (suggested.old_work and suggested.new_work):
         return http.JsonResponse(
             {'error': 'Image is not downloaded yet. Try later'},
             status=400,
@@ -113,8 +113,8 @@ def create_post_from_suggested(request, post_id, redirect_to_image_edit=False):
             text=suggested.text,
             old_work_year=suggested.old_work_year,
             new_work_year=suggested.new_work_year,
-            old_work=suggested.old_work_image,
-            new_work=suggested.new_work_image,
+            old_work=suggested.old_work,
+            new_work=suggested.new_work,
         )
     except IntegrityError:
         return http.JsonResponse({'error': 'Failed to save post'}, status=400)

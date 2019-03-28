@@ -17,8 +17,8 @@ class PostSuggestion(models.Model):
     old_work_year = models.PositiveSmallIntegerField()
     new_work_year = models.PositiveSmallIntegerField()
 
-    old_work_image = models.ImageField(upload_to='suggested', null=True, blank=True)
-    new_work_image = models.ImageField(upload_to='suggested', null=True, blank=True)
+    old_work = models.ImageField(upload_to='suggested', null=True, blank=True)
+    new_work = models.ImageField(upload_to='suggested', null=True, blank=True)
 
     old_work_url = models.CharField(max_length=4096, default='', blank=True)
     new_work_url = models.CharField(max_length=4096, default='', blank=True)

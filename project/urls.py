@@ -8,7 +8,7 @@ from django.contrib.staticfiles.urls import (
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('a/', admin.site.urls),
     path('', include('smm_admin.urls')),
 ]
 

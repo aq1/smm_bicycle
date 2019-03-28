@@ -26,8 +26,8 @@
                                         <a href="{{ post.old_work_url }}">{{ post.old_work_url }}</a>
                                     {% endif %}
                         </span>
-                                {% if post.old_work_image %}
-                                    <div><img src="{{ post.old_work_image.url }}" alt="" width="250px"></div>
+                                {% if post.old_work %}
+                                    <div><img src="{{ post.old_work.url }}" alt="" width="250px"></div>
                                 {% endif %}
                             </div>
                         </div>
@@ -40,8 +40,8 @@
                                         <a href="{{ post.new_work_url }}">{{ post.new_work_url }}</a>
                                     {% endif %}
                         </span>
-                                {% if post.new_work_image %}
-                                    <div><img src="{{ post.new_work_image.url }}" alt="" width="250px"></div>
+                                {% if post.new_work %}
+                                    <div><img src="{{ post.new_work.url }}" alt="" width="250px"></div>
                                 {% endif %}
                             </div>
                         </div>

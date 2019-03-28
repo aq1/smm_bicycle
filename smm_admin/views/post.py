@@ -13,6 +13,7 @@ from django import views
 
 from rest_framework import serializers
 
+from smm_admin import tasks
 from smm_admin.models import (
     Post,
     Link,
@@ -51,6 +52,20 @@ def post(request, post_id):
             )
         ).data
     )
+
+
+@require_http_methods(['GET'])
+@login_required
+def post_view(request, post_id):
+    try:
+        _post = Post.objects.prefetch_related('links').get(
+            id=post_id,
+            account_id=request.user.id,
+        )
+    except Post.DoesNotExist:
+        return http.HttpResponse(status=400)
+
+    return render(request, 'smm_admin/post.html', {'post': _post})
 
 
 @login_required
@@ -100,11 +115,20 @@ def save_render(request, post_id):
 class PostView(LoginRequiredMixin, views.View):
 
     @staticmethod
-    def get(request):
-        return render(request, 'smm_admin/post.html')
+    def _clean_tags(tags):
+        tags = map(str.strip, tags.split())
+        return ' '.join([
+            tag
+            if tag.startswith('#')
+            else '#{}'.format(tag)
+            for tag in tags
+        ])
 
     @staticmethod
-    def post(request):
+    def get(request):
+        return render(request, 'smm_admin/new_post.html')
+
+    def post(self, request):
         data = json.loads(request.body)
 
         try:
@@ -114,9 +138,11 @@ class PostView(LoginRequiredMixin, views.View):
                 name_ru=data.get('name_ru', ''),
                 old_work_year=data['old_work']['year'],
                 new_work_year=data['new_work']['year'],
+                old_work_url=data['old_work'].get('url', ''),
+                new_work_url=data['new_work'].get('url', ''),
                 text_en=data.get('text_en', ''),
                 text_ru=data.get('text_ru', ''),
-                tags=data['tags'],
+                tags=self._clean_tags(data['tags']),
                 schedule=data.get('schedule'),
             )
         except KeyError:
@@ -145,6 +171,9 @@ class PostView(LoginRequiredMixin, views.View):
                 Link.objects.bulk_create(links)
             except IntegrityError:
                 return http.HttpResponse(status=400)
+
+        if _post.old_work_url or _post.new_work_url:
+            tasks.download_image.delay('Post', _post.id)
 
         return http.JsonResponse(
             {'post_id': _post.id},

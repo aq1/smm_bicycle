@@ -19,9 +19,11 @@ urlpatterns = [
     path('post/<int:post_id>/', post.post),
     path('post/<int:post_id>/save_canvas/', post.save_canvas),
     path('post/<int:post_id>/save_render/', post.save_render),
-    path('p/', post.PostView.as_view()),
-    path('p/<int:post_id>/upload_files/', post.post_file_upload),
-    path('post/<int:post_id>/edit_image/', edit_image.edit_image),
+    path('new/', post.PostView.as_view()),
+    path('new/<int:post_id>/upload_files/', post.post_file_upload),
+
+    path('p/<int:post_id>/', post.post_view),
+    path('p/<int:post_id>/edit_image/', edit_image.edit_image, name='edit_image'),
 
     path('suggest/', post_suggestion.PostSuggestionView.as_view()),
     path('suggest/<int:post_id>/upload_files/', post_suggestion.post_suggestion_file_upload),

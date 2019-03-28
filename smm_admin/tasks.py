@@ -1,5 +1,9 @@
-from django.conf import settings
+from urllib.parse import urlparse
 
+from django.conf import settings
+from django.core.files import uploadedfile
+
+import requests
 import telegram
 
 from celery import shared_task
@@ -61,20 +65,32 @@ def make_a_post(post_id, services=None):
     )
 
 
+def get_image_file(url):
+    r = requests.get(url)
+    return uploadedfile.SimpleUploadedFile(
+        urlparse(url).path.split('/')[-1],
+        r.content,
+        r.headers['Content-Type'],
+    )
+
+
 @shared_task
-def download_image(suggested_post_id):
+def download_image(model, post_id):
     from django.apps import apps
-    PostSuggestion = apps.get_model('smm_admin', 'PostSuggestion')
+    model = apps.get_model('smm_admin', model)
 
     try:
-        post = PostSuggestion.get(id=suggested_post_id)
-    except PostSuggestion.DoesNotExist:
+        post = model.objects.get(id=post_id)
+    except model.DoesNotExist:
         return False
 
-    if not post.old_work and post.old_work_url:
-        pass
+    if not (post.old_work_url or post.new_work_url):
+        raise ValueError('Expected at least one url')
 
-    if not post.new_work and post.new_work_url:
-        pass
+    if post.old_work_url and not post.old_work:
+        post.old_work = get_image_file(post.old_work_url)
+
+    if post.new_work_url and not post.new_work:
+        post.new_work = get_image_file(post.new_work_url)
 
     post.save()

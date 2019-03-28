@@ -36,6 +36,9 @@ class Post(models.Model):
     old_work_year = models.PositiveSmallIntegerField()
     new_work_year = models.PositiveSmallIntegerField()
 
+    old_work_url = models.CharField(max_length=4096, default='', blank=True)
+    new_work_url = models.CharField(max_length=4096, default='', blank=True)
+
     name_en = models.CharField(max_length=255)
     name_ru = models.CharField(
         max_length=255,
@@ -63,9 +66,9 @@ class Post(models.Model):
 
     def save(self, **kwargs):
         result = super().save()
-        if self.schedule:
-            celery.app.control.revoke(self.id)
-            make_a_post.apply_async(args=[self.id], eta=self.schedule, task_id=self.id)
+        # if self.schedule:
+        #     celery.app.control.revoke(self.id)
+        #     make_a_post.apply_async(args=[self.id], eta=self.schedule, task_id=self.id)
 
         return result
 
