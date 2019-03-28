@@ -119,4 +119,3 @@ dmypy.json
 project/settings/settings_local.py
 smm_admin/static/smm_admin/lib/
 media/
-static/
