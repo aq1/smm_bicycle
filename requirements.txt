@@ -1,0 +1,15 @@
+uwsgi
+django
+Pillow
+psycopg2
+djangorestframework
+sentry-sdk
+
+requests
+celery
+django-celery-results
+redis
+
+facebook-sdk
+python_telegram_bot
+tweepy

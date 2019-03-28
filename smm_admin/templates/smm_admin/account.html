@@ -1,0 +1,210 @@
+{% extends 'smm_admin/base.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Account{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m8 offset-m2">
+                <div class="card">
+                    <div class="card-content">
+                        <form action="{% url 'account_post' %}" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col s12">
+                                    <div class="input-field col s12">
+                                        <input id="username"
+                                               type="text"
+                                               name="username"
+                                               value="{{ user.username }}"
+                                               {% if errors.email %}class="invalid"{% endif %}>
+                                        <label for="first_name">Email</label>
+                                        {% if errors.email %}
+                                            <span class="helper-text" data-error="{{ errors.email }}"></span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col s12">
+                                    {% if user.account.logo %}
+                                        <img src="{{ user.account.logo.url }}" alt="user logo" width="100px">
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col s12">
+                                    <div class="file-field input-field">
+                                        <div class="btn">
+                                            {% if user.account.logo %}
+                                                <span>Replace logo...</span>
+                                            {% else %}
+                                                <span>Add logo...</span>
+                                            {% endif %}
+                                            <input type="file" name="logo">
+                                        </div>
+                                        <div class="file-path-wrapper">
+                                            <input class="file-path" type="text">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col s12">
+                                    <div class="input-field col s12">
+                                        <input id="telegram_id"
+                                               type="text"
+                                               name="telegram_id"
+                                               value="{{ user.account.telegram_id }}"
+                                               {% if errors.telegram %}class="invalid"{% endif %}>
+                                        <label for="telegram_id">Telegram ID</label>
+                                        {% if errors.telegram %}
+                                            <span class="helper-text" data-error="{{ errors.telegram }}"></span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col s12">
+                                    <button class="btn" type="submit">Submit</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12 m8 offset-m2">
+                <div class="card">
+                    <div class="card-content">
+                        <span class="card-title">Social</span>
+                        <a class='dropdown-trigger btn' href='#' data-target='serivice-add-dropdown'>
+                            Add
+                        </a>
+                        <ul id='serivice-add-dropdown' class='dropdown-content'>
+                            {% for service in services %}
+                                <li>
+                                    <a href="{{ service.login_url }}" target="_self">
+                                        <img alt="{{ service.name }}" src="{{ service.logo_url }}" width="35">
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                        <ul class="collection">
+                            {% for each in user.account.services.all %}
+                                <li class="collection-item avatar">
+                                    <img src="{{ each.service.logo_url }}" alt="vk" class="circle">
+                                    <span class="title">{{ each.service }}</span>
+                                    <p>
+                                        <a href="{{ each.service.url }}"
+                                           target="_blank">
+                                            {{ each.service.url_title }}
+                                        </a>
+                                    </p>
+                                    <a href=""
+                                       class="secondary-content">
+                                        <i class="material-icons">delete</i>
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+
+
+                        {#                        <ul class="collection">#}
+                        {#                            <li class="collection-item avatar">#}
+                        {#                                <img src="{% static 'smm_admin/img/vk_logo.jpg' %}" alt="vk"#}
+                        {#                                     class="circle">#}
+                        {#                                <span class="title">VK Group</span>#}
+                        {#                                <p>#}
+                        {#                                    <a href="https://vk.com/{{ user.account.vk_group_screen_name }}"#}
+                        {#                                       target="_blank">#}
+                        {#                                        {{ user.account.vk_group_name }}#}
+                        {#                                    </a>#}
+                        {#                                </p>#}
+                        {#                                {% if user.account.vk_token and user.account.vk_group_id %}#}
+                        {#                                    <a href="{% url 'vk_auth' %}" class="secondary-content">#}
+                        {#                                        <i class="material-icons">create</i>#}
+                        {#                                    </a>#}
+                        {#                                {% else %}#}
+                        {#                                    <a href="{{ user.account.vk_login_url }}" class="secondary-content">#}
+                        {#                                        <i class="material-icons">add</i>#}
+                        {#                                    </a>#}
+                        {#                                {% endif %}#}
+                        {#                            </li>#}
+                        {#                            <li class="collection-item avatar">#}
+                        {#                                <img src="{% static 'smm_admin/img/facebook_logo.png' %}" alt="facebook" class="circle">#}
+                        {#                                <span class="title">Facebook Group</span>#}
+                        {#                                <p>#}
+                        {#                                    <a href="https://facebook.com/{{ user.account.facebook_group_id }}"#}
+                        {#                                       target="_blank">#}
+                        {#                                        {{ user.account.facebook_group_name }}#}
+                        {#                                    </a>#}
+                        {#                                </p>#}
+                        {#                                <a href="{{ user.account.fb_login_url }}" class="secondary-content">#}
+                        {#                                    {% if user.account.facebook_token and user.account.facebook_group_name %}#}
+                        {#                                        <i class="material-icons">create</i>#}
+                        {#                                    {% else %}#}
+                        {#                                        <i class="material-icons">add</i>#}
+                        {#                                    {% endif %}#}
+                        {#                                </a>#}
+                        {#                            </li>#}
+                        {#                            <li class="collection-item avatar">#}
+                        {#                                <img src="{% static 'smm_admin/img/telegram_logo.png' %}" alt="telegram"#}
+                        {#                                     class="circle">#}
+                        {#                                <span class="title">Telegram Channel</span>#}
+                        {#                                <p>#}
+                        {#                                    {% if user.account.telegram_token and user.account.telegram_channel_id %}#}
+                        {#                                        <a href="https://t.me/{{ user.account.telegram_channel_id }}"#}
+                        {#                                           target="_blank">#}
+                        {#                                            @{{ user.account.telegram_channel_id }}#}
+                        {#                                        </a>#}
+                        {#                                    {% endif %}#}
+                        {#                                </p>#}
+                        {#                                <a href="#telegram_channel_select" class="secondary-content modal-trigger">#}
+                        {#                                    {% if user.account.telegram_token and user.account.telegram_channel_id %}#}
+                        {#                                        <i class="material-icons">create</i>#}
+                        {#                                    {% else %}#}
+                        {#                                        <i class="material-icons">add</i>#}
+                        {#                                    {% endif %}#}
+                        {#                                </a>#}
+                        {#                            </li>#}
+                        {#                            <li class="collection-item avatar">#}
+                        {#                                <img src="{% static 'smm_admin/img/twitter_logo.jpg' %}" alt="twitter"#}
+                        {#                                     class="circle">#}
+                        {#                                <span class="title">Twitter</span>#}
+                        {#                                <p>#}
+                        {#                                    {% if user.account.twitter_token_key and user.account.twitter_username %}#}
+                        {#                                        <a href="https://twitter.com/{{ user.account.twitter_username }}"#}
+                        {#                                           target="_blank">#}
+                        {#                                            @{{ user.account.twitter_username }}#}
+                        {#                                        </a>#}
+                        {#                                    {% endif %}#}
+                        {#                                </p>#}
+                        {#                                <a href="{% url 'twitter_auth' %}" class="secondary-content">#}
+                        {#                                    {% if user.account.twitter_token_key and user.account.twitter_username %}#}
+                        {#                                        <i class="material-icons">create</i>#}
+                        {#                                    {% else %}#}
+                        {#                                        <i class="material-icons">add</i>#}
+                        {#                                    {% endif %}#}
+                        {#                                </a>#}
+                        {#                            </li>#}
+                        {#                        </ul>#}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block static %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'smm_admin/lib/material-icons.css' %}">
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            M.Dropdown.init(document.querySelectorAll('.dropdown-trigger'), {});
+        });
+    </script>
+{% endblock %}

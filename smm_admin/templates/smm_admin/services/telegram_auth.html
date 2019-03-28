@@ -1,0 +1,45 @@
+{% extends 'smm_admin/base.html' %}
+
+{% block title %}Telegram auth{% endblock %}
+{% block content %}
+    <div class="container">
+
+        <div class="row">
+            <div class="col s6 offset-s3">
+                <div class="card">
+                    <div class="card-content">
+                        <form action="{% url 'telegram_channel_form' %}" method="POST">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col s12">
+                                    <h5>Please, provide Telegram info</h5>
+                                    <p>You need to add your bot to your channel and give us the token</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s12">
+                                    <input type="text" name="telegram_channel"
+                                           value="{{ user.account.telegram_channel_id }}"
+                                           required>
+                                    <label for="telegram_channel">Telegram Channel Name</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s12">
+                                    <input type="password" name="telegram_bot_token" required
+                                           value="{{ user.account.telegram_token }}">
+                                    <label for="telegram_bot_token">Bot Token</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col s12">
+                                    <button class="btn" type="submit">Submit</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

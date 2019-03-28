@@ -1,0 +1,83 @@
+{% extends 'smm_admin/base.html' %}
+{% block title %}Login{% endblock %}
+{% block content %}
+    <div id="app" class="container">
+        <div class="row">
+            <div class="col s12 m6 offset-m3">
+                <div class="card" style="margin-top: 70px;">
+                    <div class="card-content">
+                        <span class="card-title">Login</span>
+                        <form @submit.prevent="submit()" method="POST">
+                            <div class="row">
+                                <div class="input-field col s12">
+                                    <input id="username"
+                                           type="email"
+                                           name="username"
+                                           v-model="user.username"
+                                           v-bind:class="{invalid: userErrors.username}"
+                                    >
+                                    <label for="username">Email</label>
+                                    <span class="helper-text" v-bind:data-error="userErrors.username"></span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s12">
+                                    <input id="password"
+                                           type="password"
+                                           name="password"
+                                           v-model="user.password"
+                                           v-bind:class="{invalid: userErrors.password}"
+                                    >
+                                    <label for="password">Password</label>
+                                    <span class="helper-text" v-bind:data-error="userErrors.password"></span>
+                                </div>
+                            </div>
+                            <transition name="slide">
+                                <div class="row" v-show="!loginFormActive">
+                                    <div class="input-field col s12">
+                                        <input id="password_confirm"
+                                               type="password"
+                                               name="password_confirm"
+                                               v-model="user.passwordConfirm"
+                                               v-bind:class="{invalid: userErrors.passwordConfirm}">
+                                        <label for="password_confirm">Confirm Password</label>
+                                        <span class="helper-text" v-bind:data-error="userErrors.passwordConfirm"></span>
+                                    </div>
+                                </div>
+                            </transition>
+                            <div class="row">
+                                <div class="input-field col s6">
+                                    <button class="btn" type="submit" name="submit">
+                                        <span v-show="loginFormActive">Log In</span>
+                                        <span v-show="!loginFormActive">Sign Up</span>
+                                    </button>
+                                </div>
+                                <div class="input-field col s6">
+                                    <button class="btn-flat" type="button" style="float: right" @click="changeForm()">
+                                        <span v-show="loginFormActive">or Sign Up</span>
+                                        <span v-show="!loginFormActive">or Log In</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block static %}
+    {{ block.super }}
+    {% load staticfiles %}
+
+    <script>
+        window.csrf_token = "{{ csrf_token }}";
+    </script>
+
+    <link rel="stylesheet" href="{% static 'smm_admin/css/common.css' %}">
+    <script src="{% static 'smm_admin/lib/vue.js' %}"></script>
+    <script src="{% static 'smm_admin/lib/axios.min.js' %}"></script>
+
+    <script src="{% static 'smm_admin/js/login.js' %}"></script>
+{% endblock %}

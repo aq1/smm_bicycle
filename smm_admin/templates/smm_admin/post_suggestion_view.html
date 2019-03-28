@@ -1,0 +1,83 @@
+{% extends 'smm_admin/base.html' %}
+
+{% block title %}
+    Suggested Post
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m8 offset-m2">
+                <div class="card" style="margin-top: 150px;">
+                    <div class="card-content">
+                        <div class="row">
+                            <div class="col s12">
+                                <h4>{{ post.name_en }}</h4>
+                                {% for link in post.links %}
+                                    <p><a href="{{ link }}">{{ link }}</a></p>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col s12">
+                                <h5>Old Work</h5>
+                                <span>
+                            {{ post.old_work_year }}
+                                    {% if post.old_work_url %}
+                                        <a href="{{ post.old_work_url }}">{{ post.old_work_url }}</a>
+                                    {% endif %}
+                        </span>
+                                {% if post.old_work_image %}
+                                    <div><img src="{{ post.old_work_image.url }}" alt="" width="250px"></div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col s12">
+                                <h5>New Work</h5>
+                                <span>
+                            {{ post.new_work_year }}
+                                    {% if post.new_work_url %}
+                                        <a href="{{ post.new_work_url }}">{{ post.new_work_url }}</a>
+                                    {% endif %}
+                        </span>
+                                {% if post.new_work_image %}
+                                    <div><img src="{{ post.new_work_image.url }}" alt="" width="250px"></div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col s12">
+                                <h5>Text</h5>
+                                <div>
+                                    {% if post.text %}
+                                        {{ post.text }}
+                                    {% else %}
+                                        You left newbies without adviсe.
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        {% if user %}
+                            <div class="row">
+                                <div class="col s12">
+                                    <form action="{% url 'suggested_to_post' %}" method="POST">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn">
+                                            Save
+                                        </button>
+                                    </form>
+                                    <form action="{% url 'suggested_to_post_redirect' 'edit_image' %}" method="POST">
+                                        {% csrf_token %}
+                                        <button class="btn">
+                                            Save & Create Image
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

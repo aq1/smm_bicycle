@@ -1,0 +1,5 @@
+[Unit]
+Description=SMM Bicycle Celery
+
+[Service]
+ExecStart=/root/projects/project/.env/bin/celery -A tasks worker

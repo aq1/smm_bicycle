@@ -1,0 +1,50 @@
+{% extends 'smm_admin/base.html' %}
+
+{% block title %}
+    Select VK group
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m8 offset-m2">
+                <div class="card">
+                    <div class="card-content">
+                        <div class="row">
+                            <div class="col s12">
+                                <span class="card-title">Select a group</span>
+                                <form action="{% url 'fb_group_selected' %}" method="POST">
+                                    {% csrf_token %}
+                                    <div class="input-field col s12 m12">
+                                        <select name="group" class="icons" required>
+                                            {% for group in groups %}
+                                                <option value="{{ forloop.counter0 }}"
+                                                        data-icon="{{ group.cover.source }}">
+                                                    {{ group.name }}
+                                                </option>
+                                            {% endfor %}
+                                            <label for="group">Images in select</label>
+                                        </select>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col s12">
+                                            <button class="btn" type="submit">Submit</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            M.FormSelect.init(
+                document.querySelectorAll('select'),
+                {}
+            );
+        });
+    </script>
+{% endblock %}

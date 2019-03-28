@@ -1,0 +1,60 @@
+{% extends 'smm_admin/base.html' %}
+
+{% block title %}VK auth{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col s8 offset-s2">
+                <div class="card">
+                    <div class="card-content">
+                        <div class="row">
+                            <div class="col s12">
+                                <h3>
+                                    Here is the algorithm:
+                                </h3>
+                                <ul class="collection">
+                                    <li class="collection-item">
+                                        Go to
+                                        <a href="{{ url }}" target="_blank">
+                                            vk <i class="material-icons">open_in_new</i>
+                                        </a>
+                                    </li>
+                                    <li class="collection-item">
+                                        Authorize an app
+                                    </li>
+                                    <li class="collection-item">Copy the url that vk redirected you to this form</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col s12">
+                                <form action="{% url 'vk_auth_post' %}" method="POST">
+                                    {% csrf_token %}
+                                    <div class="col input-field s12">
+                                        <input id="vk_url" type="text" name="vk_url" required
+                                        {% if error %}
+                                            class="invalid"
+                                        {% endif %}
+                                        >
+                                        <span class="helper-text" data-error="{{ error }}"></span>
+                                        <label for="vk_url">URL</label>
+                                    </div>
+                                    <div class="col input-field s12">
+                                        <button class="btn" type="submit">Submit</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block static %}
+    {{ block.super }}
+    {% load staticfiles %}
+    <link rel="stylesheet" href="{% static 'smm_admin/lib/material-icons.css' %}">
+{% endblock %}

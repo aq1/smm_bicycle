@@ -1,0 +1,85 @@
+{% extends 'smm_admin/base.html' %}
+
+{% block title %}
+    Edit Image
+{% endblock %}
+
+{% block content %}
+    <div class="container" id="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="row">
+                    <div class="col s12 m12 l12">
+                        <button class="btn waves-effect waves-light" id="save" onclick="saveProject()">Save</button>
+                        <button class="btn waves-effect waves-light" id="reset" onclick="reset(window.post, false);">
+                            Reset
+                        </button>
+                        <button class="btn modal-trigger" data-target="render-modal">Render</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12 m12 l11 xl10">
+                <div id="canvas-wrapper">
+                    <canvas id="canvas"></canvas>
+                </div>
+            </div>
+            <div class="col s12 m1 l1 xl2" style="background-color: red">
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12 m12 l12">
+
+                <div style="">
+                    <canvas id="hidden-canvas"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="render-modal" class="modal">
+        <div class="modal-content">
+            <h4>Render and save image</h4>
+            <form class="col s12">
+                <div>
+                    <div class="input-field inline col s12 m3 l3 xl3">
+                        <input id="render_width" type="number" class="validate" value="720">
+                        <label for="render_width">Minimum width</label>
+                    </div>
+                    <div class="input-field inline col s12 m3 l3 xl3">
+                        <input id="render_height" type="number" class="validate" value="460">
+                        <label for="render_height">Minimum height</label>
+                    </div>
+                </div>
+                <div>
+                    <div class="input-field inline col s12 m3 l3 xl3">
+                        <input id="render_name" type="text" class="validate" value="Filename">
+                        <label for="render_name">Filename</label>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn waves-effect waves-green" onclick="render()" id="render">Render</button>
+            <button class="modal-close waves-effect waves-green btn-flat">Close</button>
+        </div>
+    </div>
+    <script>
+        window.csrf_token = "{{ csrf_token }}";
+        window.post_id = {{ post_id }};
+        document.addEventListener('DOMContentLoaded', function () {
+            M.Modal.init(document.querySelectorAll('.modal'), {});
+        });
+    </script>
+{% endblock %}
+
+{% block static %}
+    {{ block.super }}
+    {% load staticfiles %}
+    <script type="text/javascript" src="{% static 'smm_admin/lib/axios.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'smm_admin/lib/fabric.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'smm_admin/js/edit_image.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'smm_admin/css/common.css' %}">
+{% endblock %}

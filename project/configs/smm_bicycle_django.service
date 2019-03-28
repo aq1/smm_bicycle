@@ -1,0 +1,6 @@
+[Unit]
+Description=SMM Bicycle Django
+
+[Service]
+ExecStart=/root/projects/project/.env/bin/python /root/projects/project/manage.py runserver 0.0.0.0:8000
+PIDFile=/var/run/smm_bicycle_django.pid

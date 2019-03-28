@@ -1,0 +1,185 @@
+{% extends 'smm_admin/base.html' %}
+
+{% block title %}Suggest a Post{% endblock %}
+
+{% block content %}
+    <div id="app" class="container">
+        <form @submit.prevent="submit" id="form">
+            <div class="row">
+                <div class="col s12 m8 offset-m2">
+                    <div class="card">
+                        <div class="card-content">
+                            <div class="row">
+                                <div class="col s12 m12">
+                                    <h4>Suggest a post</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 m8 offset-m2">
+                    <div class="card">
+                        <div class="card-content">
+                            <div class="row">
+                                <div class="input-field col s12 m12">
+                                    <input v-model="post.name" id="name" type="text"
+                                           v-bind:class="{invalid: post_errors.name}">
+                                    <span class="helper-text" v-bind:data-error="post_errors.name"></span>
+                                    <label for="name">Your Name</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col s12 m12">
+                                    <span>Your social links (instagram, artstation, etc)</span>
+                                    <div class="input-field" v-for="(link, index) in post.links">
+                                        <label for="url-{{ index }}">URL</label>
+                                        <input
+                                                name="url-{{ index }}"
+                                                v-model="link.value"
+                                                type="text"
+                                                @input="linksInputChanged(index)"
+                                                @blur="linksInputChanged(index)"
+                                                v-bind:class="{invalid: post_errors.links}"
+                                        >
+                                        <span class="helper-text" v-bind:data-error="post_errors.links"
+                                              v-show="index === 0"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 m8 offset-m2">
+                    <div class="card">
+                        <div class="card-content">
+                            <div class="row">
+                                <div class="col s12 m12">
+                                    <span>Your old work (the older is the better)</span>
+                                    <div class="input-field">
+                                        <label for="old-work-year">Year</label>
+                                        <input v-model="post.old_work.year" id="old-work-year" type="text"
+                                               v-bind:class="{invalid: post_errors.old_work.year}">
+                                        <span class="helper-text" v-bind:data-error="post_errors.old_work.year"></span>
+                                    </div>
+                                    <div>
+                                        <div class="file-field input-field">
+                                            <div class="btn">
+                                                <span>File</span>
+                                                <input type="file" accept="image/*" @change="setFile($event, 'old_work')">
+                                            </div>
+                                            <div class="file-path-wrapper">
+                                                <input class="file-path validate" type="text"
+                                                       placeholder="click to upload">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="input-field">
+                                        <label for="old-work-url">or URL</label>
+                                        <input v-model="post.old_work.url" id="old-work-url" type="text"
+                                               v-bind:class="{invalid: post_errors.old_work.url}">
+                                        <span class="helper-text" v-bind:data-error="post_errors.old_work.url"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 m8 offset-m2">
+                    <div class="card">
+                        <div class="card-content">
+                            <div class="row">
+                                <div class="col s12 m12">
+                                    <span>Your best or most loved work</span>
+                                    <div class="input-field">
+                                        <label for="new-work-year">Year</label>
+                                        <input v-model="post.new_work.year" id="new-work-year" type="text"
+                                               v-bind:class="{invalid: post_errors.new_work.year}">
+                                        <span class="helper-text" v-bind:data-error="post_errors.new_work.year"></span>
+                                    </div>
+                                    <div>
+                                        <div class="file-field input-field">
+                                            <div class="btn">
+                                                <span>File</span>
+                                                <input type="file" accept="image/*" @change="setFile($event, 'new_work')">
+                                            </div>
+                                            <div class="file-path-wrapper">
+                                                <input class="file-path validate"
+                                                       type="text" placeholder="click to upload">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="input-field">
+                                        <label for="new-work-url">or URL</label>
+                                        <input v-model="post.new_work.url" id="new-work-url" type="text"
+                                               v-bind:class="{invalid: post_errors.new_work.url}">
+                                        <span class="helper-text" v-bind:data-error="post_errors.new_work.url"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 m8 offset-m2">
+                    <div class="card">
+                        <div class="card-content">
+                            <div class="row">
+                                <div class="col s12 m12">
+                                    <div class="row">
+                                        <div class="input-field col s12 m12">
+                <textarea v-model="post.text" id="text" class="materialize-textarea"
+                ></textarea>
+                                            <label for="text">Your Advice (optional). It would be cool if you provide
+                                                something for newbies</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" v-show="!submitIsInProgress">
+                <div class="col s12 m6 offset-m2">
+                <span v-if="!form_is_valid" class="red-text text-lighten-1">
+                    Please correct the errors above
+                </span>
+                </div>
+                <div class="col s12 m2">
+                    <button class="btn waves-effect waves-light"
+                            type="submit"
+                            name="submit"
+                            style="float: right">
+                        Submit
+                    </button>
+                </div>
+            </div>
+            <div class="row" v-show="submitIsInProgress">
+                <div class="col s12 m8 offset-m2">
+                    <div class="progress">
+                        <div class="indeterminate"></div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+
+{% block static %}
+    {{ block.super }}
+    {% load staticfiles %}
+    <link rel="stylesheet" href="{% static 'smm_admin/css/common.css' %}">
+    <script>
+        window.csrf_token = "{{ csrf_token }}";
+    </script>
+    <script type="text/javascript" src="{% static 'smm_admin/lib/axios.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'smm_admin/lib/vue.js' %}"></script>
+    <script type="text/javascript" src="{% static 'smm_admin/js/post_suggestion_form.js' %}"></script>
+{% endblock %}
