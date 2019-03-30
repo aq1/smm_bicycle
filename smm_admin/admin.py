@@ -51,7 +51,7 @@ class PostAdmin(admin.ModelAdmin):
         LinkInline,
     )
 
-    list_display = '__str__', 'ok', 'services'
+    list_display = '__str__', 'schedule', 'ok', 'services'
 
     _true = '<img src="/static/admin/img/icon-yes.svg" alt="True">'
     _false = '<img src="/static/admin/img/icon-no.svg" alt="False">'
