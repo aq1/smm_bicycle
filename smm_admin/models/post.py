@@ -70,7 +70,7 @@ class Post(models.Model):
             task_id = 'make_a_post_{}'.format(self.id)
             celery.app.control.revoke(task_id)
             tasks.notify_user.apply_async(
-                args=[self.account.telegram_id, 'Post at {}'.format(self.schedule)],
+                args=[self.account.telegram_id, '{} at {}'.format(task_id, self.schedule)],
                 eta=self.schedule,
                 task_id=task_id,
             )
