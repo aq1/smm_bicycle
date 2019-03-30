@@ -1,4 +1,4 @@
-{% extends 'smm_admin/base.html' %}
+e{% extends 'smm_admin/base.html' %}
 
 {% block title %}{{ post.name_en }}{% endblock %}
 
@@ -60,11 +60,15 @@
                         <div class="row">
                             <div class="col s6">
                                 <h5>{{ post.old_work_year }}</h5>
-                                <img src="{{ post.old_work.url }}" alt="Old Work" width="100%">
+                                {% if post.old_work %}
+                                    <img src="{{ post.old_work.url }}" alt="Old Work" width="100%">
+                                {% endif %}
                             </div>
                             <div class="col s6">
                                 <h5>{{ post.new_work_year }}</h5>
-                                <img src="{{ post.new_work.url }}" alt="New Work" width="100%">
+                                {% if post.new_work %}
+                                    <img src="{{ post.new_work.url }}" alt="New Work" width="100%">
+                                {% endif %}
                             </div>
                         </div>
                     </div>
