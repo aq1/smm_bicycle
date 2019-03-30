@@ -122,13 +122,18 @@ new Vue({
                             }
                         }
                     ).catch(function () {
-                            alert('Something went wrong. We are terribly sorry.');
-                        }
+                        alert('Something went wrong. We are terribly sorry.');
+                    }
                     ).finally(function () {
                         view.submitIsInProgress = false;
                     });
                 } else {
                     view.submitIsInProgress = false;
+                    if (redirectToImageEditPage) {
+                        window.location = '/p/' + response.data.post_id + '/edit_image/';
+                    } else {
+                        window.location = '/p/' + response.data.post_id + '/';
+                    }
                 }
             }).catch(function () {
                 alert('Something went wrong. We are terribly sorry.');
