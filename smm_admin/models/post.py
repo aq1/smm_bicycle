@@ -4,7 +4,7 @@ from django.conf import settings
 
 from project import celery
 
-from smm_admin.tasks import make_a_post
+from smm_admin import tasks
 
 
 class Post(models.Model):
@@ -66,9 +66,14 @@ class Post(models.Model):
 
     def save(self, **kwargs):
         result = super().save()
-        # if self.schedule:
-        #     celery.app.control.revoke(self.id)
-        #     make_a_post.apply_async(args=[self.id], eta=self.schedule, task_id=self.id)
+        if self.schedule:
+            task_id = 'make_a_post_{}'.format(self.id)
+            celery.app.control.revoke(task_id)
+            tasks.notify_user.apply_async(
+                args=[self.account.telegram_id, 'Post at {}'.format(self.schedule)],
+                eta=self.schedule,
+                task_id=task_id,
+            )
 
         return result
 
