@@ -30,7 +30,7 @@ var resizeCanvas = function (w, h) {
     M.Modal.getInstance(document.getElementById('resize-modal')).close();
 };
 
-var setHooks = function () {
+(function setHooks() {
     canvas.off('object:modified');
     canvas.off('object:added');
     canvas.off('object:selected');
@@ -91,7 +91,7 @@ var setHooks = function () {
         });
     });
 
-};
+})();
 
 var addYearToImage = function (image, year) {
     var year_text = new fabric.IText(year.toString(), {
@@ -254,7 +254,6 @@ axios.get('/post/' + window.post_id + '/').then(function (response) {
     window.post = response.data;
     document.getElementById('render_name').value = window.post.name_en.toLowerCase().replace(/\s/gi, '_');
     load(response.data, true).then(function () {
-        setHooks();
         M.toast({html: 'Project loaded', displayLength: 1000})
     });
 }).catch(function (reason) {
