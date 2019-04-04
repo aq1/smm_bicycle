@@ -5,28 +5,30 @@
 {% endblock %}
 
 {% block content %}
-    <div class="container" id="container">
+    <div id="container" style="margin-top: 10px;">
         <div class="row">
-            <div class="col s12 m12 l12">
+            <div class="col s12">
                 <div class="row">
-                    <div class="col s12 m12 l12">
+                    <div class="col s12 m2">
                         <button class="btn waves-effect waves-light" id="save" onclick="saveProject()">Save</button>
                         <button class="btn waves-effect waves-light" id="reset" onclick="reset(window.post, false);">
                             Reset
                         </button>
+                    </div>
+                    <div class="col s12 m2">
+                        <button class="btn modal-trigger" data-target="resize-modal">Resize canvas</button>
+                    </div>
+                    <div class="col s12 m2">
                         <button class="btn modal-trigger" data-target="render-modal">Render</button>
                     </div>
                 </div>
             </div>
         </div>
         <div class="row">
-            <div class="col s12 m12 l11 xl10">
+            <div class="col s12">
                 <div id="canvas-wrapper">
                     <canvas id="canvas"></canvas>
                 </div>
-            </div>
-            <div class="col s12 m1 l1 xl2" style="background-color: red">
-
             </div>
         </div>
         <div class="row">
@@ -38,23 +40,44 @@
             </div>
         </div>
     </div>
+    <div id="resize-modal" class="modal">
+        <div class="modal-content">
+            <h4>Resize canvas</h4>
+            <form class="col s12">
+                <div>
+                    <div class="input-field inline col s12 m3 l3 xl3">
+                        <input id="canvas_width" type="number" class="validate" value="1200">
+                        <label for="canvas_width">Width</label>
+                    </div>
+                    <div class="input-field inline col s12 m3 l3 xl3">
+                        <input id="canvas_height" type="number" class="validate" value="700">
+                        <label for="canvas_height">Height</label>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn waves-effect waves-green" onclick="resizeCanvas()" id="resize">Resize</button>
+            <button class="modal-close waves-effect waves-green btn-flat">Cancel</button>
+        </div>
+    </div>
 
     <div id="render-modal" class="modal">
         <div class="modal-content">
             <h4>Render and save image</h4>
             <form class="col s12">
+                {#                <div>#}
+                {#                    <div class="input-field inline col s12 m3 l3 xl3">#}
+                {#                        <input id="render_width" type="number" class="validate" value="720">#}
+                {#                        <label for="render_width">Minimum width</label>#}
+                {#                    </div>#}
+                {#                    <div class="input-field inline col s12 m3 l3 xl3">#}
+                {#                        <input id="render_height" type="number" class="validate" value="460">#}
+                {#                        <label for="render_height">Minimum height</label>#}
+                {#                    </div>#}
+                {#                </div>#}
                 <div>
-                    <div class="input-field inline col s12 m3 l3 xl3">
-                        <input id="render_width" type="number" class="validate" value="720">
-                        <label for="render_width">Minimum width</label>
-                    </div>
-                    <div class="input-field inline col s12 m3 l3 xl3">
-                        <input id="render_height" type="number" class="validate" value="460">
-                        <label for="render_height">Minimum height</label>
-                    </div>
-                </div>
-                <div>
-                    <div class="input-field inline col s12 m3 l3 xl3">
+                    <div class="input-field inline col s12 m3">
                         <input id="render_name" type="text" class="validate" value="Filename">
                         <label for="render_name">Filename</label>
                     </div>
@@ -79,7 +102,8 @@
     {{ block.super }}
     {% load staticfiles %}
     <script type="text/javascript" src="{% static 'smm_admin/lib/axios.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'smm_admin/lib/vue.js' %}"></script>
     <script type="text/javascript" src="{% static 'smm_admin/lib/fabric.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'smm_admin/js/edit_image.js' %}"></script>
+    <script type="text/javascript" src="{% static 'smm_admin/js/canvas.js' %}"></script>
     <link rel="stylesheet" href="{% static 'smm_admin/css/common.css' %}">
 {% endblock %}

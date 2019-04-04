@@ -1,15 +1,39 @@
 .slide-enter-active {
-  transition: all .05s ease;
+    transition: all .05s ease;
 }
+
 .slide-leave-active {
-  transition: all .05s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+    transition: all .05s cubic-bezier(1.0, 0.5, 0.8, 1.0);
 }
+
 .slide-enter, .slide-leave-to {
-  transform: translateY(-50px);
-  opacity: 0;
+    transform: translateY(-50px);
+    opacity: 0;
 }
 
 div.drag {
-  border: 2px dashed #ccc;
-  border-radius: 10px;
+    border: 2px dashed #ccc;
+    border-radius: 10px;
+}
+
+div.canvas-size-control {
+    margin: 0;
+    padding: 0 10px;
+    background-color: white;
+    height: 40px;
+}
+
+div.canvas-size-control > div.card-content {
+    padding: 5px 8px;
+    height: 40px;
+}
+
+div.canvas-size-control > div {
+    margin: 0;
+    height: 40px;
+}
+
+div.canvas-size-control input,
+div.canvas-size-control input:focus {
+    border: none !important;
 }
