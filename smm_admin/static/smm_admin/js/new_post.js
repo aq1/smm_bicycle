@@ -113,11 +113,11 @@ new Vue({
                             headers: {'X-CSRFToken': window.csrf_token}
                         }
                     ).then(
-                        function (response) {
+                        function () {
                             if (redirectToImageEditPage) {
-                                window.location = '/p/' + response.data.post_id + '/edit_image/';
+                                window.location = '/p/' + post_id + '/edit_image/';
                             } else {
-                                window.location = '/p/' + response.data.post_id + '/';
+                                window.location = '/p/' + post_id + '/';
                             }
                         }
                     ).catch(function () {
