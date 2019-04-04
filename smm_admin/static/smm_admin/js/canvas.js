@@ -223,7 +223,10 @@ var render = function () {
         M.toast({
             html: toastHTML,
             displayLength: 4000
-        })
+        });
+        var link = document.getElementById('open_rendered');
+        link.style.visibility = 'visible';
+        link.href = url;
     }).catch(function () {
         M.toast({html: 'Something went wrong', displayLength: 3000});
     }).finally(function () {

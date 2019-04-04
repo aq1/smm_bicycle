@@ -22,7 +22,7 @@ urlpatterns = [
     path('new/', post.PostView.as_view()),
     path('new/<int:post_id>/upload_files/', post.post_file_upload),
 
-    path('p/<int:post_id>/', post.post_view),
+    path('p/<int:post_id>/', post.post_view, name='post'),
     path('p/<int:post_id>/edit_image/', edit_image.edit_image, name='edit_image'),
 
     path('suggest/', post_suggestion.PostSuggestionView.as_view()),
