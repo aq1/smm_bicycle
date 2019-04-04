@@ -110,8 +110,7 @@ new Vue({
                         '/new/' + post_id + '/upload_files/',
                         formData,
                         {
-                            headers: {'X-CSRFToken': window.csrf_token},
-                            params: {'t': token}
+                            headers: {'X-CSRFToken': window.csrf_token}
                         }
                     ).then(
                         function (response) {
@@ -141,7 +140,6 @@ new Vue({
             })
         },
         setFile: function (event, work) {
-            console.log(this.form_is_valid);
             this[work] = event.target.files[0];
         },
         linksInputChanged: function (index) {
