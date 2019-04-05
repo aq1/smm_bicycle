@@ -1,2 +1,86 @@
 {% extends 'smm_admin/base.html' %}
+
 {% block title %}Your Posts{% endblock %}
+
+{% block static %}
+    {{ block.super }}
+    {% load staticfiles %}
+
+    <link rel="stylesheet" href="{% static 'smm_admin/lib/material-icons.css' %}">
+    <link rel="stylesheet" href="{% static 'smm_admin/css/common.css' %}">
+
+    <script src="{% static 'smm_admin/lib/axios.min.js' %}"></script>
+    <script src="{% static 'smm_admin/lib/vue.js' %}"></script>
+
+    <script src="{% static 'smm_admin/js/list_posts.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+    {% verbatim %}
+    <div class="container" id="app" style="margin-top: 50px;">
+        <div class="row">
+            <div class="col s12">
+                <div class="card">
+                    <div class="card-content">
+                        <div class="row">
+                            <div class="col s12">
+                                <h4>My posts</h4>
+                            </div>
+                        </div>
+                        <div v-show="!wip">
+                            <div class="row">
+                                <div class="col s12">
+                                    <div class="collection">
+                                        <div v-for="post in posts">
+                                            <a :href="'/p/' + post.id" class="collection-item avatar default-text">
+                                                <img :src="post.new_work" alt="" class="circle">
+                                                <span class="title">
+                                                    {{ post.name_en }}
+                                                </span>
+                                                <p>
+                                                    <span :class="'status_' + post.status.toLowerCase().replace(' ', '_')">
+                                                        {{ post.status }}
+                                                    </span>
+                                                    <br>
+                                                    <span v-show="post.schedule">Planned post - {{ post.schedule }}</span>
+                                                    <span v-show="!post.schedule">not planned</span>
+                                                </p>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col s1">
+                                    <button class="btn btn" v-show="page > 1" @click="getPosts(page - 1)">
+                                        <i class="material-icons">navigate_before</i>
+                                    </button>
+                                </div>
+
+                                <div class="col s1" v-for="n in Math.ceil(count / pageSize)">
+                                    <button class="btn" :class="{'btn-flat': n != page}" @click="getPosts(n)">
+                                        {{ n }}
+                                    </button>
+                                </div>
+
+                                <div class="col s1">
+                                    <button class="btn" v-show="page < count / pageSize" @click="getPosts(page + 1)">
+                                        <i class="material-icons">navigate_next</i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col s12">
+                                <div class="progress" v-show="wip">
+                                    <div class="indeterminate"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endverbatim %}
+{% endblock %}

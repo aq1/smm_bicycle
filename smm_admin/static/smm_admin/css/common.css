@@ -37,3 +37,27 @@ div.canvas-size-control input,
 div.canvas-size-control input:focus {
     border: none !important;
 }
+
+a.default-text {
+    color: unset !important;
+}
+
+span.status_in_progress {
+    color: #26a69a;
+}
+
+span.status_not_ready {
+    color: #bdbdbd;
+}
+
+span.status_ready {
+    color: #009688;
+}
+
+span.status_ok {
+    color: #64ffda;
+}
+
+span.status_failed {
+    color: #ec407a;
+}
