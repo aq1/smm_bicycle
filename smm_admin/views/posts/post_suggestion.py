@@ -17,7 +17,7 @@ from smm_admin.models import (
 class PostSuggestionView(views.View):
     @staticmethod
     def get(request):
-        return render(request, 'smm_admin/post_suggestion_form.html')
+        return render(request, 'smm_admin/posts/post_suggestion_form.html')
 
     @staticmethod
     def post(request):
@@ -84,7 +84,7 @@ def post_suggestion_view(request):
     try:
         return render(
             request,
-            'smm_admin/post_suggestion_view.html',
+            'smm_admin/posts/post_suggestion_view.html',
             {
                 'post': PostSuggestion.objects.get(token=request.GET['t']),
                 'user': request.user,

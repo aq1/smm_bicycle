@@ -4,6 +4,19 @@ from django.conf import settings
 
 
 class Post(models.Model):
+    IN_PROGRESS, NOT_READY, READY, OK, FAILED = range(5)
+    STATUSES = (
+        (IN_PROGRESS, 'In Progress'),
+        (NOT_READY, 'Not Ready'),
+        (READY, 'Ready'),
+        (OK, 'OK'),
+        (FAILED, 'Failed'),
+    )
+
+    status = models.PositiveSmallIntegerField(
+        choices=STATUSES,
+        default=NOT_READY,
+    )
 
     account = models.ForeignKey(
         'smm_admin.Account',
@@ -47,7 +60,6 @@ class Post(models.Model):
         default='',
         blank=True,
     )
-    tags = models.TextField()
 
     canvas_json = models.TextField(
         null=True,

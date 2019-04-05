@@ -94,3 +94,8 @@ def download_image(model, post_id):
         post.new_work = get_image_file(post.new_work_url)
 
     post.save()
+
+
+@shared_task
+def make_posts():
+    pass

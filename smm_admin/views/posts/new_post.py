@@ -1,115 +1,18 @@
-import binascii
-import base64
 import json
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import IntegrityError, transaction
 from django.views.decorators.http import require_http_methods
 from django.contrib.auth.decorators import login_required
-from django.core.files.base import ContentFile
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import render
 from django import http
 from django import views
-
-from rest_framework import serializers
 
 from smm_admin import tasks
 from smm_admin.models import (
     Post,
     Link,
 )
-
-
-class LinkSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Link
-        exclude = (
-            'post',
-        )
-        depth = 1
-
-
-class PostSerializer(serializers.ModelSerializer):
-    links = LinkSerializer(read_only=True, many=True)
-
-    class Meta:
-        model = Post
-        exclude = (
-            'id',
-        )
-        depth = 1
-
-
-@login_required
-@require_http_methods(['GET'])
-def post(request, post_id):
-    return http.JsonResponse(
-        PostSerializer(
-            instance=get_object_or_404(
-                Post,
-                id=post_id,
-                account__user_id=request.user.id,
-            )
-        ).data
-    )
-
-
-@require_http_methods(['GET'])
-@login_required
-def post_view(request, post_id):
-    try:
-        _post = Post.objects.prefetch_related('links').get(
-            id=post_id,
-            account_id=request.user.id,
-        )
-    except Post.DoesNotExist:
-        return http.HttpResponse(status=400)
-
-    return render(request, 'smm_admin/post.html', {'post': _post})
-
-
-@login_required
-@require_http_methods(['POST'])
-def save_canvas(request, post_id):
-    try:
-        json.loads(request.body)
-    except (ValueError, json.JSONDecodeError):
-        return http.HttpResponse(status=400)
-
-    updated = Post.objects.filter(
-        id=post_id,
-        account__user_id=request.user.id,
-    ).update(
-        canvas_json=request.body.decode('utf8'),
-    )
-    if updated == 0:
-        return http.HttpResponse(status=404)
-
-    return http.HttpResponse(status=201)
-
-
-@login_required
-@require_http_methods(['POST'])
-def save_render(request, post_id):
-    if not request.GET.get('f'):
-        return http.HttpResponse(status=400)
-
-    try:
-        _post = Post.objects.get(
-            id=post_id,
-            account__user_id=request.user.id,
-        )
-    except Post.DoesNotExist:
-        return http.HttpResponse(status=404)
-
-    try:
-        _post.rendered_image.save(
-            request.GET['f'],
-            ContentFile(base64.b64decode(request.body.decode('utf8').split(',')[1])),
-        )
-    except (binascii.Error, TypeError, IndexError, ValueError):
-        return http.HttpResponse(status=400)
-    return http.JsonResponse({'url': _post.rendered_image.url}, status=201)
 
 
 class PostView(LoginRequiredMixin, views.View):
@@ -126,7 +29,7 @@ class PostView(LoginRequiredMixin, views.View):
 
     @staticmethod
     def get(request):
-        return render(request, 'smm_admin/new_post.html')
+        return render(request, 'smm_admin/posts/new_post.html')
 
     def post(self, request):
         data = json.loads(request.body)

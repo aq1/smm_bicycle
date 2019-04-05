@@ -1,9 +1,16 @@
-from django.urls import path
+from django.urls import path, include
+
+from rest_framework.routers import DefaultRouter
 
 from .views import (
     account,
     auth,
-    edit_image,
+    canvas,
+)
+from smm_admin.views.posts import (
+    new_post,
+    post_api,
+    list_posts,
     post,
     post_suggestion,
 )
@@ -15,15 +22,25 @@ from .views.services import (
     vk,
 )
 
+
+router = DefaultRouter()
+router.register(r'posts', post_api.PostViewSet, basename='post')
+
+
 urlpatterns = [
-    path('post/<int:post_id>/', post.post),
-    path('post/<int:post_id>/save_canvas/', post.save_canvas),
-    path('post/<int:post_id>/save_render/', post.save_render),
-    path('new/', post.PostView.as_view()),
-    path('new/<int:post_id>/upload_files/', post.post_file_upload),
+
+    path('api/', include(router.urls)),
+
+    path('posts/', list_posts.list_posts, name='list_posts'),
+
+    path('post/<int:post_id>/save_canvas/', canvas.save_canvas),
+    path('post/<int:post_id>/save_render/', canvas.save_render),
+
+    path('new/', new_post.PostView.as_view()),
+    path('new/<int:post_id>/upload_files/', new_post.post_file_upload),
 
     path('p/<int:post_id>/', post.post_view, name='post'),
-    path('p/<int:post_id>/edit_image/', edit_image.edit_image, name='edit_image'),
+    path('p/<int:post_id>/edit_image/', canvas.edit_image, name='edit_image'),
 
     path('suggest/', post_suggestion.PostSuggestionView.as_view()),
     path('suggest/<int:post_id>/upload_files/', post_suggestion.post_suggestion_file_upload),

@@ -3,6 +3,7 @@ django
 Pillow
 psycopg2
 djangorestframework
+django-filter
 sentry-sdk
 
 requests
