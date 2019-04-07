@@ -43,9 +43,9 @@ class PostAdmin(admin.ModelAdmin):
 
     def ok(self, obj):
         return mark_safe([
-                             self._false,
-                             self._true
-                         ][obj.ok])
+             self._false,
+             self._true
+         ][obj.ok])
 
     def services(self, obj):
         return mark_safe('<br>'.join(
@@ -55,6 +55,12 @@ class PostAdmin(admin.ModelAdmin):
             )
             for res in obj.results.all()
         ))
+
+    @staticmethod
+    def links(obj):
+        return mark_safe(
+            '{}<br>{}'.format(obj.artstation, obj.instagram),
+        )
 
 
 @admin.register(PostResult)

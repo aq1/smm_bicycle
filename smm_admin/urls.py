@@ -25,6 +25,7 @@ from .views.services import (
 
 router = DefaultRouter()
 router.register(r'posts', post_api.PostViewSet, basename='post')
+router.register(r'post', post_api.PostTokenViewSet, basename='post')
 
 
 urlpatterns = [
@@ -40,16 +41,10 @@ urlpatterns = [
     path('new/<int:post_id>/upload_files/', new_post.post_file_upload),
 
     path('p/<int:post_id>/', post.post_view, name='post'),
+    path('p/<str:token>/', post.post_view, name='post'),
     path('p/<int:post_id>/edit_image/', canvas.edit_image, name='edit_image'),
 
-    path('suggest/', post_suggestion.PostSuggestionView.as_view()),
-    path('suggest/<int:post_id>/upload_files/', post_suggestion.post_suggestion_file_upload),
-    path('suggested/', post_suggestion.post_suggestion_view, name='suggested'),
-    path(
-        'suggested/create_post/<int:post_id>/<str:redirect_to_image_edit>/',
-        post_suggestion.create_post_from_suggested,
-        name='suggested_to_post_redirect',
-    ),
+    path('suggest/<int:account_id>/', post_suggestion.post_suggest_view),
 
     path('me/', account.account, name='account'),
     path('account_post/', account.account_post, name='account_post'),

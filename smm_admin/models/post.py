@@ -1,12 +1,18 @@
+import uuid
+
 from django.db import models
 from django.urls import reverse
 from django.conf import settings
-from django.contrib.postgres.fields import ArrayField
+
+
+def generate_token():
+    return str(uuid.uuid4()).replace('-', '')
 
 
 class Post(models.Model):
-    IN_PROGRESS, NOT_READY, READY, OK, FAILED = range(5)
+    SUGGESTED, IN_PROGRESS, NOT_READY, READY, OK, FAILED = range(6)
     STATUSES = (
+        (SUGGESTED, 'Suggested'),
         (IN_PROGRESS, 'In Progress'),
         (NOT_READY, 'Not Ready'),
         (READY, 'Ready'),
@@ -14,14 +20,16 @@ class Post(models.Model):
         (FAILED, 'Failed'),
     )
 
+    token = models.CharField(
+        max_length=32,
+        default=generate_token,
+        blank=True,
+        unique=True,
+    )
+
     status = models.PositiveSmallIntegerField(
         choices=STATUSES,
         default=NOT_READY,
-    )
-
-    suggested = models.BooleanField(
-        default=False,
-        blank=True,
     )
 
     account = models.ForeignKey(
@@ -48,8 +56,15 @@ class Post(models.Model):
         blank=True,
     )
 
-    links = ArrayField(
-        models.CharField(max_length=5000),
+    artstation = models.CharField(
+        max_length=256,
+        blank=True,
+    )
+
+    instagram = models.CharField(
+        max_length=256,
+        default='',
+        blank=True,
     )
 
     old_work_year = models.PositiveSmallIntegerField()

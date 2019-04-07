@@ -4,22 +4,33 @@
 
 {% block content %}
     <div class="content">
+        {% if by_token %}
+            <div class="row">
+                <div class="col s12 m8 offset-m2">
+                    <div class="card">
+                        <div class="card-content">
+                            <h4>Thank you for your post</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
         <div class="row">
             <div class="col s12 m8 offset-m2">
                 <div class="card">
-                    {% if post.rendered_image %}
+                    {% if not by_token and post.rendered_image %}
                         <div class="card-image">
                             <img src="{{ post.rendered_image.url }}">
                         </div>
                     {% endif %}
                     <div class="card-content">
-                    {% if not post.rendered_image %}
-                        <div class="row">
-                            <div class="col s12">
-                                <h4>No rendered image yet <a href="{% url 'edit_image' post.id %}">create</a></h4>
+                        {% if not by_token and not post.rendered_image %}
+                            <div class="row">
+                                <div class="col s12">
+                                    <h4>No rendered image yet <a href="{% url 'edit_image' post.id %}">create</a></h4>
+                                </div>
                             </div>
-                        </div>
-                    {% endif %}
+                        {% endif %}
                         <div class="row">
                             <div class="col s12">
                                 <h4>{{ post.name_en }}</h4>
@@ -28,19 +39,12 @@
                         </div>
                         <div class="row">
                             <div class="col s12">
-                                {% for link in post.links.all %}
                                     <div>
-                                        <a href="{{ link.url }}">{{ link.url }}</a>
+                                        <a href="{{ post.artstation }}">{{ post.artstation }}</a>
                                     </div>
-                                {% endfor %}
-                                <div>
-                                    {{ post.tags }}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col s12">
-
+                                    <div>
+                                        <a href="{{ post.instagram }}">{{ post.instagram }}</a>
+                                    </div>
                             </div>
                         </div>
                         <div class="row">
@@ -63,11 +67,17 @@
                                 {% if post.old_work %}
                                     <img src="{{ post.old_work.url }}" alt="Old Work" width="100%">
                                 {% endif %}
+                                {% if post.old_work_url %}
+                                    <a href="{{ post.old_work_url }}" target="_blank">Old Work Url</a>
+                                {% endif %}
                             </div>
                             <div class="col s6">
                                 <h5>{{ post.new_work_year }}</h5>
                                 {% if post.new_work %}
                                     <img src="{{ post.new_work.url }}" alt="New Work" width="100%">
+                                {% endif %}
+                                {% if post.new_work_url %}
+                                    <a href="{{ post.new_work_url }}" target="_blank">New Work Url</a>
                                 {% endif %}
                             </div>
                         </div>

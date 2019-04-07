@@ -2,10 +2,12 @@ from django_filters import rest_framework as filters
 from rest_framework import (
     serializers,
     viewsets,
+    mixins,
     permissions,
 )
 
 from smm_admin.models import (
+    Account,
     Post,
 )
 
@@ -17,7 +19,6 @@ class IsAuthor(permissions.BasePermission):
 
 
 class PostFilter(filters.FilterSet):
-
     status = filters.ChoiceFilter(
         choices=Post.STATUSES,
     )
@@ -46,8 +47,21 @@ class PostSerializer(serializers.ModelSerializer):
         depth = 1
 
 
-class PostViewSet(viewsets.ModelViewSet):
+class PostTokenSerializer(serializers.ModelSerializer):
+    account = serializers.PrimaryKeyRelatedField(queryset=Account.objects.all())
 
+    class Meta:
+        model = Post
+        exclude = (
+            'schedule',
+            'rendered_image',
+            'name_ru',
+            'text_ru',
+            'canvas_json',
+        )
+
+
+class PostViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthor]
     queryset = Post.objects.all()
     serializer_class = PostSerializer
@@ -57,7 +71,15 @@ class PostViewSet(viewsets.ModelViewSet):
         'status',
     )
 
-    def get_queryset(self):
-        return super().get_queryset().filter(
-            account_id=self.request.user.id
-        )
+
+class PostTokenViewSet(viewsets.ModelViewSet):
+
+    queryset = Post.objects.all()
+    serializer_class = PostTokenSerializer
+    lookup_field = 'token'
+
+    def destroy(self, request, *args, **kwargs):
+        pass
+
+    def list(self, request, *args, **kwargs):
+        pass

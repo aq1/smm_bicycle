@@ -3,32 +3,28 @@ new Vue({
     data: {
         submitIsInProgress: false,
         post: {
-            name: '',
+            account: location.pathname.match(/\d/)[0],
+            name_en: '',
             artstation: '',
             instagram: '',
-            old_work: {
-                year: '',
-                url: ''
-            },
-            new_work: {
-                year: '',
-                url: ''
-            }
+            old_work_year: '',
+            old_work_url: '',
+            new_work_year: '',
+            new_work_url: '',
+            text_en: ''
         },
         old_work: '',
         new_work: '',
         form_is_valid: true,
         post_errors: {
-            links: '',
-            name: '',
-            old_work: {
-                year: '',
-                url: ''
-            },
-            new_work: {
-                year: '',
-                url: ''
-            }
+            name_en: '',
+            artstation: '',
+            instagram: '',
+            old_work_year: '',
+            old_work_url: '',
+            new_work_year: '',
+            new_work_url: '',
+            text_en: ''
         }
     },
     methods: {
@@ -36,39 +32,39 @@ new Vue({
             // I bet there is a better way to do it
             var valid = true;
 
-            this.post_errors.name = '';
-            if (!this.post.name) {
-                this.post_errors.name = 'This field is required';
+            this.post_errors.name_en = '';
+            if (!this.post.name_en) {
+                this.post_errors.name_en = 'Name is required';
                 valid = false;
             }
 
-            this.post_errors.links = '';
-            if (!this.post.artstation) {
-                this.post_errors.links = 'Link to ArtStation is required';
+            this.post_errors.artstation = '';
+            if (!this.post.artstation || this.post.artstation.search('artstation.com') === -1) {
+                this.post_errors.artstation = 'Link to Art Station is required';
                 valid = false;
             }
 
-            this.post_errors.old_work.year = '';
-            this.post_errors.old_work.url = '';
-            if (!this.post.old_work.year || isNaN(this.post.old_work.year)) {
-                this.post_errors.old_work.year = 'Number is required here';
+            this.post_errors.old_work_year = '';
+            this.post_errors.old_work_url = '';
+            if (!this.post.old_work_year || isNaN(this.post.old_work_year)) {
+                this.post_errors.old_work_year = 'Year is required here';
                 valid = false;
             }
 
-            if (!(this.post.old_work.url || this.old_work)) {
-                this.post_errors.old_work.url = 'URL required if no file selected.';
+            if (!(this.post.old_work_url || this.old_work)) {
+                this.post_errors.old_work_url = 'URL required if no file selected.';
                 valid = false;
             }
 
-            this.post_errors.new_work.year = '';
-            this.post_errors.new_work.url = '';
-            if (!this.post.new_work.year || isNaN(this.post.new_work.year)) {
-                this.post_errors.new_work.year = 'Number is required here';
+            this.post_errors.new_work_year = '';
+            this.post_errors.new_work_url = '';
+            if (!this.post.new_work_year || isNaN(this.post.new_work_year)) {
+                this.post_errors.new_work_year = 'Year is required here';
                 valid = false;
             }
 
-            if (!(this.post.new_work.url || this.new_work)) {
-                this.post_errors.new_work.url = 'URL required if no file selected.';
+            if (!(this.post.new_work_url || this.new_work)) {
+                this.post_errors.new_work_url = 'URL required if no file selected.';
                 valid = false;
             }
 
@@ -81,11 +77,10 @@ new Vue({
                 view.submitIsInProgress = true;
 
                 axios.post(
-                    '/suggest/',
+                    '/api/post/',
                     this.post,
                     {headers: {'X-CSRFToken': window.csrf_token}}
                 ).then(function (response) {
-                    var post_id = response.data.post_id;
                     var token = response.data.token;
 
                     if (view.old_work || view.new_work) {
@@ -97,23 +92,13 @@ new Vue({
                         if (view.new_work) {
                             formData.append('new_work', view.new_work);
                         }
-                        axios.post(
-                            '/suggest/' + post_id + '/upload_files/',
+                        axios.patch(
+                            '/api/post/' + token + '/',
                             formData,
-                            {
-                                headers: {'X-CSRFToken': window.csrf_token},
-                                params: {'t': token}
-                            }
+                            {headers: {'X-CSRFToken': window.csrf_token}}
                         ).then(
                             function (response) {
-                                var url = response.data + '?t=' + token;
-                                var toastHTML = '<span>Done. </span>' +
-                                    '<a target="_blank" href="' + url +
-                                    '" class="btn-flat toast-action"> Open</a>';
-                                M.toast({
-                                    html: toastHTML,
-                                    displayLength: 10000
-                                })
+                                location.pathname = '/p/' + token + '/';
                             }
                         ).catch(function () {
                                 alert('Something went wrong. We are terribly sorry.');
@@ -122,16 +107,16 @@ new Vue({
                             view.submitIsInProgress = false;
                         });
                     } else {
-                        view.submitIsInProgress = false;
+                        location.pathname = '/p/' + token + '/';
                     }
                 }).catch(function () {
                     alert('Something went wrong. We are terribly sorry.');
+                }).finally(function () {
                     view.submitIsInProgress = false;
-                })
+                });
             }
         },
         setFile: function (event, work) {
-            console.log(this.form_is_valid);
             this[work] = event.target.files[0];
         }
     }
