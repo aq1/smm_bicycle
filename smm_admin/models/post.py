@@ -1,6 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from django.conf import settings
+from django.contrib.postgres.fields import ArrayField
 
 
 class Post(models.Model):
@@ -16,6 +17,11 @@ class Post(models.Model):
     status = models.PositiveSmallIntegerField(
         choices=STATUSES,
         default=NOT_READY,
+    )
+
+    suggested = models.BooleanField(
+        default=False,
+        blank=True,
     )
 
     account = models.ForeignKey(
@@ -40,6 +46,10 @@ class Post(models.Model):
     rendered_image = models.ImageField(
         null=True,
         blank=True,
+    )
+
+    links = ArrayField(
+        models.CharField(max_length=5000),
     )
 
     old_work_year = models.PositiveSmallIntegerField()
@@ -74,8 +84,6 @@ class Post(models.Model):
 
     @classmethod
     def get(cls, _id, values=False):
-        from smm_admin.models import Link
-
         obj = cls.objects.select_related(
             'account',
         )
@@ -83,8 +91,6 @@ class Post(models.Model):
             obj = obj.values()
 
         obj = obj.get(id=_id)
-        obj.links_list = Link.for_post(post_id=_id)
-
         return obj
 
     @property

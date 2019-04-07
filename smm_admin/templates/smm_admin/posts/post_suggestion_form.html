@@ -32,19 +32,16 @@
                             </div>
                             <div class="row">
                                 <div class="col s12 m12">
-                                    <span>Your social links (instagram, artstation, etc)</span>
-                                    <div class="input-field" v-for="(link, index) in post.links">
-                                        <label for="url-{{ index }}">URL</label>
-                                        <input
-                                                name="url-{{ index }}"
-                                                v-model="link.value"
-                                                type="text"
-                                                @input="linksInputChanged(index)"
-                                                @blur="linksInputChanged(index)"
-                                                v-bind:class="{invalid: post_errors.links}"
-                                        >
-                                        <span class="helper-text" v-bind:data-error="post_errors.links"
-                                              v-show="index === 0"></span>
+                                    <span>Your social links</span>
+                                    <div class="input-field">
+                                        <input type="text" id="artstation" v-model="post.artstation">
+                                        <label for="artstation">Artstation (required)</label>
+                                        <span class="helper-text" v-bind:data-error="post_errors.artstation"></span>
+                                    </div>
+                                    <div class="input-field">
+                                        <input type="text" id="instagram" v-model="post.instagram">
+                                        <label for="instagram">Instagram (optional)</label>
+                                        <span class="helper-text" v-bind:data-error="post_errors.instagram"></span>
                                     </div>
                                 </div>
                             </div>
@@ -53,12 +50,12 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col s12 m8 offset-m2">
+                <div class="col s12 m4 offset-m2">
                     <div class="card">
                         <div class="card-content">
                             <div class="row">
                                 <div class="col s12 m12">
-                                    <span>Your old work (the older is the better)</span>
+                                    <span>Old work (the older is the better)</span>
                                     <div class="input-field">
                                         <label for="old-work-year">Year</label>
                                         <input v-model="post.old_work.year" id="old-work-year" type="text"
@@ -69,33 +66,33 @@
                                         <div class="file-field input-field">
                                             <div class="btn">
                                                 <span>File</span>
-                                                <input type="file" accept="image/*" @change="setFile($event, 'old_work')">
+                                                <input type="file" accept="image/*"
+                                                       @change="setFile($event, 'old_work')">
                                             </div>
                                             <div class="file-path-wrapper">
                                                 <input class="file-path validate" type="text"
                                                        placeholder="click to upload">
                                             </div>
+                                            <div class="input-field">
+                                                <label for="old-work-url">or URL</label>
+                                                <input v-model="post.old_work.url" id="old-work-url" type="text"
+                                                       v-bind:class="{invalid: post_errors.old_work.url}">
+                                                <span class="helper-text"
+                                                      v-bind:data-error="post_errors.old_work.url"></span>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="input-field">
-                                        <label for="old-work-url">or URL</label>
-                                        <input v-model="post.old_work.url" id="old-work-url" type="text"
-                                               v-bind:class="{invalid: post_errors.old_work.url}">
-                                        <span class="helper-text" v-bind:data-error="post_errors.old_work.url"></span>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col s12 m8 offset-m2">
+                <div class="col s12 m4">
                     <div class="card">
                         <div class="card-content">
                             <div class="row">
                                 <div class="col s12 m12">
-                                    <span>Your best or most loved work</span>
+                                    <span>The best or most loved work</span>
                                     <div class="input-field">
                                         <label for="new-work-year">Year</label>
                                         <input v-model="post.new_work.year" id="new-work-year" type="text"
@@ -106,7 +103,8 @@
                                         <div class="file-field input-field">
                                             <div class="btn">
                                                 <span>File</span>
-                                                <input type="file" accept="image/*" @change="setFile($event, 'new_work')">
+                                                <input type="file" accept="image/*"
+                                                       @change="setFile($event, 'new_work')">
                                             </div>
                                             <div class="file-path-wrapper">
                                                 <input class="file-path validate"
@@ -133,11 +131,11 @@
                             <div class="row">
                                 <div class="col s12 m12">
                                     <div class="row">
+                                        <span>Your Advice (optional). It would be cool if you provide something for newbies</span>
                                         <div class="input-field col s12 m12">
-                <textarea v-model="post.text" id="text" class="materialize-textarea"
-                ></textarea>
-                                            <label for="text">Your Advice (optional). It would be cool if you provide
-                                                something for newbies</label>
+                                            <textarea v-model="post.text" id="text" class="materialize-textarea"
+                                            ></textarea>
+                                            <label for="text"></label>
                                         </div>
                                     </div>
                                 </div>

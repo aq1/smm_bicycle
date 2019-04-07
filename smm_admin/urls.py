@@ -45,7 +45,6 @@ urlpatterns = [
     path('suggest/', post_suggestion.PostSuggestionView.as_view()),
     path('suggest/<int:post_id>/upload_files/', post_suggestion.post_suggestion_file_upload),
     path('suggested/', post_suggestion.post_suggestion_view, name='suggested'),
-    path('suggested/create_post/<int:post_id>/', post_suggestion.create_post_from_suggested, name='suggested_to_post'),
     path(
         'suggested/create_post/<int:post_id>/<str:redirect_to_image_edit>/',
         post_suggestion.create_post_from_suggested,

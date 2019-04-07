@@ -7,7 +7,6 @@ from rest_framework import (
 
 from smm_admin.models import (
     Post,
-    Link,
 )
 
 
@@ -40,18 +39,7 @@ class PostFilter(filters.FilterSet):
         ]
 
 
-class LinkSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Link
-        exclude = (
-            'post',
-        )
-        depth = 1
-
-
 class PostSerializer(serializers.ModelSerializer):
-    links = LinkSerializer(read_only=True, many=True)
-
     class Meta:
         model = Post
         fields = '__all__'

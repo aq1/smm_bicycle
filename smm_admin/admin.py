@@ -5,10 +5,8 @@ from .models import (
     Account,
     Post,
     LinkType,
-    Link,
     Service,
     PostResult,
-    PostSuggestion,
 )
 
 
@@ -34,22 +32,9 @@ class LinkTypeAdmin(admin.ModelAdmin):
     pass
 
 
-@admin.register(Link)
-class LinkAdmin(admin.ModelAdmin):
-    pass
-
-
-class LinkInline(admin.TabularInline):
-    model = Link
-    extra = 0
-
-
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
     exclude = 'canvas_json',
-    inlines = (
-        LinkInline,
-    )
 
     list_display = '__str__', 'schedule', 'ok', 'services'
 
@@ -76,8 +61,3 @@ class PostAdmin(admin.ModelAdmin):
 class PostResultAdmin(admin.ModelAdmin):
     list_display = '__str__', 'ok', 'created_at'
     ordering = ['-created_at']
-
-
-@admin.register(PostSuggestion)
-class PostSuggestionAdmin(admin.ModelAdmin):
-    pass

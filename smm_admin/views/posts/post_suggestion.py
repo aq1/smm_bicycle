@@ -9,7 +9,6 @@ from django import views
 from django import http
 
 from smm_admin.models import (
-    PostSuggestion,
     Post,
 )
 
@@ -25,6 +24,7 @@ class PostSuggestionView(views.View):
 
         try:
             data = dict(
+                suggested=True,
                 links=[link['value'] for link in data['links'] if link['value']],
                 name_en=data['name'],
                 old_work_year=data['old_work']['year'],
@@ -37,7 +37,7 @@ class PostSuggestionView(views.View):
             return http.HttpResponse(status=400)
 
         try:
-            post = PostSuggestion.objects.create(**data)
+            post = Post.objects.create(**data)
         except IntegrityError:
             return http.HttpResponse(status=400)
         return http.JsonResponse(

@@ -2,7 +2,6 @@
 
 from django.db import migrations, models
 import django.utils.timezone
-import smm_admin.models.post_suggestion
 
 
 class Migration(migrations.Migration):
@@ -21,6 +20,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='postsuggestion',
             name='token',
-            field=models.CharField(blank=True, default=smm_admin.models.post_suggestion.generate_token, max_length=36, unique=True),
+            field=models.CharField(blank=True, max_length=36, unique=True),
         ),
     ]

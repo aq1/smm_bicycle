@@ -11,7 +11,6 @@ from django import views
 from smm_admin import tasks
 from smm_admin.models import (
     Post,
-    Link,
 )
 
 

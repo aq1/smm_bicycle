@@ -4,7 +4,8 @@ new Vue({
         submitIsInProgress: false,
         post: {
             name: '',
-            links: [{}],
+            artstation: '',
+            instagram: '',
             old_work: {
                 year: '',
                 url: ''
@@ -42,8 +43,8 @@ new Vue({
             }
 
             this.post_errors.links = '';
-            if (!this.post.links[0].value) {
-                this.post_errors.links = 'At least one link is required';
+            if (!this.post.artstation) {
+                this.post_errors.links = 'Link to ArtStation is required';
                 valid = false;
             }
 
@@ -132,18 +133,6 @@ new Vue({
         setFile: function (event, work) {
             console.log(this.form_is_valid);
             this[work] = event.target.files[0];
-        },
-        linksInputChanged: function (index) {
-            for (var i = 0; i < this.post.links.length - 1; i++) {
-                if (!this.post.links[i].value) {
-                    this.post.links.splice(i, 1);
-                    return;
-                }
-            }
-
-            if (this.post.links[i].value) {
-                this.post.links.push({value: ''});
-            }
         }
     }
 });
