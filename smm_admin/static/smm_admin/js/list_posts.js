@@ -16,12 +16,15 @@ new Vue({
         posts: []
     },
     methods: {
-        cleanPosts: function(posts) {
+        pagesCount: function () {
+            return Math.ceil(this.count / this.pageSize);
+        },
+        cleanPosts: function (posts) {
             var _posts = [];
             var view = this;
-            posts.forEach(function(post) {
+            posts.forEach(function (post) {
                 post.status = view.STATUSES[post.status];
-                post.schedule = new Date(post.schedule).toLocaleDateString();
+                // post.schedule = new Date(post.schedule).toLocaleDateString();
                 _posts.push(post);
             });
             return _posts;
@@ -34,18 +37,36 @@ new Vue({
             axios.get(
                 '/api/posts/',
                 {params: {'page': page}}
-            ).then(function(response) {
+            ).then(function (response) {
                 view.posts = view.cleanPosts(response.data.results);
                 view.count = response.data.count;
                 view.page = page;
-            }).catch(function() {
+            }).catch(function () {
                 alert('We did not expect this. Maybe server is down?');
             }).finally(function () {
                 view.wip = false;
             });
         }
     },
-    created: function() {
+    created: function () {
         this.getPosts();
+    },
+    updated: function () {
+        M.Materialbox.init(document.querySelectorAll('.materialboxed'), {});
+        var now = new Date();
+
+        this.posts.forEach(function (post) {
+            M.Datepicker.init(
+                document.querySelectorAll('#date_' + post.id),
+                {
+                    autoClose: true,
+                    firstDay: 1,
+                    defaultDate: new Date(post.schedule),
+                    setDefaultDate: true,
+                    minDate: now,
+                    showClearBtn: true
+                }
+            );
+        });
     }
 });

@@ -1,3 +1,7 @@
+[v-cloak] {
+    display: none;
+}
+
 .slide-enter-active {
     transition: all .05s ease;
 }
@@ -60,4 +64,14 @@ span.status_ok {
 
 span.status_failed {
     color: #ec407a;
+}
+
+div.post-in-list {
+    border: 1px solid #D5E5EC;
+    border-radius: 2px;
+    padding: 5px 0;
+}
+
+div.post-in-list:hover {
+    background-color: #D5E5EC;
 }

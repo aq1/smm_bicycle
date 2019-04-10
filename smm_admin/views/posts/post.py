@@ -1,3 +1,4 @@
+from django import http
 from django.views.decorators.http import require_http_methods
 from django.shortcuts import render, get_object_or_404
 
@@ -10,8 +11,10 @@ from smm_admin.models import (
 def post_view(request, post_id=None, token=None):
     if token:
         _post = get_object_or_404(Post, token=token)
+    elif not request.user.is_anonymous:
+        _post = get_object_or_404(Post, id=post_id, account_id=request.user.id)
     else:
-        _post = get_object_or_404(Post, id=post_id, account_id=post_id)
+        return http.HttpResponse(status=404)
 
     return render(
         request,

@@ -28,7 +28,7 @@ class PostView(LoginRequiredMixin, views.View):
 
     @staticmethod
     def get(request):
-        return render(request, 'smm_admin/posts/new_post.html')
+        return render(request, 'smm_admin/posts/new_post_old.html')
 
     def post(self, request):
         data = json.loads(request.body)

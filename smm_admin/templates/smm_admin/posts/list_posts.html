@@ -29,25 +29,45 @@
                         </div>
                         <div v-show="!wip">
                             <div class="row">
-                                <div class="col s12">
-                                    <div class="collection">
-                                        <div v-for="post in posts">
-                                            <a :href="'/p/' + post.id" class="collection-item avatar default-text">
-                                                <img :src="post.new_work" alt="" class="circle">
-                                                <span class="title">
-                                                    {{ post.name_en }}
-                                                </span>
-                                                <p>
-                                                    <span :class="'status_' + post.status.toLowerCase().replace(' ', '_')">
-                                                        {{ post.status }}
-                                                    </span>
-                                                    <br>
-                                                    <span v-show="post.schedule">Planned post - {{ post.schedule }}</span>
-                                                    <span v-show="!post.schedule">not planned</span>
-                                                </p>
-                                            </a>
-                                        </div>
+                                <div class="col s2">Info</div>
+                                <div class="col s2 offset-s2">Post Date</div>
+                                <div class="col s2">Post Time</div>
+                                <div class="col s2">Is ready to post?</div>
+                                <div class="col s2">Open</div>
+                            </div>
+                            <div class="row post-in-list" v-for="post in posts">
+                                <div class="col s2">
+                                    <img class="materialboxed" width="100px" alt="img"
+                                         :src="post.rendered_image || post.new_work">
+                                </div>
+                                <div class="col s2">
+                                    <div>
+                                        {{ post.name_en }}
                                     </div>
+                                    <div>
+                                        <span :class="'status_' + post.status.toLowerCase().replace(' ', '_')">
+                                            {{ post.status }}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col s2">
+                                    <input :id="'date_' + post.id" type="text" class="datepicker">
+                                </div>
+                                <div class="col s2">
+                                    <input :id="'time_' + post.id" type="text" class="timepicker">
+                                </div>
+                                <div class="col s2">
+                                    <div class="switch">
+                                        <label>
+                                            <input type="checkbox">
+                                            <span class="lever"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col s2">
+                                    <a :href="'/p/' + post.id + '/'" target="_blank">
+                                        <i class="material-icons">launch</i>
+                                    </a>
                                 </div>
                             </div>
                             <div class="row">
@@ -57,8 +77,9 @@
                                     </button>
                                 </div>
 
-                                <div class="col s1" v-for="n in Math.ceil(count / pageSize)">
-                                    <button class="btn" :class="{'btn-flat': n != page}" @click="getPosts(n)">
+                                <div class="col s1" v-for="n in pagesCount()">
+                                    <button v-if="pagesCount() > 1" class="btn" :class="{'btn-flat': n != page}"
+                                            @click="getPosts(n)">
                                         {{ n }}
                                     </button>
                                 </div>

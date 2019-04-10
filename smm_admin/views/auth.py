@@ -63,4 +63,4 @@ def login_post(request):
 
     login(request, user)
 
-    return redirect(reverse('account'))
+    return http.JsonResponse({}, status=200)

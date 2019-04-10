@@ -53,10 +53,7 @@ new Vue({
         },
         validate: function () {
             // There has to be a better way;
-            console.log(JSON.stringify(this.user));
-            var v = this.validateUsername() & this.validatePassword() & this.validatePasswordConfirm();
-            console.log(JSON.stringify(this.userErrors));
-            return v;
+            return this.validateUsername() & this.validatePassword() & this.validatePasswordConfirm();
         },
         submit: function () {
             if (!this.validate()) {
@@ -70,9 +67,10 @@ new Vue({
                 {headers: {'X-CSRFToken': window.csrf_token}}
             ).then(function () {
                 window.location.search.substr(1).split('&').forEach(function(query) {
+                    debugger;
                     var q = query.split('=');
                     if (q[0] === 'next') {
-                        window.location = q[1];
+                        location.pathname = q[1];
                     }
                 });
                 window.location = view.defaultRedirectURL;
