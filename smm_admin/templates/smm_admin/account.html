@@ -104,94 +104,17 @@
                                             {{ each.service.url_title }}
                                         </a>
                                     </p>
-                                    <a href=""
-                                       class="secondary-content">
-                                        <i class="material-icons">delete</i>
-                                    </a>
+                                    <form action="{% url 'delete_service' each.id %}" method="post">
+                                        {% csrf_token %}
+                                        <button type="submit"
+                                                style="border: none; background: transparent; cursor: pointer;"
+                                           class="secondary-content">
+                                            <i class="material-icons">delete</i>
+                                        </button>
+                                    </form>
                                 </li>
                             {% endfor %}
                         </ul>
-
-
-                        {#                        <ul class="collection">#}
-                        {#                            <li class="collection-item avatar">#}
-                        {#                                <img src="{% static 'smm_admin/img/vk_logo.jpg' %}" alt="vk"#}
-                        {#                                     class="circle">#}
-                        {#                                <span class="title">VK Group</span>#}
-                        {#                                <p>#}
-                        {#                                    <a href="https://vk.com/{{ user.account.vk_group_screen_name }}"#}
-                        {#                                       target="_blank">#}
-                        {#                                        {{ user.account.vk_group_name }}#}
-                        {#                                    </a>#}
-                        {#                                </p>#}
-                        {#                                {% if user.account.vk_token and user.account.vk_group_id %}#}
-                        {#                                    <a href="{% url 'vk_auth' %}" class="secondary-content">#}
-                        {#                                        <i class="material-icons">create</i>#}
-                        {#                                    </a>#}
-                        {#                                {% else %}#}
-                        {#                                    <a href="{{ user.account.vk_login_url }}" class="secondary-content">#}
-                        {#                                        <i class="material-icons">add</i>#}
-                        {#                                    </a>#}
-                        {#                                {% endif %}#}
-                        {#                            </li>#}
-                        {#                            <li class="collection-item avatar">#}
-                        {#                                <img src="{% static 'smm_admin/img/facebook_logo.png' %}" alt="facebook" class="circle">#}
-                        {#                                <span class="title">Facebook Group</span>#}
-                        {#                                <p>#}
-                        {#                                    <a href="https://facebook.com/{{ user.account.facebook_group_id }}"#}
-                        {#                                       target="_blank">#}
-                        {#                                        {{ user.account.facebook_group_name }}#}
-                        {#                                    </a>#}
-                        {#                                </p>#}
-                        {#                                <a href="{{ user.account.fb_login_url }}" class="secondary-content">#}
-                        {#                                    {% if user.account.facebook_token and user.account.facebook_group_name %}#}
-                        {#                                        <i class="material-icons">create</i>#}
-                        {#                                    {% else %}#}
-                        {#                                        <i class="material-icons">add</i>#}
-                        {#                                    {% endif %}#}
-                        {#                                </a>#}
-                        {#                            </li>#}
-                        {#                            <li class="collection-item avatar">#}
-                        {#                                <img src="{% static 'smm_admin/img/telegram_logo.png' %}" alt="telegram"#}
-                        {#                                     class="circle">#}
-                        {#                                <span class="title">Telegram Channel</span>#}
-                        {#                                <p>#}
-                        {#                                    {% if user.account.telegram_token and user.account.telegram_channel_id %}#}
-                        {#                                        <a href="https://t.me/{{ user.account.telegram_channel_id }}"#}
-                        {#                                           target="_blank">#}
-                        {#                                            @{{ user.account.telegram_channel_id }}#}
-                        {#                                        </a>#}
-                        {#                                    {% endif %}#}
-                        {#                                </p>#}
-                        {#                                <a href="#telegram_channel_select" class="secondary-content modal-trigger">#}
-                        {#                                    {% if user.account.telegram_token and user.account.telegram_channel_id %}#}
-                        {#                                        <i class="material-icons">create</i>#}
-                        {#                                    {% else %}#}
-                        {#                                        <i class="material-icons">add</i>#}
-                        {#                                    {% endif %}#}
-                        {#                                </a>#}
-                        {#                            </li>#}
-                        {#                            <li class="collection-item avatar">#}
-                        {#                                <img src="{% static 'smm_admin/img/twitter_logo.jpg' %}" alt="twitter"#}
-                        {#                                     class="circle">#}
-                        {#                                <span class="title">Twitter</span>#}
-                        {#                                <p>#}
-                        {#                                    {% if user.account.twitter_token_key and user.account.twitter_username %}#}
-                        {#                                        <a href="https://twitter.com/{{ user.account.twitter_username }}"#}
-                        {#                                           target="_blank">#}
-                        {#                                            @{{ user.account.twitter_username }}#}
-                        {#                                        </a>#}
-                        {#                                    {% endif %}#}
-                        {#                                </p>#}
-                        {#                                <a href="{% url 'twitter_auth' %}" class="secondary-content">#}
-                        {#                                    {% if user.account.twitter_token_key and user.account.twitter_username %}#}
-                        {#                                        <i class="material-icons">create</i>#}
-                        {#                                    {% else %}#}
-                        {#                                        <i class="material-icons">add</i>#}
-                        {#                                    {% endif %}#}
-                        {#                                </a>#}
-                        {#                            </li>#}
-                        {#                        </ul>#}
                     </div>
                 </div>
             </div>

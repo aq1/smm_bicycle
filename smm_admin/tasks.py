@@ -98,4 +98,8 @@ def download_image(model, post_id):
 
 @shared_task
 def make_posts():
-    pass
+
+    from django.apps import apps
+    model = apps.get_model('smm_admin', 'Post')
+
+    posts = model.objects.filter()

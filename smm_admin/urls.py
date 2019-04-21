@@ -48,6 +48,7 @@ urlpatterns = [
 
     path('me/', account.account, name='account'),
     path('account_post/', account.account_post, name='account_post'),
+    path('account_service_delete/<int:service_id>/', account.delete_service, name='delete_service'),
 
     path('vk_auth/', vk.vk_auth, name='vk_auth'),
     path('vk_auth_post/', vk.vk_auth_post, name='vk_auth_post'),

@@ -3,12 +3,13 @@ from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 from django.views.decorators.http import require_http_methods
 from django.core.validators import validate_email
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 
 from smm_admin.services import SERVICES
+from smm_admin.models import Service
 
 
 @login_required
@@ -72,5 +73,18 @@ def account_post(request):
         request.user.account.save()
     except IntegrityError:
         return http.HttpResponse(status=400)
+
+    return redirect(reverse('account'))
+
+
+@login_required
+@require_http_methods(['POST'])
+def delete_service(request, service_id):
+
+    get_object_or_404(
+        Service,
+        id=service_id,
+        account_id=request.user.id,
+    ).delete()
 
     return redirect(reverse('account'))
