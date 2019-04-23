@@ -19,8 +19,10 @@
             <div class="col s12 m8 offset-m2">
                 <div class="card">
                     {% if not by_token and post.rendered_image %}
-                        <div class="card-image">
-                            <img src="{{ post.rendered_image.url }}">
+                        <div class="card-image tooltipped" data-position="bottom" data-tooltip="Click to edit">
+                            <a href="{% url 'edit_image' post.id %}">
+                                <img id="rendered_image" src="{{ post.rendered_image.url }}">
+                            </a>
                         </div>
                     {% endif %}
                     <div class="card-content">
@@ -39,12 +41,12 @@
                         </div>
                         <div class="row">
                             <div class="col s12">
-                                    <div>
-                                        <a href="{{ post.artstation }}">{{ post.artstation }}</a>
-                                    </div>
-                                    <div>
-                                        <a href="{{ post.instagram }}">{{ post.instagram }}</a>
-                                    </div>
+                                <div>
+                                    <a href="{{ post.artstation }}">{{ post.artstation }}</a>
+                                </div>
+                                <div>
+                                    <a href="{{ post.instagram }}">{{ post.instagram }}</a>
+                                </div>
                             </div>
                         </div>
                         <div class="row">
@@ -86,4 +88,15 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block static %}
+    {% load static %}
+    {{ block.super }}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            M.Tooltip.init(document.querySelectorAll('.tooltipped'), {});
+        });
+    </script>
+    <link rel="stylesheet" href="{% static 'smm_admin/css/common.css' %}">
 {% endblock %}

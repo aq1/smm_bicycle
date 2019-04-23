@@ -82,3 +82,7 @@ div.post-in-list {
 div.post-in-list:hover {
     background-color: #D5E5EC;
 }
+
+img#rendered_image {
+    cursor: pointer;
+}
