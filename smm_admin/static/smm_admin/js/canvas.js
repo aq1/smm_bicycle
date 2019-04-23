@@ -148,7 +148,7 @@ var placeObjectsFromPost = function (post, use_json, resolve) {
             }
         });
 
-        var place_text = function (x_offset, y_offset) {
+        var place_text = function (x_offset) {
             var name = new fabric.IText(post.name_en, {
                 left: x_offset + grid * 2,
                 top: old_work_img.getScaledHeight() + grid * 2,
@@ -167,16 +167,20 @@ var placeObjectsFromPost = function (post, use_json, resolve) {
             });
             canvas.add(text);
 
-            var links_text = [post.artstation];
+            var artstation = post.artstation.split('/');
+            artstation = 'artstation/' + artstation[artstation.length - 1];
+
+            var links_text = [artstation];
             if (post.instagram) {
-                links_text.push(post.instagram);
+                var instagram = post.instagram.split('/');
+                links_text.push('@' + instagram[instagram.length - 1]);
             }
 
             var links = new fabric.IText(links_text.join('\n'), {
                 left: x_offset + grid * 2,
                 top: text.top + text.getScaledHeight() + grid,
-                fontFamily: 'Intro',
-                fontSize: 13,
+                fontFamily: 'Myriad Pro',
+                fontSize: 19,
                 fill: window.textFills[0]
             });
             canvas.add(links);
