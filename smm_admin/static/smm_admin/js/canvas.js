@@ -167,10 +167,11 @@ var placeObjectsFromPost = function (post, use_json, resolve) {
             });
             canvas.add(text);
 
-            var links_text = [];
-            post.links.forEach(function (l) {
-                links_text.push(l.url)
-            });
+            var links_text = [post.artstation];
+            if (post.instagram) {
+                links_text.push(post.instagram);
+            }
+
             var links = new fabric.IText(links_text.join('\n'), {
                 left: x_offset + grid * 2,
                 top: text.top + text.getScaledHeight() + grid,
@@ -253,7 +254,7 @@ var reset = function (post) {
     });
 };
 
-axios.get('/post/' + window.post_id + '/').then(function (response) {
+axios.get('/api/posts/' + window.post_id + '/').then(function (response) {
     window.post = response.data;
     document.getElementById('render_name').value = window.post.name_en.toLowerCase().replace(/\s/gi, '_');
     load(response.data, true).then(function () {

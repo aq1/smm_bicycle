@@ -54,7 +54,7 @@
                                     <input :id="'date_' + post.id" type="text" class="datepicker">
                                 </div>
                                 <div class="col s2">
-                                    <input :id="'time_' + post.id" type="text" class="timepicker">
+                                    <input :id="'time_' + post.id" type="text" class="timepicker" v-model="post.schedule">
                                 </div>
                                 <div class="col s2">
                                     <div class="switch">
