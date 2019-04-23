@@ -18,15 +18,21 @@ var canvas = new fabric.Canvas('canvas', {
     height: window.initHeight
 });
 
-var resizeCanvas = function (w, h) {
-    w = Number(document.getElementById('canvas_width').value);
-    h = Number(document.getElementById('canvas_height').value);
-    if (!(w && h)) {
-        return;
-    }
+
+var _resizeCanvas = function(w, h) {
     canvas.setWidth(w);
     canvas.setHeight(h);
     canvas.calcOffset();
+    resizeDivWrapper();
+};
+
+var resizeCanvas = function () {
+    var w = Number(document.getElementById('canvas_width').value);
+    var h = Number(document.getElementById('canvas_height').value);
+    if (!(w && h)) {
+        return;
+    }
+    _resizeCanvas(w, h);
     M.Modal.getInstance(document.getElementById('resize-modal')).close();
 };
 
@@ -64,11 +70,6 @@ var setSizeValueInModal = function () {
     };
     canvas.on('selection:updated', selectionCallback);
     canvas.on('selection:created', selectionCallback);
-    // window.onbeforeunload = function (e) {
-    //     var dialogText = 'Unsaved progress will be lost. Exit anyway?';
-    //     e.returnValue = dialogText;
-    //     return dialogText;
-    // };
 
     document.body.onkeydown = function (e) {
         if (!e.ctrlKey) {
@@ -120,11 +121,10 @@ var placeObjectsFromPost = function (post, use_json, resolve) {
         resolve();
         return;
     }
-    canvas.setWidth(window.initWidth);
-    canvas.setHeight(window.initHeight);
-    canvas.calcOffset();
 
-    canvas.backgroundColor = '#BFBFBF';
+    _resizeCanvas(window.initWidth, window.initHeight);
+
+    canvas.backgroundColor = window.textFills[2];
 
     fabric.Image.fromURL(post.old_work, function (old_work_img) {
         old_work_img.top = grid;
@@ -304,9 +304,6 @@ document.addEventListener('DOMContentLoaded', function () {
             })
         ]
     }).on('resizemove', function (event) {
-        canvas.setWidth(Math.round(event.rect.width));
-        canvas.setHeight(Math.round(event.rect.height));
-        canvas.calcOffset();
-        resizeDivWrapper();
+        _resizeCanvas(Math.round(event.rect.width), Math.round(event.rect.height));
     });
 });

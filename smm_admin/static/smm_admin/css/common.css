@@ -22,6 +22,8 @@ div.drag {
 
 div#canvas-wrapper {
     border: 3px solid #a0a0a0;
+    border-left: none;
+    border-top: none;
     touch-action: none;
 }
 
