@@ -20,6 +20,11 @@ div.drag {
     border-radius: 10px;
 }
 
+div#canvas-wrapper {
+    border: 3px solid #a0a0a0;
+    touch-action: none;
+}
+
 div.canvas-size-control {
     margin: 0;
     padding: 0 10px;

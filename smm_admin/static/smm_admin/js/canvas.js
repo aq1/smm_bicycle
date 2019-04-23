@@ -5,10 +5,10 @@ fabric.Object.prototype.set({
     cornerSize: 20
 });
 
-window.initWidth = 1200;
-window.initHeight = 700;
+window.initWidth = 1920;
+window.initHeight = 1080;
 
-var grid = 5;
+var grid = 10;
 window.textFills = ['#000', '#fff', '#BFBFBF'];
 window.selectedTexts = [];
 
@@ -28,6 +28,12 @@ var resizeCanvas = function (w, h) {
     canvas.setHeight(h);
     canvas.calcOffset();
     M.Modal.getInstance(document.getElementById('resize-modal')).close();
+};
+
+
+var setSizeValueInModal = function () {
+    document.getElementById('canvas_width').value = canvas.getWidth();
+    document.getElementById('canvas_height').value = canvas.getHeight();
 };
 
 (function setHooks() {
@@ -98,7 +104,7 @@ var addYearToImage = function (image, year) {
         left: image.left + grid * 2,
         top: image.top + grid * 2,
         fontFamily: 'Intro',
-        fill: window.textFills[1],
+        fill: window.textFills[2],
         fontSize: Math.round(window.innerWidth / 50)
     });
     canvas.add(year_text);
@@ -167,12 +173,12 @@ var placeObjectsFromPost = function (post, use_json, resolve) {
             });
             canvas.add(text);
 
-            var artstation = post.artstation.split('/');
+            var artstation = post.artstation.replace(/\/$/, '').split('/');
             artstation = 'artstation/' + artstation[artstation.length - 1];
 
             var links_text = [artstation];
             if (post.instagram) {
-                var instagram = post.instagram.split('/');
+                var instagram = post.instagram.replace(/\/$/, '').split('/');
                 links_text.push('@' + instagram[instagram.length - 1]);
             }
 
@@ -266,4 +272,41 @@ axios.get('/api/posts/' + window.post_id + '/').then(function (response) {
     });
 }).catch(function (reason) {
     console.log(reason);
+});
+
+
+var resizeDivWrapper = function () {
+    var div = document.getElementById('canvas-wrapper');
+    div.style.width = canvas.getWidth() + 10 + 'px';
+    div.style.height = canvas.getHeight() + 10 + 'px';
+};
+
+document.addEventListener('DOMContentLoaded', function () {
+    resizeDivWrapper();
+    interact('#canvas-wrapper').resizable({
+        inertia: false,
+        edges: {
+            left: false,
+            right: true,
+            bottom: true,
+            top: false
+        },
+        modifiers: [
+            // keep the edges inside the parent
+            interact.modifiers.restrictEdges({
+                outer: 'parent',
+                endOnly: true
+            }),
+
+            // minimum size
+            interact.modifiers.restrictSize({
+                min: {width: 1000, height: 500}
+            })
+        ]
+    }).on('resizemove', function (event) {
+        canvas.setWidth(Math.round(event.rect.width));
+        canvas.setHeight(Math.round(event.rect.height));
+        canvas.calcOffset();
+        resizeDivWrapper();
+    });
 });
