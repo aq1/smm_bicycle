@@ -2,8 +2,9 @@ new Vue({
     el: '#app',
     data: {
         submitIsInProgress: false,
+        url: '/api/post/',
         post: {
-            account: location.pathname.match(/\d/)[0],
+            account: '',
             name: '',
             artstation: '',
             instagram: '',
@@ -11,7 +12,8 @@ new Vue({
             old_work_url: '',
             new_work_year: '',
             new_work_url: '',
-            text_en: ''
+            text_en: '',
+            text_ru: ''
         },
         old_work: '',
         new_work: '',
@@ -25,6 +27,12 @@ new Vue({
             new_work_year: '',
             new_work_url: '',
             text_en: ''
+        }
+    },
+    created: function () {
+        try {
+            this.post.account = location.pathname.match(/\d/)[0];
+        } catch (err) {
         }
     },
     methods: {
@@ -77,7 +85,7 @@ new Vue({
                 view.submitIsInProgress = true;
 
                 axios.post(
-                    '/api/post/',
+                    this.url,
                     this.post,
                     {headers: {'X-CSRFToken': window.csrf_token}}
                 ).then(function (response) {
@@ -93,9 +101,12 @@ new Vue({
                             formData.append('new_work', view.new_work);
                         }
                         axios.patch(
-                            '/api/post/' + token + '/',
+                            view.url + response.data.id + '/',
                             formData,
-                            {headers: {'X-CSRFToken': window.csrf_token}}
+                            {
+                                headers: {'X-CSRFToken': window.csrf_token},
+                                params: {'t': token}
+                            }
                         ).then(
                             function (response) {
                                 location.pathname = '/p/' + token + '/';

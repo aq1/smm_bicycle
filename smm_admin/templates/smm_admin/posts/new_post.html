@@ -12,7 +12,8 @@
                         <div class="card-content">
                             <div class="row">
                                 <div class="col s12 m12">
-                                    <h4>Suggest a post</h4>
+                                    <h4 v-if="post.account">Suggest a post</h4>
+                                    <h4 v-if="!post.account">Create a post</h4>
                                 </div>
                             </div>
                         </div>
@@ -57,12 +58,20 @@
                             <div class="row">
                                 <div class="col s12 m12">
                                     <div class="row">
-                                        <span>Your Advice (optional)</span>
+                                        <span v-if="post.account">Your Advice (optional)</span>
+                                        <span v-if="!post.account">Text in English</span>
                                         <div class="input-field col s12 m12">
                                             <textarea v-model="post.text_en" id="text" class="materialize-textarea"
                                             ></textarea>
-                                            <label for="text">It would be cool if you provide something for
+                                            <label for="text" v-if="post.account">It would be cool if you provide something for
                                                 newbies</label>
+                                        </div>
+                                    </div>
+                                    <div class="row" v-if="!post.account">
+                                        <span>Text in Russian</span>
+                                        <div class="input-field col s12 m12">
+                                            <textarea v-model="post.text_ru" id="text" class="materialize-textarea"
+                                            ></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -73,11 +82,12 @@
             </div>
             <div class="row">
                 <div class="col s12 m5 offset-m1">
-                    <div class="card">
+                    <div class="card" id="old-work-card">
                         <div class="card-content">
                             <div class="row">
                                 <div class="col s12 m12">
-                                    <span>Old work (the older is the better)</span>
+                                    <span v-if="post.account">Old work (the older is the better)</span>
+                                    <span v-if="!post.account">Old work</span>
                                     <div class="input-field">
                                         <label for="old-work-year">Year</label>
                                         <input v-model="post.old_work_year" id="old-work-year" type="text"
@@ -104,7 +114,7 @@
                                             </div>
                                         </div>
                                         <div class="col s12" style="word-break:break-all">
-                                            {{ new_work.name }}
+                                            {{ old_work.name }}
                                         </div>
                                     </div>
                                 </div>
@@ -113,11 +123,12 @@
                     </div>
                 </div>
                 <div class="col s12 m5">
-                    <div class="card">
+                    <div class="card" id="new-work-card">
                         <div class="card-content">
                             <div class="row">
                                 <div class="col s12 m12">
-                                    <span>The best or most loved work</span>
+                                    <span v-if="post.account">The best or most loved work</span>
+                                    <span v-if="!post.account">New work</span>
                                     <div class="input-field">
                                         <label for="new-work-year">Year</label>
                                         <input v-model="post.new_work_year" id="new-work-year" type="text"
@@ -185,5 +196,5 @@
     </script>
     <script type="text/javascript" src="{% static 'smm_admin/lib/axios.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'smm_admin/lib/vue.js' %}"></script>
-    <script type="text/javascript" src="{% static 'smm_admin/js/post_suggestion_form.js' %}"></script>
+    <script type="text/javascript" src="{% static 'smm_admin/js/new_post.js' %}"></script>
 {% endblock %}

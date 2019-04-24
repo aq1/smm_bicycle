@@ -24,8 +24,7 @@ from .views.services import (
 
 
 router = DefaultRouter()
-router.register(r'posts', post_api.PostViewSet, basename='post')
-router.register(r'post', post_api.PostTokenViewSet, basename='post')
+router.register(r'post', post_api.PostViewSet, basename='post')
 
 
 urlpatterns = [

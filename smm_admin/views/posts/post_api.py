@@ -11,9 +11,11 @@ from smm_admin.models import (
 )
 
 
-class IsAuthor(permissions.BasePermission):
+class IsAuthorOrToken(permissions.BasePermission):
 
     def has_object_permission(self, request, view, obj):
+        if request.query_params.get('t'):
+            return obj.token == request.query_params['t']
         return obj.account_id == request.user.id
 
 
@@ -60,7 +62,7 @@ class PostTokenSerializer(serializers.ModelSerializer):
 
 
 class PostViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAuthor]
+    permission_classes = [IsAuthorOrToken]
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     filterset_class = PostFilter
@@ -69,15 +71,13 @@ class PostViewSet(viewsets.ModelViewSet):
         'status',
     )
 
+    def get_serializer_class(self):
+        if self.request.user.is_authenticated:
+            return PostSerializer
 
-class PostTokenViewSet(viewsets.ModelViewSet):
+        return PostTokenSerializer
 
-    queryset = Post.objects.all()
-    serializer_class = PostTokenSerializer
-    lookup_field = 'token'
-
-    def destroy(self, request, *args, **kwargs):
-        pass
-
-    def list(self, request, *args, **kwargs):
-        pass
+    def get_queryset(self):
+        if self.request.user.is_authenticated:
+            return Post.objects.filter(account_id=self.request.user.id)
+        return Post.objects.filter(token=self.request.query_params.get('t', ''))
