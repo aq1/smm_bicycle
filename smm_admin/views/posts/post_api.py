@@ -71,6 +71,12 @@ class PostViewSet(viewsets.ModelViewSet):
         'status',
     )
 
+    def perform_create(self, serializer):
+        kwargs = {}
+        if not serializer.validated_data.get('account_id') and self.request.user.is_authenticated:
+            kwargs['account_id'] = self.request.user.id
+        serializer.save(**kwargs)
+
     def get_serializer_class(self):
         if self.request.user.is_authenticated:
             return PostSerializer

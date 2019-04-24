@@ -86,3 +86,12 @@ div.post-in-list:hover {
 img#rendered_image {
     cursor: pointer;
 }
+
+div.dropzone {
+    border: 3px dotted #cfc8d7;
+    border-radius: 5px;
+}
+
+div.dropzone.highlight {
+    border: 3px solid #a59fab;
+}

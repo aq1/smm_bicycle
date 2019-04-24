@@ -30,10 +30,56 @@ new Vue({
         }
     },
     created: function () {
+        var view = this;
+
         try {
             this.post.account = location.pathname.match(/\d/)[0];
         } catch (err) {
         }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            ['old-work-card', 'new-work-card'].forEach(function (id) {
+                var dropArea = document.getElementById(id);
+                ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(function (eventName) {
+                    dropArea.addEventListener(
+                        eventName,
+                        function preventDefaults(e) {
+                            e.preventDefault();
+                            e.stopPropagation()
+                        },
+                        false
+                    );
+                });
+                ['dragenter', 'dragover'].forEach(function (eventName) {
+                    dropArea.addEventListener(
+                        eventName,
+                        function highlight() {
+                            dropArea.classList.add('highlight');
+                        },
+                        false
+                    );
+                });
+                ['dragleave', 'drop'].forEach(function (eventName) {
+                    dropArea.addEventListener(
+                        eventName,
+                        function highlight() {
+                            dropArea.classList.remove('highlight');
+                        },
+                        false
+                    );
+                });
+                dropArea.addEventListener(
+                    'drop',
+                    function handle(e) {
+                        view.setFile(
+                            {target: {files: e.dataTransfer.files}},
+                            id.slice(0, 8).replace('-', '_')
+                        );
+                    },
+                    false
+                );
+            });
+        });
     },
     methods: {
         validate: function () {
