@@ -36,7 +36,7 @@ class FacebookService(Service):
 
     def _get_caption(self):
         return '{}\n\n{}\n\n{}'.format(
-            self.post.name_en,
+            self.post.name,
             '\n'.join(map(str, self.post.links_list)),
             self.post.tags,
         )

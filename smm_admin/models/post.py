@@ -73,12 +73,7 @@ class Post(models.Model):
     old_work_url = models.CharField(max_length=4096, default='', blank=True)
     new_work_url = models.CharField(max_length=4096, default='', blank=True)
 
-    name_en = models.CharField(max_length=255)
-    name_ru = models.CharField(
-        max_length=255,
-        default='',
-        blank=True,
-    )
+    name = models.CharField(max_length=255)
 
     text_en = models.TextField()
     text_ru = models.TextField(
@@ -94,7 +89,7 @@ class Post(models.Model):
     def __str__(self):
         return '{} for {}'.format(
             self.account,
-            self.name_en,
+            self.name,
         )
 
     @classmethod

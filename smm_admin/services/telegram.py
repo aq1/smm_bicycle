@@ -38,7 +38,7 @@ class TelegramService(Service):
             link.for_telegram()
             for link in self.post.links_list
         ])
-        return '<b>{}</b> {}'.format(self.post.name_en, links)
+        return '<b>{}</b> {}'.format(self.post.name, links)
 
     def _make_a_post(self):
         kwargs = dict(

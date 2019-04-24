@@ -4,7 +4,6 @@ from django.utils.safestring import mark_safe
 from .models import (
     Account,
     Post,
-    LinkType,
     Service,
     PostResult,
 )
@@ -25,11 +24,6 @@ class AccountAdmin(admin.ModelAdmin):
     inlines = (
         ServiceInline,
     )
-
-
-@admin.register(LinkType)
-class LinkTypeAdmin(admin.ModelAdmin):
-    pass
 
 
 @admin.register(Post)

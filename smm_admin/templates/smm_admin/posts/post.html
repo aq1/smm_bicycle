@@ -1,6 +1,6 @@
 {% extends 'smm_admin/base.html' %}
 
-{% block title %}{{ post.name_en }}{% endblock %}
+{% block title %}{{ post.name }}{% endblock %}
 
 {% block content %}
     <div class="content">
@@ -35,8 +35,7 @@
                         {% endif %}
                         <div class="row">
                             <div class="col s12">
-                                <h4>{{ post.name_en }}</h4>
-                                <h6>{{ post.name_ru }}</h6>
+                                <h4>{{ post.name }}</h4>
                             </div>
                         </div>
                         <div class="row">

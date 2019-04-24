@@ -155,7 +155,7 @@ var placeObjectsFromPost = function (post, use_json, resolve) {
         });
 
         var place_text = function (x_offset) {
-            var name = new fabric.IText(post.name_en, {
+            var name = new fabric.IText(post.name, {
                 left: x_offset + grid * 2,
                 top: old_work_img.getScaledHeight() + grid * 2,
                 fontFamily: 'Intro',
@@ -266,7 +266,7 @@ var reset = function (post) {
 
 axios.get('/api/posts/' + window.post_id + '/').then(function (response) {
     window.post = response.data;
-    document.getElementById('render_name').value = window.post.name_en.toLowerCase().replace(/\s/gi, '_');
+    document.getElementById('render_name').value = window.post.name.toLowerCase().replace(/\s/gi, '_');
     load(response.data, true).then(function () {
         M.toast({html: 'Project loaded', displayLength: 1000})
     });

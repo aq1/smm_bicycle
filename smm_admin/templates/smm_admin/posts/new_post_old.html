@@ -15,15 +15,10 @@
                         </div>
                         <div class="row">
                             <div class="input-field col s6 m6">
-                                <input v-model="post.name_en" id="name_en" type="text"
-                                       v-bind:class="{invalid: post_errors.name_en}">
-                                <span class="helper-text" v-bind:data-error="post_errors.name_en"></span>
-                                <label for="name_en">Name in English</label>
-                            </div>
-                            <div class="input-field col s6 m6">
-                                <input v-model="post.name_ru" id="name_ru" type="text"
-                                       v-bind:class="{invalid: post_errors.name_en}">
-                                <label for="name_ru">Name in Russian</label>
+                                <input v-model="post.name" id="name" type="text"
+                                       v-bind:class="{invalid: post_errors.name}">
+                                <span class="helper-text" v-bind:data-error="post_errors.name"></span>
+                                <label for="name">Name in English</label>
                             </div>
                         </div>
                         <div class="row">

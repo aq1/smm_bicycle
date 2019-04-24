@@ -54,7 +54,6 @@ class PostTokenSerializer(serializers.ModelSerializer):
         exclude = (
             'schedule',
             'rendered_image',
-            'name_ru',
             'text_ru',
             'canvas_json',
         )

@@ -26,9 +26,9 @@ new Vue({
             // I bet there is a better way to do it
             var valid = true;
 
-            this.post_errors.name_en = '';
-            if (!this.post.name_en) {
-                this.post_errors.name_en = 'This field is required';
+            this.post_errors.name = '';
+            if (!this.post.name) {
+                this.post_errors.name = 'This field is required';
                 valid = false;
             }
 

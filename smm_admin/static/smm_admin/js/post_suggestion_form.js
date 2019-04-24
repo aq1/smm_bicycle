@@ -4,7 +4,7 @@ new Vue({
         submitIsInProgress: false,
         post: {
             account: location.pathname.match(/\d/)[0],
-            name_en: '',
+            name: '',
             artstation: '',
             instagram: '',
             old_work_year: '',
@@ -17,7 +17,7 @@ new Vue({
         new_work: '',
         form_is_valid: true,
         post_errors: {
-            name_en: '',
+            name: '',
             artstation: '',
             instagram: '',
             old_work_year: '',
@@ -32,9 +32,9 @@ new Vue({
             // I bet there is a better way to do it
             var valid = true;
 
-            this.post_errors.name_en = '';
-            if (!this.post.name_en) {
-                this.post_errors.name_en = 'Name is required';
+            this.post_errors.name = '';
+            if (!this.post.name) {
+                this.post_errors.name = 'Name is required';
                 valid = false;
             }
 

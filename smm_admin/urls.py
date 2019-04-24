@@ -37,8 +37,7 @@ urlpatterns = [
     path('post/<int:post_id>/save_canvas/', canvas.save_canvas),
     path('post/<int:post_id>/save_render/', canvas.save_render),
 
-    path('new/', new_post.PostView.as_view()),
-    path('new/<int:post_id>/upload_files/', new_post.post_file_upload),
+    path('new/', new_post.new_post),
 
     path('p/<int:post_id>/', post.post_view, name='post'),
     path('p/<str:token>/', post.post_view, name='post'),
