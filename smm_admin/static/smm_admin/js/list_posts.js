@@ -35,7 +35,7 @@ new Vue({
             page = page ? page : 1;
 
             axios.get(
-                '/api/posts/',
+                '/api/post/',
                 {params: {'page': page}}
             ).then(function (response) {
                 view.posts = view.cleanPosts(response.data.results);

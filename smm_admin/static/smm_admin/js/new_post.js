@@ -31,11 +31,7 @@ new Vue({
     },
     created: function () {
         var view = this;
-
-        try {
-            this.post.account = location.pathname.match(/\d/)[0];
-        } catch (err) {
-        }
+        this.post.account = window.account_id;
 
         document.addEventListener('DOMContentLoaded', function () {
             ['old-work-card', 'new-work-card'].forEach(function (id) {

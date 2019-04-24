@@ -1,19 +1,29 @@
 {% extends 'smm_admin/base.html' %}
 
-{% block title %}Suggest a Post{% endblock %}
+{% block title %}
+    {% if not account %}New Post{% else %}Suggest a Post{% endif %}
+{% endblock %}
 
+{% block navbar %}
+    {% if not account %}
+        {{ block.super }}
+    {% endif %}
+{% endblock %}
 {% block content %}
+    {% if account %}
+        <div class="deep-purple lighten-2 top-line">
+
+    {% endif %}
     {% verbatim %}
     <div id="app" class="container" v-cloak>
         <form @submit.prevent="submit" id="form">
-            <div class="row">
+            <div class="row" v-if="post.account">
                 <div class="col s12 m10 offset-m1">
                     <div class="card">
                         <div class="card-content">
                             <div class="row">
                                 <div class="col s12 m12">
-                                    <h4 v-if="post.account">Suggest a post</h4>
-                                    <h4 v-if="!post.account">Create a post</h4>
+                                    <h4>Suggest a post</h4>
                                 </div>
                             </div>
                         </div>
@@ -63,7 +73,8 @@
                                         <div class="input-field col s12 m12">
                                             <textarea v-model="post.text_en" id="text" class="materialize-textarea"
                                             ></textarea>
-                                            <label for="text" v-if="post.account">It would be cool if you provide something for
+                                            <label for="text" v-if="post.account">It would be cool if you provide
+                                                something for
                                                 newbies</label>
                                         </div>
                                     </div>
@@ -193,6 +204,7 @@
     <link rel="stylesheet" href="{% static 'smm_admin/css/common.css' %}">
     <script>
         window.csrf_token = "{{ csrf_token }}";
+        window.account_id = "{{ account.user_id }}";
     </script>
     <script type="text/javascript" src="{% static 'smm_admin/lib/axios.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'smm_admin/lib/vue.js' %}"></script>

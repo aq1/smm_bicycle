@@ -12,7 +12,7 @@ from smm_admin.views.posts import (
     post_api,
     list_posts,
     post,
-    post_suggestion,
+    suggest_post,
 )
 
 from .views.services import (
@@ -42,7 +42,7 @@ urlpatterns = [
     path('p/<str:token>/', post.post_view, name='post'),
     path('p/<int:post_id>/edit_image/', canvas.edit_image, name='edit_image'),
 
-    path('suggest/<int:account_id>/', post_suggestion.post_suggest_view),
+    path('suggest/<int:account_id>/', suggest_post.post_suggest_view),
 
     path('me/', account.account, name='account'),
     path('account_post/', account.account_post, name='account_post'),
