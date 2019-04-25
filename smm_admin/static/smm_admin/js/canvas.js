@@ -264,7 +264,7 @@ var reset = function (post) {
     });
 };
 
-axios.get('/api/posts/' + window.post_id + '/').then(function (response) {
+axios.get('/api/post/' + window.post_id + '/').then(function (response) {
     window.post = response.data;
     document.getElementById('render_name').value = window.post.name.toLowerCase().replace(/\s/gi, '_');
     load(response.data, true).then(function () {
