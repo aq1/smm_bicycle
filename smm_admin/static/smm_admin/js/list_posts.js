@@ -1,13 +1,6 @@
 new Vue({
     el: '#app',
     data: {
-        STATUSES: {
-            0: 'In Progress',
-            1: 'Not Ready',
-            2: 'Ready',
-            3: 'OK',
-            4: 'Failed'
-        },
         wip: true,
         pageSize: 20,
         count: 0,
@@ -23,7 +16,7 @@ new Vue({
             return post.previews.rendered_image[100] || post.previews.new_work[100] || post.previews.old_work[100];
         },
         cleanSinglePost: function (post) {
-            // post.status = this.STATUSES[post.status];
+            post.status = post.status_display;
             post.image = this.getPreview(post);
             post.time = '';
             if (post.schedule) {
@@ -78,16 +71,19 @@ new Vue({
                 var time = post.time.slice(0, 5).split(':');
                 var hours = Number(time[0]);
                 var minutes = Number(time[1]);
-                if (hours && minutes) {
-                    post.schedule.setHours(time[0]);
-                    post.schedule.setMinutes(time[1]);
+                if (isNaN(hours) || isNaN(minutes)) {
+                    return
                 }
+
+                post.schedule.setHours(hours);
+                post.schedule.setMinutes(minutes);
                 // Why do I have to do it?
                 if (post.scheduleTimeoutId) {
                     clearTimeout(post.scheduleTimeoutId);
                 }
                 post.scheduleTimeoutId = setTimeout(function () {
                     post.submitting = true;
+                    view.$forceUpdate();
                     axios.patch(
                         '/api/post/' + post.id + '/',
                         {schedule: post.schedule},
@@ -97,23 +93,46 @@ new Vue({
                             console.log(view.posts[i].id, post.id);
                             if (view.posts[i].id === post.id) {
                                 view.posts[i] = view.cleanSinglePost(response.data);
-                                view.$forceUpdate();  // god damit
                                 break;
                             }
                         }
                     }).finally(function () {
                         post.submitting = false;
+                        view.$forceUpdate();
                     });
                 }, 1000);
             }
+        },
+        deletePost: function (post) {
+            if (!confirm('Delete post ' + post.name + '?')) {
+                return;
+            }
+            var view = this;
+            axios.patch(
+                '/api/post/' + post.id + '/',
+                {status: 5}
+            ).then(function() {
+                view.getPosts();
+            }).catch(function(e) {
+                console.log(e);
+                alert('Something went wrong');
+            })
         }
     },
     created: function () {
+
+        axios.defaults.headers.common = {
+            'X-CSRFToken': window.csrf_token
+        };
+
         this.getPosts();
     },
     updated: function () {
         var now = new Date();
         var view = this;
+
+        M.Tooltip.init(document.querySelectorAll('.tooltipped'), {outDuration: 50});
+        M.Modal.init(document.querySelectorAll('.modal'), {});
 
         this.posts.forEach(function (post) {
             M.Datepicker.init(

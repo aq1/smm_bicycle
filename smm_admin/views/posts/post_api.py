@@ -72,7 +72,7 @@ class PreviewsField(serializers.Field):
 
 class PostSerializer(serializers.ModelSerializer):
     previews = PreviewsField()
-    status = serializers.CharField(source='get_status_display')
+    status_display = serializers.CharField(source='get_status_display')
 
     class Meta:
         model = Post
@@ -117,5 +117,12 @@ class PostViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         if self.request.user.is_authenticated:
-            return Post.objects.filter(account_id=self.request.user.id)
+            return Post.objects.filter(
+                account_id=self.request.user.id
+            ).exclude(
+                status=Post.DELETED,
+            ).order_by(
+                'status',
+                'schedule',
+            )
         return Post.objects.filter(token=self.request.query_params.get('t', ''))

@@ -12,14 +12,14 @@ def generate_token():
 
 
 class Post(models.Model):
-    SUGGESTED, IN_PROGRESS, NOT_READY, READY, OK, FAILED = range(6)
+    FAILED, IN_PROGRESS, NOT_READY, READY, OK, DELETED = range(6)
     STATUSES = (
-        (SUGGESTED, 'Suggested'),
+        (FAILED, 'Failed'),
         (IN_PROGRESS, 'In Progress'),
         (NOT_READY, 'Not Ready'),
         (READY, 'Ready'),
         (OK, 'OK'),
-        (FAILED, 'Failed'),
+        (DELETED, 'Deleted'),
     )
 
     token = models.CharField(
@@ -93,6 +93,12 @@ class Post(models.Model):
             self.account,
             self.name,
         )
+
+    def save(self, **kwargs):
+        if self.status == self.NOT_READY:
+            if self.rendered_image and self.schedule:
+                self.status = self.READY
+        return super().save(**kwargs)
 
     @classmethod
     def get(cls, _id, values=False):

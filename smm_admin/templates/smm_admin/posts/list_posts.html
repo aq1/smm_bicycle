@@ -19,8 +19,8 @@
                                 <div class="col m2">Info</div>
                                 <div class="col m2 offset-m2">Post Date</div>
                                 <div class="col m2">Post Time</div>
-                                <div class="col m2">Open</div>
-                                <div class="col m2">Status</div>
+                                <div class="col m2"></div>
+                                <div class="col m2"></div>
                             </div>
                             <div class="row post-in-list" v-for="(post, index) in posts">
                                 <div class="col m2">
@@ -42,12 +42,23 @@
                                            v-model="post.time" placeholder="hh:mm">
                                 </div>
                                 <div class="col m2">
-                                    <a :href="'/p/' + post.id + '/'">
+                                    <a :href="'/p/' + post.id + '/'"
+                                       class="tooltipped"
+                                       data-position="top"
+                                       :data-tooltip="'Open ' + post.name">
                                         <i class="material-icons">launch</i>
+                                    </a>
+                                    <a class="tooltipped"
+                                       style="cursor: pointer;"
+                                       data-position="top"
+                                       :data-tooltip="'Delete ' + post.name"
+                                       @click="deletePost(post)">
+                                        <i class="material-icons">delete</i>
                                     </a>
                                 </div>
                                 <div class="col m2">
-                                    <span v-if="!post.submitting" :class="'status_' + post.status.toLowerCase().replace(' ', '_')">
+                                    <span v-if="!post.submitting"
+                                          :class="'status_' + post.status.toLowerCase().replace(' ', '_')">
                                         {{ post.status }}
                                     </span>
                                     <div v-if="post.submitting" class="preloader-wrapper small active">
@@ -98,6 +109,7 @@
             </div>
         </div>
     </div>
+
     {% endverbatim %}
 {% endblock %}
 
