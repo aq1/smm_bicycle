@@ -2,19 +2,6 @@
 
 {% block title %}Your Posts{% endblock %}
 
-{% block static %}
-    {{ block.super }}
-    {% load staticfiles %}
-
-    <link rel="stylesheet" href="{% static 'smm_admin/lib/material-icons.css' %}">
-    <link rel="stylesheet" href="{% static 'smm_admin/css/common.css' %}">
-
-    <script src="{% static 'smm_admin/lib/axios.min.js' %}"></script>
-    <script src="{% static 'smm_admin/lib/vue.min.js' %}"></script>
-
-    <script src="{% static 'smm_admin/js/list_posts.js' %}"></script>
-{% endblock %}
-
 {% block content %}
     {% verbatim %}
     <div class="container" id="app" style="margin-top: 50px;">
@@ -47,11 +34,12 @@
                                     </div>
                                 </div>
                                 <div class="col m2">
-                                    <input :id="'date_' + post.id" type="text" class="datepicker">
+                                    <input :id="'date_' + post.id" type="text" class="datepicker"
+                                           placeholder="yyyy.mm.dd">
                                 </div>
                                 <div class="col m2">
-                                    <input :id="'time_' + post.id" type="text" class="timepicker"
-                                           v-model="post.schedule">
+                                    <input :id="'time_' + post.id" type="text" @keyup="scheduleChanged(post)"
+                                           v-model="post.time" placeholder="hh:mm">
                                 </div>
                                 <div class="col m2">
                                     <a :href="'/p/' + post.id + '/'">
@@ -59,9 +47,22 @@
                                     </a>
                                 </div>
                                 <div class="col m2">
-                                    <span :class="'status_' + post.status.toLowerCase().replace(' ', '_')">
+                                    <span v-if="!post.submitting" :class="'status_' + post.status.toLowerCase().replace(' ', '_')">
                                         {{ post.status }}
                                     </span>
+                                    <div v-if="post.submitting" class="preloader-wrapper small active">
+                                        <div class="spinner-layer spinner-blue-only">
+                                            <div class="circle-clipper left">
+                                                <div class="circle"></div>
+                                            </div>
+                                            <div class="gap-patch">
+                                                <div class="circle"></div>
+                                            </div>
+                                            <div class="circle-clipper right">
+                                                <div class="circle"></div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="row">
@@ -98,4 +99,21 @@
         </div>
     </div>
     {% endverbatim %}
+{% endblock %}
+
+{% block static %}
+    {{ block.super }}
+    {% load staticfiles %}
+
+    <link rel="stylesheet" href="{% static 'smm_admin/lib/material-icons.css' %}">
+    <link rel="stylesheet" href="{% static 'smm_admin/css/common.css' %}">
+    <script>
+        window.csrf_token = "{{ csrf_token }}";
+    </script>
+
+    <script src="{% static 'smm_admin/lib/axios.min.js' %}"></script>
+    <script src="{% static 'smm_admin/lib/vue.min.js' %}"></script>
+    <script src="{% static 'smm_admin/lib/cleave.min.js' %}"></script>
+
+    <script src="{% static 'smm_admin/js/list_posts.js' %}"></script>
 {% endblock %}
