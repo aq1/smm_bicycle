@@ -30,14 +30,14 @@
         <div class="nav-wrapper cyan">
             <a href="/" class="brand-logo right">10khl.com</a>
             <ul id="nav-mobile" class="left hide-on-med-and-down">
-                <li><a href="/me/">Me</a></li>
-                <li><a href="/posts/">Posts</a></li>
-                <li><a href="/new/">+ New Post</a></li>
+                <li><a href="{% url 'account' %}">Me</a></li>
+                <li><a href="{% url 'list_posts' %}">Posts</a></li>
+                <li><a href="{% url 'new_post' %}">+ New Post</a></li>
+                <li><a href="{% url 'logout' %}">Logout</a></li>
             </ul>
         </div>
     </nav>
 {% endblock %}
-</div>
 {% block content %}
 {% endblock %}
 {% block static %}

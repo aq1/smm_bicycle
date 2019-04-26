@@ -48,13 +48,13 @@
                             </transition>
                             <div class="row">
                                 <div class="input-field col s6">
-                                    <button class="btn" type="submit" name="submit">
+                                    <button class="btn" type="submit" name="submit" v-bind:disabled="submitInProgress">
                                         <span v-show="loginFormActive">Log In</span>
                                         <span v-show="!loginFormActive">Sign Up</span>
                                     </button>
                                 </div>
                                 <div class="input-field col s6">
-                                    <button class="btn-flat" type="button" style="float: right" @click="changeForm()">
+                                    <button class="btn-flat" type="button" style="float: right" @click="changeForm()" v-bind:disabled="submitInProgress">
                                         <span v-show="loginFormActive">or Sign Up</span>
                                         <span v-show="!loginFormActive">or Log In</span>
                                     </button>

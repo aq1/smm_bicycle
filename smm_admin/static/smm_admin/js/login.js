@@ -1,6 +1,7 @@
 new Vue({
     el: '#app',
     data: {
+        submitInProgress: false,
         defaultRedirectURL: '/me/',
         loginFormActive: true,
         required: 'This field is required',
@@ -60,6 +61,7 @@ new Vue({
                 return;
             }
 
+            this.submitInProgress = true;
             var view = this;
             axios.post(
                 '/login/',
@@ -67,7 +69,6 @@ new Vue({
                 {headers: {'X-CSRFToken': window.csrf_token}}
             ).then(function () {
                 window.location.search.substr(1).split('&').forEach(function(query) {
-                    debugger;
                     var q = query.split('=');
                     if (q[0] === 'next') {
                         location.pathname = q[1];
@@ -77,7 +78,11 @@ new Vue({
             }).catch(function (response) {
                 if (response.data) {
                     view.userErrors = response.data;
+                } else {
+                    view.userErrors.username = 'Wrong credentials';
                 }
+            }).finally(function() {
+                view.submitInProgress = false;
             });
         },
         changeForm: function () {

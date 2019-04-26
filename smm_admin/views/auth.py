@@ -1,13 +1,19 @@
 import json
 
 from django import http
+from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 from django.core.validators import validate_email
 from django.views.decorators.http import require_http_methods
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from django.contrib.auth import get_user_model, authenticate, login
+from django.contrib.auth import (
+    get_user_model,
+    authenticate,
+    login,
+    logout,
+)
 
 from smm_admin.models import Account
 
@@ -18,11 +24,6 @@ def login_view(request):
         return redirect(reverse('account'))
 
     return render(request, 'smm_admin/login.html')
-
-
-@require_http_methods(['GET'])
-def logout_view(request):
-    return redirect(reverse('login'))
 
 
 @require_http_methods(['POST'])
@@ -64,3 +65,10 @@ def login_post(request):
     login(request, user)
 
     return http.JsonResponse({}, status=200)
+
+
+@require_http_methods(['GET'])
+@login_required
+def logout_view(request):
+    logout(request)
+    return redirect(reverse('login'))

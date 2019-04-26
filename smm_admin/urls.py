@@ -36,7 +36,7 @@ urlpatterns = [
     path('post/<int:post_id>/save_canvas/', canvas.save_canvas),
     path('post/<int:post_id>/save_render/', canvas.save_render),
 
-    path('new/', new_post.new_post),
+    path('new/', new_post.new_post, name='new_post'),
 
     path('p/<int:post_id>/', post.post_view, name='post'),
     path('p/<str:token>/', post.post_view, name='post'),
@@ -64,4 +64,5 @@ urlpatterns = [
 
     path('', auth.login_view, name='login'),
     path('login/', auth.login_post, name='login_post'),
+    path('logout/', auth.logout_view, name='logout'),
 ]
