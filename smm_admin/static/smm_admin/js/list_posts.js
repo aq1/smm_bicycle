@@ -18,7 +18,7 @@ new Vue({
         cleanSinglePost: function (post) {
             post.status = post.status_display;
             post.image = this.getPreview(post);
-            post.time = '';
+            post.time = '19:05';
             if (post.schedule) {
                 post.schedule = new Date(post.schedule);
                 // Goddamit, JS
