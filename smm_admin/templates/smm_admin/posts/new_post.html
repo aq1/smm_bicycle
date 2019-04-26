@@ -39,7 +39,9 @@
                                     <input v-model="post.name" id="name" type="text"
                                            v-bind:class="{invalid: post_errors.name}">
                                     <span class="helper-text" v-bind:data-error="post_errors.name"></span>
-                                    <label for="name">Your Name</label>
+                                    <label for="name">
+                                        <span v-if="post.account">Your </span>Name
+                                    </label>
                                 </div>
                             </div>
                             <div class="row">
