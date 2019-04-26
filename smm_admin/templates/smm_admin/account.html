@@ -7,14 +7,14 @@
 {% block content %}
     <div class="container">
         <div class="row">
-            <div class="col s12 m8 offset-m2">
+            <div class="col m12 l8 offset-l2">
                 <div class="card">
                     <div class="card-content">
                         <form action="{% url 'account_post' %}" method="POST" enctype="multipart/form-data">
                             {% csrf_token %}
                             <div class="row">
-                                <div class="col s12">
-                                    <div class="input-field col s12">
+                                <div class="col m12">
+                                    <div class="input-field col m12">
                                         <input id="username"
                                                type="text"
                                                name="username"
@@ -28,14 +28,14 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col s12">
+                                <div class="col m12">
                                     {% if user.account.logo %}
                                         <img src="{{ user.account.logo.url }}" alt="user logo" width="100px">
                                     {% endif %}
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col s12">
+                                <div class="col m12">
                                     <div class="file-field input-field">
                                         <div class="btn">
                                             {% if user.account.logo %}
@@ -52,8 +52,8 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col s12">
-                                    <div class="input-field col s12">
+                                <div class="col m12">
+                                    <div class="input-field col m12">
                                         <input id="telegram_id"
                                                type="text"
                                                name="telegram_id"
@@ -67,7 +67,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col s12">
+                                <div class="col m12">
                                     <button class="btn" type="submit">Submit</button>
                                 </div>
                             </div>
@@ -77,7 +77,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col s12 m8 offset-m2">
+            <div class="col m12 l8 offset-l2">
                 <div class="card">
                     <div class="card-content">
                         <span class="card-title">Social</span>

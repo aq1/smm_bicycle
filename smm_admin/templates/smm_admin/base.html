@@ -29,6 +29,7 @@
     <nav>
         <div class="nav-wrapper cyan">
             <a href="/" class="brand-logo right">10khl.com</a>
+            <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
             <ul id="nav-mobile" class="left hide-on-med-and-down">
                 <li><a href="{% url 'account' %}">Me</a></li>
                 <li><a href="{% url 'list_posts' %}">Posts</a></li>
@@ -39,12 +40,26 @@
         {% block navbar_tabs %}
         {% endblock %}
     </nav>
+    <ul class="sidenav" id="mobile-demo">
+        {% block navbar_tabs_mobile %}
+        {% endblock %}
+        <li><a href="{% url 'account' %}">Me</a></li>
+        <li><a href="{% url 'list_posts' %}">Posts</a></li>
+        <li><a href="{% url 'new_post' %}">+ New Post</a></li>
+        <li><a href="{% url 'logout' %}">Logout</a></li>
+    </ul>
 {% endblock %}
 {% block content %}
 {% endblock %}
 {% block static %}
     <link rel="stylesheet" href="{% static 'smm_admin/lib/materialize.min.css' %}">
+    <link rel="stylesheet" href="{% static 'smm_admin/lib/material-icons.css' %}">
     <script type="text/javascript" src="{% static 'smm_admin/lib/materialize.min.js' %}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            M.Sidenav.init(document.querySelectorAll('.sidenav'), {});
+        });
+    </script>
 {% endblock %}
 </body>
 </html>
