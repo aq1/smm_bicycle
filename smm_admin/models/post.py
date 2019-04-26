@@ -95,9 +95,11 @@ class Post(models.Model):
         )
 
     def save(self, **kwargs):
-        if self.status == self.NOT_READY:
+        if self.status in (self.READY, self.NOT_READY):
             if self.rendered_image and self.schedule:
                 self.status = self.READY
+            else:
+                self.status = self.NOT_READY
         return super().save(**kwargs)
 
     @classmethod
