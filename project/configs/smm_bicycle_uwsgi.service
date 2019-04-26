@@ -1,0 +1,13 @@
+[Unit]
+Description=uWSGI app
+After=syslog.target
+
+[Service]
+ExecStart=/_projects/smm_bicycle/.env/bin/uwsgi --ini /_projects/smm_bicycle/project/configs/uwsgi.ini
+User=nginx
+Group=nginx
+Restart=on-failure
+KillSignal=SIGQUIT
+Type=notify
+StandardError=syslog
+NotifyAccess=all
