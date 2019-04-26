@@ -19,7 +19,7 @@ var canvas = new fabric.Canvas('canvas', {
 });
 
 
-var _resizeCanvas = function(w, h) {
+var _resizeCanvas = function (w, h) {
     canvas.setWidth(w);
     canvas.setHeight(h);
     canvas.calcOffset();
@@ -197,18 +197,19 @@ var placeObjectsFromPost = function (post, use_json, resolve) {
 
 
 var saveProject = function () {
-    var button = document.getElementById('save');
-    button.disabled = true;
+    var tab = document.getElementById('save');
+    tab.classList.add('disabled');
 
     axios.post(
         '/post/' + window.post_id + '/save_canvas/',
         JSON.stringify(canvas),
         {headers: {'X-CSRFToken': window.csrf_token}}
     ).then(function () {
-        button.disabled = false;
         M.toast({html: 'Saved', displayLength: 1000})
     }).catch(function (reason) {
         console.log(reason);
+    }).finally(function () {
+        tab.classList.remove('disabled');
     });
 };
 

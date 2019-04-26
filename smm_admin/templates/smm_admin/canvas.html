@@ -3,44 +3,41 @@
 {% block title %}
     Edit Image
 {% endblock %}
-
+{% block navbar_tabs %}
+    <div class="nav-content cyan">
+        <ul class="tabs tabs-transparent">
+            <li class="tab" onclick="saveProject()" id="save">
+                <a>Save</a>
+            </li>
+            <li class="tab" onclick="reset(window.post, false);" id="reset">
+                <a>Reset</a>
+            </li>
+            <li class="tab modal-trigger" data-target="render-modal">
+                <a>Render</a>
+            </li>
+            <li class="tab">
+                <a class="waves-effect waves-teal" target="_blank" href="{% url 'post' post_id %}">
+                    Open post
+                </a>
+            </li>
+            <li class="tab">
+                {% if post.rendered_image %}
+                    <a id="open_rendered" target="_blank"
+                       href="{{ post.rendered_image.url }}">
+                        Open rendered
+                    </a>
+                {% else %}
+                    <a id="open_rendered" target="_blank"
+                       href="" style="visibility: hidden">
+                        Open rendered
+                    </a>
+                {% endif %}
+            </li>
+        </ul>
+    </div>
+{% endblock %}
 {% block content %}
-    <div id="container" style="margin-top: 10px;">
-        <div class="row">
-            <div class="col s12">
-                <div class="row">
-                    <div class="col s12 m2">
-                        <button class="btn waves-effect waves-light" id="save" onclick="saveProject()">Save</button>
-                        <button class="btn waves-effect waves-light" id="reset" onclick="reset(window.post, false);">
-                            Reset
-                        </button>
-                    </div>
-                    <div class="col s12 m2">
-                        <button class="btn modal-trigger" data-target="resize-modal">Resize canvas</button>
-                    </div>
-                    <div class="col s12 m2">
-                        <button class="btn modal-trigger" data-target="render-modal">Render</button>
-                    </div>
-                    <div class="col s12 m3">
-                        <a class="waves-effect waves-teal btn-flat" target="_blank" href="{% url 'post' post_id %}">
-                            Open post
-                        </a>
-
-                        {% if post.rendered_image %}
-                            <a id="open_rendered" class="waves-effect waves-teal btn-flat" target="_blank"
-                               href="{{ post.rendered_image.url }}">
-                                Open rendered
-                            </a>
-                        {% else %}
-                            <a id="open_rendered" class="waves-effect waves-teal btn-flat" target="_blank"
-                               href="" style="visibility: hidden">
-                                Open rendered
-                            </a>
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div id="container" style="margin-top: 60px;">
         <div class="row">
             <div class="col s12">
                 <div id="canvas-wrapper">
@@ -121,7 +118,6 @@
     {{ block.super }}
     {% load staticfiles %}
     <script type="text/javascript" src="{% static 'smm_admin/lib/axios.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'smm_admin/lib/vue.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'smm_admin/lib/fabric.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'smm_admin/lib/interact.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'smm_admin/js/canvas.js' %}"></script>
