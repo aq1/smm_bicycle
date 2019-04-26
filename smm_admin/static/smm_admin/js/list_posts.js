@@ -19,11 +19,15 @@ new Vue({
         pagesCount: function () {
             return Math.ceil(this.count / this.pageSize);
         },
+        getPreview: function(post) {
+            return post.previews.rendered_image[100] || post.previews.new_work[100] || post.previews.old_work[100];
+        },
         cleanPosts: function (posts) {
             var _posts = [];
             var view = this;
             posts.forEach(function (post) {
                 post.status = view.STATUSES[post.status];
+                post.image = view.getPreview(post);
                 // post.schedule = new Date(post.schedule).toLocaleDateString();
                 _posts.push(post);
             });
@@ -52,6 +56,7 @@ new Vue({
         this.getPosts();
     },
     updated: function () {
+        var view = this;
         M.Materialbox.init(document.querySelectorAll('.materialboxed'), {});
         var now = new Date();
 

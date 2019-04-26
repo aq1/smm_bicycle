@@ -4,6 +4,8 @@ from django.db import models
 from django.urls import reverse
 from django.conf import settings
 
+from easy_thumbnails.fields import ThumbnailerImageField
+
 
 def generate_token():
     return str(uuid.uuid4()).replace('-', '')
@@ -42,16 +44,16 @@ class Post(models.Model):
         blank=True,
     )
 
-    old_work = models.ImageField(
+    old_work = ThumbnailerImageField(
         null=True,
         blank=True,
     )
-    new_work = models.ImageField(
+    new_work = ThumbnailerImageField(
         null=True,
         blank=True,
     )
 
-    rendered_image = models.ImageField(
+    rendered_image = ThumbnailerImageField(
         null=True,
         blank=True,
     )

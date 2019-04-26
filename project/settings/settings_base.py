@@ -17,6 +17,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_filters',
     'django_celery_results',
+    'easy_thumbnails',
 
     'smm_admin',
 ]
@@ -83,7 +84,6 @@ MEDIA_URL = '/media/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = '/me/'
 LOGOUT_REDIRECT_URL = ''
@@ -94,4 +94,17 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',),
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 20,
+}
+
+THUMBNAIL_ALIASES = {
+    '': {
+        '100': {
+            'size': (100, 50),
+            'crop': True
+        },
+        '500': {
+            'size': (500, 500),
+            'crop': True,
+        }
+    },
 }

@@ -1,4 +1,9 @@
+from collections import defaultdict
+
+from django.conf import settings
+
 from django_filters import rest_framework as filters
+from easy_thumbnails.fields import ThumbnailerImageField
 from rest_framework import (
     serializers,
     viewsets,
@@ -41,7 +46,33 @@ class PostFilter(filters.FilterSet):
         ]
 
 
+class PreviewsField(serializers.Field):
+
+    def to_representation(self, obj):
+        previews = defaultdict(dict)
+        for field in obj._meta.fields:
+            if isinstance(field, ThumbnailerImageField):
+                val = getattr(obj, field.name)
+                for thumb in settings.THUMBNAIL_ALIASES[''].keys():
+                    if val:
+                        previews[field.name][thumb] = val[thumb].url
+                    else:
+                        previews[field.name][thumb] = ''
+        return previews
+
+    def to_internal_value(self, data):
+        pass
+
+    def __init__(self, **kwargs):
+        kwargs['read_only'] = True
+        kwargs['source'] = '*'
+
+        super().__init__(**kwargs)
+
+
 class PostSerializer(serializers.ModelSerializer):
+    previews = PreviewsField()
+
     class Meta:
         model = Post
         fields = '__all__'

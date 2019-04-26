@@ -32,42 +32,36 @@
                                 <div class="col m2">Info</div>
                                 <div class="col m2 offset-m2">Post Date</div>
                                 <div class="col m2">Post Time</div>
-                                <div class="col m2">Is ready to post?</div>
                                 <div class="col m2">Open</div>
+                                <div class="col m2">Status</div>
                             </div>
-                            <div class="row post-in-list" v-for="post in posts">
+                            <div class="row post-in-list" v-for="(post, index) in posts">
                                 <div class="col m2">
-                                    <img class="materialboxed" width="100px" alt="img"
-                                         :src="post.rendered_image || post.new_work">
+                                    <img width="100px"
+                                         alt="img"
+                                         :src="post.image">
                                 </div>
                                 <div class="col m2">
                                     <div>
                                         {{ post.name }}
-                                    </div>
-                                    <div>
-                                        <span :class="'status_' + post.status.toLowerCase().replace(' ', '_')">
-                                            {{ post.status }}
-                                        </span>
                                     </div>
                                 </div>
                                 <div class="col m2">
                                     <input :id="'date_' + post.id" type="text" class="datepicker">
                                 </div>
                                 <div class="col m2">
-                                    <input :id="'time_' + post.id" type="text" class="timepicker" v-model="post.schedule">
-                                </div>
-                                <div class="col m2">
-                                    <div class="switch">
-                                        <label>
-                                            <input type="checkbox">
-                                            <span class="lever"></span>
-                                        </label>
-                                    </div>
+                                    <input :id="'time_' + post.id" type="text" class="timepicker"
+                                           v-model="post.schedule">
                                 </div>
                                 <div class="col m2">
                                     <a :href="'/p/' + post.id + '/'">
                                         <i class="material-icons">launch</i>
                                     </a>
+                                </div>
+                                <div class="col m2">
+                                    <span :class="'status_' + post.status.toLowerCase().replace(' ', '_')">
+                                        {{ post.status }}
+                                    </span>
                                 </div>
                             </div>
                             <div class="row">
