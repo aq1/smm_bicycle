@@ -40,7 +40,7 @@ urlpatterns = [
 
     path('p/<int:post_id>/', post.post_view, name='post'),
     path('p/<str:token>/', post.post_view, name='post'),
-    path('p/<int:post_id>/edit_image/', canvas.edit_image, name='edit_image'),
+    path('p/<int:post_id>/canvas/', canvas.canvas, name='canvas'),
 
     path('suggest/<int:account_id>/', suggest_post.post_suggest_view),
 

@@ -20,7 +20,7 @@
                 <div class="card">
                     {% if not by_token and post.rendered_image %}
                         <div class="card-image tooltipped" data-position="bottom" data-tooltip="Click to edit">
-                            <a href="{% url 'edit_image' post.id %}">
+                            <a href="{% url 'canvas' post.id %}">
                                 <img id="rendered_image" src="{{ post.rendered_image.url }}">
                             </a>
                         </div>
@@ -29,7 +29,7 @@
                         {% if not by_token and not post.rendered_image %}
                             <div class="row">
                                 <div class="col s12">
-                                    <h4>No rendered image yet <a href="{% url 'edit_image' post.id %}">create</a></h4>
+                                    <h4>No rendered image yet <a href="{% url 'canvas' post.id %}">create</a></h4>
                                 </div>
                             </div>
                         {% endif %}

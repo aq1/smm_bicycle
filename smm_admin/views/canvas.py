@@ -14,7 +14,7 @@ from smm_admin.models import (
 
 
 @login_required
-def edit_image(request, post_id):
+def canvas(request, post_id):
     return render(
         request,
         'smm_admin/canvas.html',

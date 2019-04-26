@@ -202,8 +202,7 @@ var saveProject = function () {
 
     axios.post(
         '/post/' + window.post_id + '/save_canvas/',
-        JSON.stringify(canvas),
-        {headers: {'X-CSRFToken': window.csrf_token}}
+        JSON.stringify(canvas)
     ).then(function () {
         M.toast({html: 'Saved', displayLength: 1000})
     }).catch(function (reason) {
@@ -214,6 +213,22 @@ var saveProject = function () {
 };
 
 
+var setRenderButtons = function (url) {
+    url = url || '';
+    var a = document.getElementById('open-rendered');
+    a.href = url;
+    [
+        a,
+        document.getElementById('delete-rendered')
+    ].forEach(function (button) {
+        if (url) {
+            button.style.visibility = 'visible';
+        } else {
+            button.style.visibility = 'hidden';
+        }
+    });
+};
+
 var render = function () {
     var render_name = document.getElementById('render_name').value;
     var button = document.getElementById('render');
@@ -223,7 +238,6 @@ var render = function () {
         '/post/' + window.post_id + '/save_render/',
         canvas.toDataURL(),
         {
-            headers: {'X-CSRFToken': window.csrf_token},
             params: {'f': render_name + '.png'}
         }
     ).then(function (response) {
@@ -236,9 +250,29 @@ var render = function () {
             html: toastHTML,
             displayLength: 4000
         });
-        var link = document.getElementById('open_rendered');
-        link.style.visibility = 'visible';
-        link.href = url;
+        setRenderButtons(url);
+    }).catch(function () {
+        M.toast({html: 'Something went wrong', displayLength: 3000});
+    }).finally(function () {
+        button.disabled = false;
+    });
+};
+
+
+var deleteRender = function () {
+    var button = document.getElementById('delete-render');
+    button.disabled = true;
+
+    axios.patch(
+        '/api/post/' + window.post_id + '/',
+        {'rendered_image': null}
+    ).then(function (response) {
+        M.Modal.getInstance(document.getElementById('delete-render-modal')).close();
+        M.toast({
+            html: 'Render deleted',
+            displayLength: 4000
+        });
+        setRenderButtons('');
     }).catch(function () {
         M.toast({html: 'Something went wrong', displayLength: 3000});
     }).finally(function () {
@@ -265,9 +299,16 @@ var reset = function (post) {
     });
 };
 
+
+axios.defaults.headers.common = {
+    'X-CSRFToken': window.csrf_token
+};
+
+
 axios.get('/api/post/' + window.post_id + '/').then(function (response) {
     window.post = response.data;
     document.getElementById('render_name').value = window.post.name.toLowerCase().replace(/\s/gi, '_');
+    setRenderButtons(window.post.rendered_image);
     load(response.data, true).then(function () {
         M.toast({html: 'Project loaded', displayLength: 1000})
     });

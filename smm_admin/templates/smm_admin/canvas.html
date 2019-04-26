@@ -20,18 +20,15 @@
                     Open post
                 </a>
             </li>
+            <li class="tab" style="width: 100px"></li>
             <li class="tab">
-                {% if post.rendered_image %}
-                    <a id="open_rendered" target="_blank"
-                       href="{{ post.rendered_image.url }}">
-                        Open rendered
-                    </a>
-                {% else %}
-                    <a id="open_rendered" target="_blank"
-                       href="" style="visibility: hidden">
-                        Open rendered
-                    </a>
-                {% endif %}
+                <a id="open-rendered" target="_blank"
+                   href="">
+                    Open rendered
+                </a>
+            </li>
+            <li class="tab modal-trigger" data-target="delete-render-modal">
+                <a id="delete-rendered">Delete render</a>
             </li>
         </ul>
     </div>
@@ -80,16 +77,6 @@
         <div class="modal-content">
             <h4>Render and save image</h4>
             <form class="col s12">
-                {#                <div>#}
-                {#                    <div class="input-field inline col s12 m3 l3 xl3">#}
-                {#                        <input id="render_width" type="number" class="validate" value="720">#}
-                {#                        <label for="render_width">Minimum width</label>#}
-                {#                    </div>#}
-                {#                    <div class="input-field inline col s12 m3 l3 xl3">#}
-                {#                        <input id="render_height" type="number" class="validate" value="460">#}
-                {#                        <label for="render_height">Minimum height</label>#}
-                {#                    </div>#}
-                {#                </div>#}
                 <div>
                     <div class="input-field inline col s12 m3">
                         <input id="render_name" type="text" class="validate" value="Filename">
@@ -100,6 +87,15 @@
         </div>
         <div class="modal-footer">
             <button class="btn waves-effect waves-green" onclick="render()" id="render">Render</button>
+            <button class="modal-close waves-effect waves-green btn-flat">Close</button>
+        </div>
+    </div>
+    <div id="delete-render-modal" class="modal">
+        <div class="modal-content">
+            <h4>Confirm action</h4>
+        </div>
+        <div class="modal-footer">
+            <button class="btn waves-effect waves-green" onclick="deleteRender()" id="delete-render">Confirm</button>
             <button class="modal-close waves-effect waves-green btn-flat">Close</button>
         </div>
     </div>
