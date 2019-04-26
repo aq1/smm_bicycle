@@ -22,7 +22,7 @@
                     <div class="card">
                         <div class="card-content">
                             <div class="row">
-                                <div class="col s12">
+                                <div class="col m12">
                                     <h4>Suggest a post</h4>
                                 </div>
                             </div>
@@ -35,24 +35,26 @@
                     <div class="card">
                         <div class="card-content">
                             <div class="row">
-                                <div class="input-field col s12">
-                                    <input v-model="post.name" id="name" type="text"
-                                           v-bind:class="{invalid: post_errors.name}">
-                                    <span class="helper-text" v-bind:data-error="post_errors.name"></span>
-                                    <label for="name">
-                                        <span v-if="post.account">Your </span>Name
-                                    </label>
+                                <div class="col m12">
+                                    <div class="input-field col m12">
+                                        <input v-model="post.name" id="name" type="text"
+                                               v-bind:class="{invalid: post_errors.name}">
+                                        <span class="helper-text" v-bind:data-error="post_errors.name"></span>
+                                        <label for="name">
+                                            <span v-if="post.account">Your </span>Name
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col s12">
-                                    <div class="input-field">
+                                <div class="col m12">
+                                    <div class="input-field col m12">
                                         <input type="text" id="artstation" v-model="post.artstation"
                                                v-bind:class="{invalid: post_errors.artstation}">
                                         <label for="artstation">Artstation (required)</label>
                                         <span class="helper-text" v-bind:data-error="post_errors.artstation"></span>
                                     </div>
-                                    <div class="input-field">
+                                    <div class="input-field col m12">
                                         <input type="text" id="instagram" v-model="post.instagram">
                                         <label for="instagram">Instagram (optional)</label>
                                         <span class="helper-text" v-bind:data-error="post_errors.instagram"></span>
@@ -68,11 +70,11 @@
                     <div class="card">
                         <div class="card-content">
                             <div class="row">
-                                <div class="col s12">
+                                <div class="col m12">
                                     <div class="row">
                                         <span v-if="post.account">Your Advice (optional)</span>
                                         <span v-if="!post.account">Text in English</span>
-                                        <div class="input-field col s12">
+                                        <div class="input-field col m12">
                                             <textarea v-model="post.text_en" id="text" class="materialize-textarea"
                                             ></textarea>
                                             <label for="text" v-if="post.account">It would be cool if you provide
@@ -82,7 +84,7 @@
                                     </div>
                                     <div class="row" v-if="!post.account">
                                         <span>Text in Russian</span>
-                                        <div class="input-field col s12">
+                                        <div class="input-field col m12">
                                             <textarea v-model="post.text_ru" id="text" class="materialize-textarea"
                                             ></textarea>
                                         </div>
@@ -98,7 +100,7 @@
                     <div class="card dropzone" id="old-work-card">
                         <div class="card-content">
                             <div class="row">
-                                <div class="col s12">
+                                <div class="col m12">
                                     <span v-if="post.account">Old work (the older is the better)</span>
                                     <span v-if="!post.account">Old work</span>
                                     <div class="input-field">
@@ -108,7 +110,7 @@
                                         <span class="helper-text" v-bind:data-error="post_errors.old_work_year"></span>
                                     </div>
                                     <div class="row">
-                                        <div class="col s12 m3">
+                                        <div class="col m12 m3">
                                             <div class="file-field input-field">
                                                 <div class="btn">
                                                     <span>File</span>
@@ -117,7 +119,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col s12 m9">
+                                        <div class="col m12 m9">
                                             <div class="input-field">
                                                 <label for="old-work-url">or URL</label>
                                                 <input v-model="post.old_work_url" id="old-work-url" type="text"
@@ -126,7 +128,7 @@
                                                       v-bind:data-error="post_errors.old_work_url"></span>
                                             </div>
                                         </div>
-                                        <div class="col s12" style="word-break:break-all">
+                                        <div class="col m12" style="word-break:break-all">
                                             {{ old_work.name }}
                                         </div>
                                     </div>
@@ -139,7 +141,7 @@
                     <div class="card dropzone" id="new-work-card">
                         <div class="card-content">
                             <div class="row">
-                                <div class="col s12">
+                                <div class="col m12">
                                     <span v-if="post.account">The best or most loved work</span>
                                     <span v-if="!post.account">New work</span>
                                     <div class="input-field">
@@ -149,7 +151,7 @@
                                         <span class="helper-text" v-bind:data-error="post_errors.new_work_year"></span>
                                     </div>
                                     <div class="row">
-                                        <div class="col s12 m3">
+                                        <div class="col m12 m3">
                                             <div class="file-field input-field">
                                                 <div class="btn">
                                                     <span>File</span>
@@ -158,7 +160,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col s12 m9">
+                                        <div class="col m12 m9">
                                             <div class="input-field">
                                                 <label for="new-work-url">or URL</label>
                                                 <input v-model="post.new_work_url" id="new-work-url" type="text"
@@ -167,7 +169,7 @@
                                                       v-bind:data-error="post_errors.new_work_url"></span>
                                             </div>
                                         </div>
-                                        <div class="col s12" style="word-break:break-all">
+                                        <div class="col m12" style="word-break:break-all">
                                             {{ new_work.name }}
                                         </div>
                                     </div>
