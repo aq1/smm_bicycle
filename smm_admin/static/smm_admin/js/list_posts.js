@@ -90,9 +90,9 @@ new Vue({
                         {headers: {'X-CSRFToken': window.csrf_token}}
                     ).then(function (response) {
                         for (var i = 0; i < view.posts.length; i++) {
-                            console.log(view.posts[i].id, post.id);
                             if (view.posts[i].id === post.id) {
                                 view.posts[i] = view.cleanSinglePost(response.data);
+                                M.toast({html: 'Updated ' + post.name, displayLength: 1000});
                                 break;
                             }
                         }
@@ -102,6 +102,12 @@ new Vue({
                     });
                 }, 1000);
             }
+        },
+        timeKeyUp: function(event, post) {
+            if (isNaN(Number(event.key))) {
+                return;
+            }
+            this.scheduleChanged(post);
         },
         deletePost: function (post) {
             if (!confirm('Delete post ' + post.name + '?')) {
@@ -141,7 +147,7 @@ new Vue({
                     autoClose: true,
                     firstDay: 1,
                     defaultDate: post.schedule || '',
-                    format: 'yyyy.mm.dd',
+                    format: 'dd.mm.yyyy',
                     setDefaultDate: Boolean(post.schedule),
                     minDate: now,
                     showClearBtn: true,

@@ -38,7 +38,7 @@
                                            placeholder="yyyy.mm.dd">
                                 </div>
                                 <div class="col m2">
-                                    <input :id="'time_' + post.id" type="text" @keyup="scheduleChanged(post)"
+                                    <input :id="'time_' + post.id" type="text" @keyup="timeKeyUp(event, post)"
                                            v-model="post.time" placeholder="hh:mm">
                                 </div>
                                 <div class="col m2">
