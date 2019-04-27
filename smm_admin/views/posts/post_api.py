@@ -72,7 +72,10 @@ class PreviewsField(serializers.Field):
 
 class PostSerializer(serializers.ModelSerializer):
     previews = PreviewsField()
-    status_display = serializers.CharField(source='get_status_display')
+    status_display = serializers.CharField(
+        source='get_status_display',
+        read_only=True,
+    )
 
     class Meta:
         model = Post
