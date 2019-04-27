@@ -37,7 +37,7 @@ class TwitterService(Service):
     def _get_caption(self):
         return '{}\n\n{}'.format(
             self.post.name,
-            '\n'.join([l.url for l in self.post.links_list]),
+            '\n'.join(self.post.links_list),
         )
 
     def _make_a_post(self):

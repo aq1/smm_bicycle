@@ -1,3 +1,6 @@
+import urllib.parse
+import re
+
 from django.urls import reverse
 
 import telegram
@@ -34,11 +37,14 @@ class TelegramService(Service):
         return result.link
 
     def _get_caption(self):
-        links = ' / '.join([
-            link.for_telegram()
-            for link in self.post.links_list
-        ])
-        return '<b>{}</b> {}'.format(self.post.name, links)
+        links = []
+        for link in self.post.links_list:
+            host = urllib.parse.urlparse(link).hostname
+            host = re.sub(r'^www\.', '', host)
+            host = re.sub(r'\.com$', '', host)
+            links.append('<a href="{}">{}</a>'.format(link, host))
+
+        return '<b>{}</b> {}'.format(self.post.name, ' / '.join(links))
 
     def _make_a_post(self):
         kwargs = dict(

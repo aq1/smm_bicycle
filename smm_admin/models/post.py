@@ -83,6 +83,11 @@ class Post(models.Model):
         blank=True,
     )
 
+    tags = models.TextField(
+        default='',
+        blank=True,
+    )
+
     canvas_json = models.TextField(
         null=True,
         blank=True,
@@ -116,6 +121,13 @@ class Post(models.Model):
     @property
     def ok(self):
         return all((r.ok for r in self.results.all()))
+
+    @property
+    def links_list(self):
+        _list = [self.artstation]
+        if self.instagram:
+            _list.append(self.instagram)
+        return
 
     def get_url(self):
         return '{}{}'.format(

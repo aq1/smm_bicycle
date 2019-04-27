@@ -13,7 +13,8 @@ new Vue({
             new_work_year: '',
             new_work_url: '',
             text_en: '',
-            text_ru: ''
+            text_ru: '',
+            tags: '#3d #cg #art #artwork #10khourslater #10khourslater_3d #progress #environment'
         },
         old_work: '',
         new_work: '',
@@ -34,6 +35,34 @@ new Vue({
         this.post.account = window.account_id;
 
         document.addEventListener('DOMContentLoaded', function () {
+            var tags = [];
+            view.post.tags.split(' ').forEach(function (_tag) {
+                tags.push({tag: _tag});
+            });
+            var instance = M.Chips.init(document.querySelectorAll('.chips'), {
+                data: tags,
+                placeholder: 'Tags',
+                secondaryPlaceholder: 'Add more tags...',
+                onChipDelete: function (_, chip) {
+                    var tag = chip.innerText.replace(/close$/, '');
+                    view.post.tags = view.post.tags.replace(tag, '').replace('  ', ' ');
+                }
+            })[0];
+
+            // I don't know JS, okay?
+            var addChip = instance.addChip;
+            instance.addChip = function (chip) {
+                if (chip.tag[0] !== '#') {
+                    chip.tag = '#' + chip.tag;
+                }
+                var r = new RegExp('\\s?' + chip.tag + '\\s?');
+                if (view.post.tags.match(r)) {
+                    return;
+                }
+                addChip.apply(instance, [chip]);
+                view.post.tags += ' ' + chip.tag;
+            };
+
             ['old-work-card', 'new-work-card'].forEach(function (id) {
                 var dropArea = document.getElementById(id);
                 ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(function (eventName) {
@@ -121,6 +150,7 @@ new Vue({
             return valid;
         },
         submit: function () {
+            console.log(this.post.tags);
             this.form_is_valid = this.validate();
             if (this.form_is_valid) {
                 var view = this;
