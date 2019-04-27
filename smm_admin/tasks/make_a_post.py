@@ -53,8 +53,6 @@ def make_a_post(post, services=None):
         _get_result_text(post, results),
     )
 
-    return post
-
 
 @shared_task
 def make_a_post_task(post_id, services=None):

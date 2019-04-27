@@ -30,16 +30,10 @@ class AccountAdmin(admin.ModelAdmin):
 class PostAdmin(admin.ModelAdmin):
     exclude = 'canvas_json',
 
-    list_display = '__str__', 'schedule', 'ok', 'services'
+    list_display = '__str__', 'schedule', 'status', 'services'
 
     _true = '<img src="/static/admin/img/icon-yes.svg" alt="True">'
     _false = '<img src="/static/admin/img/icon-no.svg" alt="False">'
-
-    def ok(self, obj):
-        return mark_safe([
-             self._false,
-             self._true
-         ][obj.ok])
 
     def services(self, obj):
         return mark_safe('<br>'.join(

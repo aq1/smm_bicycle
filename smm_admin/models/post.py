@@ -120,10 +120,6 @@ class Post(models.Model):
         return obj
 
     @property
-    def ok(self):
-        return all((r.ok for r in self.results.all()))
-
-    @property
     def links_list(self):
         _list = [self.artstation]
         if self.instagram:
