@@ -127,7 +127,7 @@ class Post(models.Model):
         _list = [self.artstation]
         if self.instagram:
             _list.append(self.instagram)
-        return
+        return _list
 
     def get_url(self):
         return '{}{}'.format(
