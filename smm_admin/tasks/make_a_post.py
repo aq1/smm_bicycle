@@ -27,14 +27,7 @@ def _get_result_text(post, results):
     )
 
 
-@shared_task
-def make_a_post(post_id, services=None):
-    from django.apps import apps
-
-    Post = apps.get_model('smm_admin', 'Post')
-
-    post = Post.get(post_id)
-
+def make_a_post(post, services=None):
     if services is None:
         services = post.account.services.all()
 
@@ -47,3 +40,12 @@ def make_a_post(post_id, services=None):
         post.account.telegram_id,
         _get_result_text(post, results),
     )
+
+
+@shared_task
+def make_a_post_task(post_id, services=None):
+    from django.apps import apps
+    Post = apps.get_model('smm_admin', 'Post')
+    post = Post.get(post_id)
+
+    make_a_post(post, services)

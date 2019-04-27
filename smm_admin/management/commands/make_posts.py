@@ -3,9 +3,8 @@ from django.contrib.auth import get_user_model
 from django.utils import timezone
 
 from smm_admin.models import Post
-from smm_admin.tasks.notify_user import (
-    notify_user,
-)
+from smm_admin.tasks.notify_user import notify_user
+from smm_admin.tasks.make_a_post import make_a_post
 
 
 class Command(BaseCommand):
@@ -18,7 +17,16 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         self.stdout.write(self.style.SUCCESS('Working...\n'))
         now = timezone.now()
-        posts = Post.objects.filter(status=Post.READY, schedule__lte=now)
+        posts = Post.objects.filter(
+            status=Post.READY,
+            schedule__lte=now
+        ).select_related(
+            'account',
+        )
+
+        for post in posts:
+            make_a_post(post)
+
         notify_user(
             get_user_model().objects.get(is_superuser=True).account.telegram_id,
             '\n'.join([p.name for p in posts]),
