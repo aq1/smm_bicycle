@@ -27,8 +27,9 @@ class Command(BaseCommand):
         for post in posts:
             make_a_post(post)
 
-        notify_user(
-            get_user_model().objects.get(is_superuser=True).account.telegram_id,
-            '\n'.join([p.name for p in posts]),
-        )
+        if posts:
+            notify_user(
+                get_user_model().objects.get(is_superuser=True).account.telegram_id,
+                '\n'.join([p.name for p in posts]),
+            )
         self.stdout.write(self.style.SUCCESS('Done.\n'))
