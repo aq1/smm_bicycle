@@ -26,6 +26,10 @@ class Command(BaseCommand):
 
         for post in posts:
             make_a_post(post)
+            if post.status == post.ok:
+                self.stdout.write(self.style.SUCCESS('Posted {}\n'.format(post.name)))
+            else:
+                self.stderr.write(self.style.ERROR('Failed {}\n'.format(post.name)))
 
         if posts:
             notify_user(
