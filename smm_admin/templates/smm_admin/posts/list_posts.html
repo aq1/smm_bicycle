@@ -55,13 +55,14 @@
                                        @click="deletePost(post)">
                                         <i class="material-icons">delete</i>
                                     </a>
-{#                                    <a :href="'/p/' + post.id + '/edit/'"#}
-{#                                       class="tooltipped"#}
-{#                                       data-position="top"#}
-{#                                       :data-tooltip="'Edit ' + post.name"#}
-{#                                       >#}
-{#                                        <i class="material-icons">edit</i>#}
-{#                                    </a>#}
+                                    <!--
+                                    <a :href="'/p/' + post.id + '/edit/'"
+                                       class="tooltipped"
+                                       data-position="top"
+                                       :data-tooltip="'Edit ' + post.name"
+                                       >
+                                        <i class="material-icons">edit</i>
+                                    </a>-->
                                 </div>
                                 <div class="col m2">
                                     <span v-if="!post.submitting"
