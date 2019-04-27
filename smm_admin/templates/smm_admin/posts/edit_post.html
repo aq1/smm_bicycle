@@ -12,7 +12,7 @@
 {% block content %}
     {% if account %}
         <div class="cyan top-line">
-
+        </div>
     {% endif %}
     {% verbatim %}
     <div id="app" class="container" v-cloak>
@@ -216,8 +216,9 @@
     <script>
         window.csrf_token = "{{ csrf_token }}";
         window.account_id = "{{ account.user_id }}";
+        window.post_id = "{{ post_id }}";
     </script>
     <script type="text/javascript" src="{% static 'smm_admin/lib/axios.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'smm_admin/lib/vue.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'smm_admin/js/new_post.js' %}"></script>
+    <script type="text/javascript" src="{% static 'smm_admin/js/edit_post.js' %}"></script>
 {% endblock %}

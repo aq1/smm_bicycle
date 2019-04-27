@@ -3,6 +3,7 @@ new Vue({
     data: {
         submitIsInProgress: false,
         url: '/api/post/',
+        post_id: window.post_id,
         post: {
             account: '',
             name: '',
@@ -33,6 +34,15 @@ new Vue({
     created: function () {
         var view = this;
         this.post.account = window.account_id;
+        this.post_id = window.post_id;
+
+        if (this.post_id) {
+            axios.get(this.url + this.post_id + '/').then(function(response) {
+                view.post = response.data;
+            }).catch(function() {
+                alert('Could not get the post');
+            });
+        }
 
         document.addEventListener('DOMContentLoaded', function () {
             var tags = [];
@@ -156,8 +166,15 @@ new Vue({
                 var view = this;
                 view.submitIsInProgress = true;
 
-                axios.post(
-                    this.url,
+                var httpRequest = axios.post;
+                var url = this.url;
+                if (this.post_id) {
+                    httpRequest = axios.patch;
+                    url = this.url + this.post_id + '/';
+                }
+
+                httpRequest(
+                    url,
                     this.post,
                     {headers: {'X-CSRFToken': window.csrf_token}}
                 ).then(function (response) {
@@ -172,8 +189,12 @@ new Vue({
                         if (view.new_work) {
                             formData.append('new_work', view.new_work);
                         }
+                        var patchUrl = url;
+                        if (!view.post_id) {
+                            patchUrl = view.url + response.data.id + '/';
+                        }
                         axios.patch(
-                            view.url + response.data.id + '/',
+                            patchUrl,
                             formData,
                             {
                                 headers: {'X-CSRFToken': window.csrf_token},

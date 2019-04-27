@@ -9,6 +9,7 @@ from .views import (
 )
 from smm_admin.views.posts import (
     new_post,
+    edit_post,
     post_api,
     list_posts,
     post,
@@ -37,6 +38,7 @@ urlpatterns = [
     path('post/<int:post_id>/save_render/', canvas.save_render),
 
     path('new/', new_post.new_post, name='new_post'),
+    path('p/<int:post_id>/edit/', edit_post.edit_post, name='edit_post'),
 
     path('p/<int:post_id>/', post.post_view, name='post'),
     path('p/<str:token>/', post.post_view, name='post'),
