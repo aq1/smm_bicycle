@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 
-from smm_admin.tasks import (
+from smm_admin.tasks.make_a_post import (
     make_a_post,
 )
 
