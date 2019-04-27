@@ -28,6 +28,9 @@ def _get_result_text(post, results):
 
 
 def make_a_post(post, services=None):
+    post.status = post.IN_PROGRESS
+    post.save()
+
     if services is None:
         services = post.account.services.all()
 
@@ -35,6 +38,15 @@ def make_a_post(post, services=None):
 
     for service in services:
         results.append(service.service.make_a_post(post=post))
+
+    if all([not r.ok for r in results]):
+        post.status = post.FAILED
+    elif any([not r.ok for r in results]):
+        post.status = post.PARTIALLY_FAILED
+    else:
+        post.status = post.OK
+
+    post.save()
 
     notify_user(
         post.account.telegram_id,

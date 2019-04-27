@@ -12,8 +12,9 @@ def generate_token():
 
 
 class Post(models.Model):
-    FAILED, IN_PROGRESS, NOT_READY, READY, OK, DELETED = range(6)
+    PARTIALLY_FAILED, FAILED, IN_PROGRESS, NOT_READY, READY, OK, DELETED = range(7)
     STATUSES = (
+        (PARTIALLY_FAILED, 'Partially Failed'),
         (FAILED, 'Failed'),
         (IN_PROGRESS, 'In Progress'),
         (NOT_READY, 'Not Ready'),
