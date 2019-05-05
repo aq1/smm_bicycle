@@ -116,7 +116,7 @@ new Vue({
             var view = this;
             axios.patch(
                 '/api/post/' + post.id + '/',
-                {status: 5}
+                {status: 6}
             ).then(function() {
                 view.getPosts();
             }).catch(function(e) {
