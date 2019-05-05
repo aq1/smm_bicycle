@@ -33,7 +33,7 @@ class Command(BaseCommand):
 
         if posts:
             notify_user(
-                get_user_model().objects.get(is_superuser=True).account.telegram_id,
+                get_user_model().objects.filter(is_superuser=True).first().account.telegram_id,
                 '\n'.join([p.name for p in posts]),
             )
         self.stdout.write(self.style.SUCCESS('Done.\n'))
