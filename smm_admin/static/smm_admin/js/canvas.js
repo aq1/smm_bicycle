@@ -5,21 +5,18 @@ fabric.Object.prototype.set({
     cornerSize: 20
 });
 
-var config = {
-    grid: 10,
-    initWidth: 1920,
-    initHeight: 1080,
-    minWidth: 1000,
-    minHeight: 500,
-    textFills: ['#000', '#fff', '#BFBFBF']
-};
-
+window.grid = 10;
+window.initWidth = 1920;
+window.initHeight = 1080;
+window.minWidth = 1000;
+window.minHeight = 500;
+window.textFills = ['#000', '#fff', '#BFBFBF'];
 window.selectedTexts = [];
 
 var canvas = new fabric.Canvas('canvas', {
     preserveObjectStacking: true,
-    width: config.initWidth,
-    height: config.initHeight
+    width: window.initWidth,
+    height: window.initHeight
 });
 
 
@@ -37,11 +34,11 @@ var resizeCanvas = function () {
     if (!(w && h)) {
         return;
     }
-    if (w < config.minWidth) {
-        w = config.minWidth;
+    if (w < window.minWidth) {
+        w = window.minWidth;
     }
-    if (h < config.minHeight) {
-        h = config.minHeight;
+    if (h < window.minHeight) {
+        h = window.minHeight;
     }
     _resizeCanvas(w, h);
     M.Modal.getInstance(document.getElementById('resize-modal')).close();
@@ -88,9 +85,9 @@ var setSizeValueInInput = function () {
         }
         if (window.selectedTexts && e.key === 'c') {
             window.selectedTexts.forEach(function (text) {
-                var fillIndex = (config.textFills.indexOf(text.fill) + 1);
+                var fillIndex = (window.textFills.indexOf(text.fill) + 1);
                 text.set({
-                    fill: config.textFills[fillIndex % config.textFills.length]
+                    fill: window.textFills[fillIndex % window.textFills.length]
                 });
             });
             canvas.requestRenderAll();
@@ -103,22 +100,27 @@ var setSizeValueInInput = function () {
     // http://jsfiddle.net/fabricjs/S9sLu/
     canvas.on('object:moving', function (options) {
         options.target.set({
-            left: Math.round(options.target.left / config.grid) * config.grid,
-            top: Math.round(options.target.top / config.grid) * config.grid
+            left: Math.round(options.target.left / window.grid) * window.grid,
+            top: Math.round(options.target.top / window.grid) * window.grid
         });
     });
 
 })();
 
+
 var addYearToImage = function (image, year) {
     var year_text = new fabric.IText(year.toString(), {
-        left: image.left + config.grid * 2,
-        top: image.top + config.grid * 2,
+        top: image.top + window.grid * 2,
         fontFamily: 'Intro',
-        fill: config.textFills[2],
-        fontSize: Math.round(config.innerWidth / 50)
+        fill: window.textFills[2],
+        fontSize: Math.round(window.innerWidth / 50)
     });
     canvas.add(year_text);
+    var left = image.left + image.getScaledWidth() - year_text.getScaledWidth() - window.grid;
+    var top = image.top + image.getScaledHeight() - year_text.getScaledHeight() - window.grid;
+    year_text.set('left', left);
+    year_text.set('top', top);
+    year_text.setCoords();
 };
 
 
@@ -132,29 +134,29 @@ var placeObjectsFromPost = function (post, use_json, resolve) {
         return;
     }
 
-    _resizeCanvas(config.initWidth, config.initHeight);
+    _resizeCanvas(window.initWidth, window.initHeight);
 
-    canvas.backgroundColor = config.textFills[2];
+    canvas.backgroundColor = window.textFills[2];
 
     fabric.Image.fromURL(post.old_work, function (old_work_img) {
-        old_work_img.top = config.grid;
-        old_work_img.left = config.grid;
-        old_work_img.scaleToHeight(Math.round(config.innerHeight / 2));
+        old_work_img.top = window.grid;
+        old_work_img.left = window.grid;
+        old_work_img.scaleToHeight(Math.round(window.innerHeight / 2));
         canvas.add(old_work_img);
 
         addYearToImage(old_work_img, post.old_work_year);
 
         fabric.Image.fromURL(post.new_work, function (new_work_img) {
-            new_work_img.top = config.grid;
-            new_work_img.left = old_work_img.getScaledWidth() + config.grid * 2;
-            new_work_img.scaleToHeight(Math.round(config.innerHeight / 2));
+            new_work_img.top = window.grid;
+            new_work_img.left = old_work_img.getScaledWidth() + window.grid * 2;
+            new_work_img.scaleToHeight(Math.round(window.innerHeight / 2));
             canvas.add(new_work_img);
 
             addYearToImage(new_work_img, post.new_work_year);
             if (post.account.logo) {
                 fabric.Image.fromURL(post.account.logo, function (logo_img) {
-                    logo_img.top = old_work_img.getScaledHeight() + config.grid * 2;
-                    logo_img.left = config.grid;
+                    logo_img.top = old_work_img.getScaledHeight() + window.grid * 2;
+                    logo_img.left = window.grid;
                     logo_img.scaleToWidth(canvas.width / 10);
                     canvas.add(logo_img);
                     place_text(logo_img.getScaledWidth());
@@ -166,20 +168,20 @@ var placeObjectsFromPost = function (post, use_json, resolve) {
 
         var place_text = function (x_offset) {
             var name = new fabric.IText(post.name, {
-                left: x_offset + config.grid * 2,
-                top: old_work_img.getScaledHeight() + config.grid * 2,
+                left: x_offset + window.grid * 2,
+                top: old_work_img.getScaledHeight() + window.grid * 2,
                 fontFamily: 'Intro',
                 fontSize: 30,
-                fill: config.textFills[0]
+                fill: window.textFills[0]
             });
             canvas.add(name);
 
             var text = new fabric.IText(post.text_en, {
-                left: x_offset + config.grid * 2,
-                top: name.top + name.getScaledHeight() + config.grid,
+                left: x_offset + window.grid * 2,
+                top: name.top + name.getScaledHeight() + window.grid,
                 fontFamily: 'Intro',
                 fontSize: 15,
-                fill: config.textFills[0]
+                fill: window.textFills[0]
             });
             canvas.add(text);
 
@@ -193,11 +195,11 @@ var placeObjectsFromPost = function (post, use_json, resolve) {
             }
 
             var links = new fabric.IText(links_text.join('\n'), {
-                left: x_offset + config.grid * 2,
-                top: text.top + text.getScaledHeight() + config.grid,
+                left: x_offset + window.grid * 2,
+                top: text.top + text.getScaledHeight() + window.grid,
                 fontFamily: 'Myriad Pro',
                 fontSize: 19,
-                fill: config.textFills[0]
+                fill: window.textFills[0]
             });
             canvas.add(links);
             resolve();
@@ -337,6 +339,13 @@ document.addEventListener('DOMContentLoaded', function () {
     resizeDivWrapper();
 
     M.Modal.init(document.querySelectorAll('.modal'));
+    M.Tooltip.init(
+        document.querySelectorAll('.tooltipped'),
+        {
+            exitDelay: 0,
+            outDuration: 0
+        }
+    );
 
     interact('#canvas-wrapper').resizable({
         inertia: false,
@@ -355,7 +364,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // minimum size
             interact.modifiers.restrictSize({
-                min: {width: config.minWidth, height: config.minHeight}
+                min: {width: window.minWidth, height: window.minHeight}
             })
         ]
     }).on('resizemove', function (event) {

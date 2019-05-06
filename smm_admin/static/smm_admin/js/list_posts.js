@@ -103,7 +103,7 @@ new Vue({
                 }, 1000);
             }
         },
-        timeKeyUp: function(event, post) {
+        timeKeyUp: function (event, post) {
             if (isNaN(Number(event.key))) {
                 return;
             }
@@ -116,9 +116,9 @@ new Vue({
             var view = this;
             axios.delete(
                 '/api/post/' + post.id + '/'
-            ).then(function() {
+            ).then(function () {
                 view.getPosts();
-            }).catch(function(e) {
+            }).catch(function (e) {
                 console.log(e);
                 alert('Something went wrong');
             })
@@ -138,7 +138,10 @@ new Vue({
 
         M.Tooltip.init(
             document.querySelectorAll('.tooltipped'),
-            {outDuration: 50}
+            {
+                exitDelay: 0,
+                outDuration: 0
+            }
         );
         M.Modal.init(document.querySelectorAll('.modal'), {});
 

@@ -6,13 +6,13 @@
 {% block navbar_tabs %}
     <div class="nav-content cyan">
         <ul class="tabs tabs-transparent">
-            <li class="tab">
+            <li class="tab canvas-input tooltipped" data-tooltip="Resize Width">
                 <label for="canvas_width"></label>
-                <input type="text" class="canvas-input" id="canvas_width" onchange="resizeCanvas()">
+                <input type="text" id="canvas_width" onchange="resizeCanvas()">
             </li>
-            <li class="tab">
+            <li class="tab canvas-input tooltipped" data-tooltip="Resize Height">
                 <label for="canvas_height"></label>
-                <input type="text" class="canvas-input" id="canvas_height" onchange="resizeCanvas()">
+                <input type="text" id="canvas_height" onchange="resizeCanvas()">
             </li>
             <li class="tab" onclick="saveProject()" id="save">
                 <a>Save</a>

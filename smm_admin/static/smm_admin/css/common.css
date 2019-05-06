@@ -105,16 +105,20 @@ div.dropzone.highlight {
     border: 3px solid #a59fab;
 }
 
-input.canvas-input {
+li.canvas-input input {
     margin-left: 10px !important;
     width: 50px !important;
     color: rgba(255, 255, 255, 0.7);
 }
 
-input.canvas-input:hover {
+li.canvas-input:nth-child(2) {
+    padding-right: 20px !important;
+}
+
+li.canvas-input input:hover {
     color: rgba(255, 255, 255, 0.85);
 }
 
-input.canvas-input:focus {
+li.canvas-input input:focus {
     color: rgba(255, 255, 255, 1);
 }
