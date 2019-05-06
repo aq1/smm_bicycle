@@ -136,7 +136,10 @@ new Vue({
         var now = new Date();
         var view = this;
 
-        M.Tooltip.init(document.querySelectorAll('.tooltipped'), {outDuration: 50});
+        M.Tooltip.init(
+            document.querySelectorAll('.tooltipped'),
+            {outDuration: 50}
+        );
         M.Modal.init(document.querySelectorAll('.modal'), {});
 
         this.posts.forEach(function (post) {

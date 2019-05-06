@@ -23,11 +23,16 @@
                                 <div class="col m2"></div>
                             </div>
                             <div class="row post-in-list" v-for="(post, index) in posts">
-                                <div class="col m2">
-                                    <img width="100px"
-                                         alt="no image"
-                                         :src="post.image">
-                                </div>
+                                <a :href="'/p/' + post.id + '/canvas/'">
+                                    <div class="col m2 tooltipped"
+                                         data-position="top"
+                                         data-tooltip="Click to edit image"
+                                         style="cursor: pointer">
+                                        <img width="100px"
+                                             alt="no image"
+                                             :src="post.image">
+                                    </div>
+                                </a>
                                 <div class="col m2">
                                     <div>
                                         {{ post.name }}
@@ -47,6 +52,12 @@
                                        data-position="top"
                                        :data-tooltip="'Open ' + post.name">
                                         <i class="material-icons">launch</i>
+                                    </a>
+                                    <a :href="'/p/' + post.id + '/canvas/'"
+                                       class="tooltipped"
+                                       data-position="top"
+                                       :data-tooltip="'Edit image ' + post.name">
+                                        <i class="material-icons">photo</i>
                                     </a>
                                     <a class="tooltipped"
                                        style="cursor: pointer;"
