@@ -112,6 +112,10 @@ class PostViewSet(viewsets.ModelViewSet):
             kwargs['account_id'] = self.request.user.id
         serializer.save(**kwargs)
 
+    def perform_destroy(self, instance):
+        instance.status = instance.DELETED
+        instance.save()
+
     def get_serializer_class(self):
         if self.request.user.is_authenticated:
             return PostSerializer

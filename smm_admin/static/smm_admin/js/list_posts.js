@@ -114,9 +114,8 @@ new Vue({
                 return;
             }
             var view = this;
-            axios.patch(
-                '/api/post/' + post.id + '/',
-                {status: 6}
+            axios.delete(
+                '/api/post/' + post.id + '/'
             ).then(function() {
                 view.getPosts();
             }).catch(function(e) {
