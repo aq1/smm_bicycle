@@ -154,7 +154,7 @@ new Vue({
                     defaultDate: post.schedule || '',
                     format: 'dd.mm.yyyy',
                     setDefaultDate: Boolean(post.schedule),
-                    minDate: now,
+                    minDate: post.schedule || now,
                     showClearBtn: true,
                     onSelect: function (value) {
                         view.scheduleChanged(post, value);
