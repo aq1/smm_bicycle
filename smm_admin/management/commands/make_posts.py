@@ -17,11 +17,11 @@ class Command(BaseCommand):
         self.stdout.write(self.style.SUCCESS('Working...\n'))
 
         now = timezone.now()
-        fifteen_minutes_forward = now + timezone.timedelta(minutes=15)
-        
+
         posts_for_instagram = Post.objects.filter(
             status=Post.READY,
-            schedule__lte=fifteen_minutes_forward
+            schedule__lte=now + timezone.timedelta(minutes=15),
+            schedule__gte=now + timezone.timedelta(minutes=10),
         ).select_related(
             'account',
         )
