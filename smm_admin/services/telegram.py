@@ -56,7 +56,7 @@ class TelegramService(Service):
             disable_web_page_preview=True,
         )
         try:
-            message = telegram.Bot(token=self.model.data['telegram_token']).send_photo(**kwargs)
+            message = self.send_photo(**kwargs)
         except telegram.error.TelegramError as e:
             return self.result.error(str(e))
 
@@ -64,3 +64,19 @@ class TelegramService(Service):
             self._get_post_link(message),
             message,
         )
+
+    def send_message(self, **kwargs):
+        try:
+            message = telegram.Bot(token=self.model.data['telegram_token']).send_message(**kwargs)
+        except telegram.error.TelegramError as e:
+            return self.result.error(str(e))
+
+        return message
+
+    def send_photo(self, **kwargs):
+        try:
+            message = telegram.Bot(token=self.model.data['telegram_token']).send_photo(**kwargs)
+        except telegram.error.TelegramError as e:
+            return self.result.error(str(e))
+
+        return message
