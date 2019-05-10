@@ -23,7 +23,7 @@ class Command(BaseCommand):
 
             telegram_service.send_message(
                 chat_id=post.account.telegram_id,
-                text=post.name_en,
+                text=post.name,
             )
 
             for photo, year in ((post.old_work, post.old_work_year), (post.new_work, post.new_work_year)):
@@ -36,5 +36,6 @@ class Command(BaseCommand):
                 chat_id=post.account.telegram_id,
                 text=post.text_en,
             )
+            self.stdout.write(self.style.SUCCESS('Sent {}.\n'.format(post.name)))
 
         self.stdout.write(self.style.SUCCESS('Done.\n'))
