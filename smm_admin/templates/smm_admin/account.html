@@ -1,6 +1,6 @@
 {% extends 'smm_admin/base.html' %}
 
-{% load staticfiles %}
+{% load staticfiles thumbnail %}
 
 {% block title %}Account{% endblock %}
 
@@ -30,7 +30,7 @@
                             <div class="row">
                                 <div class="col m12">
                                     {% if user.account.logo %}
-                                        <img src="{{ user.account.logo.url }}" alt="user logo" width="100px">
+                                        <img src="{{ user.account.logo | thumbnail_url:'100' }}" alt="user logo" width="100px">
                                     {% endif %}
                                 </div>
                             </div>

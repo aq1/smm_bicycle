@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 
+from easy_thumbnails.fields import ThumbnailerImageField
+
 
 class Account(models.Model):
     user = models.OneToOneField(
@@ -8,7 +10,7 @@ class Account(models.Model):
         primary_key=True,
         on_delete=models.CASCADE,
     )
-    logo = models.ImageField(
+    logo = ThumbnailerImageField(
         null=True,
         blank=True,
     )
