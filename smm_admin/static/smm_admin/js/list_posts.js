@@ -62,11 +62,7 @@ new Vue({
             });
         },
         scheduleChanged: function (post, dateValue) {
-            if (dateValue) {
-                post.schedule = dateValue;
-            }
-
-            if (post.schedule && post.time) {
+            if (dateValue && post.time) {
                 var view = this;
                 var time = post.time.slice(0, 5).split(':');
                 var hours = Number(time[0]);
@@ -75,8 +71,8 @@ new Vue({
                     return
                 }
 
-                post.schedule.setHours(hours);
-                post.schedule.setMinutes(minutes);
+                dateValue.setHours(hours);
+                dateValue.setMinutes(minutes);
                 // Why do I have to do it?
                 if (post.scheduleTimeoutId) {
                     clearTimeout(post.scheduleTimeoutId);
@@ -86,7 +82,7 @@ new Vue({
                     view.$forceUpdate();
                     axios.patch(
                         '/api/post/' + post.id + '/',
-                        {schedule: post.schedule},
+                        {schedule: dateValue},
                         {headers: {'X-CSRFToken': window.csrf_token}}
                     ).then(function (response) {
                         for (var i = 0; i < view.posts.length; i++) {
@@ -107,7 +103,7 @@ new Vue({
             if (isNaN(Number(event.key))) {
                 return;
             }
-            this.scheduleChanged(post);
+            this.scheduleChanged(post, new Date(post.schedule));
         },
         deletePost: function (post) {
             if (!confirm('Delete post ' + post.name + '?')) {
@@ -154,7 +150,7 @@ new Vue({
                     defaultDate: post.schedule || '',
                     format: 'dd.mm.yyyy',
                     setDefaultDate: Boolean(post.schedule),
-                    minDate: post.schedule || now,
+                    minDate: new Date(Math.min.apply(null, [post.schedule || now, now])),
                     showClearBtn: true,
                     onSelect: function (value) {
                         view.scheduleChanged(post, value);
