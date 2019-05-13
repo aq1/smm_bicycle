@@ -78,7 +78,10 @@ class Post(models.Model):
 
     name = models.CharField(max_length=255)
 
-    text_en = models.TextField()
+    text_en = models.TextField(
+        default='',
+        blank=True,
+    )
     text_ru = models.TextField(
         default='',
         blank=True,
