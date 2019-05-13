@@ -41,7 +41,9 @@ class PostAdmin(admin.ModelAdmin):
     inlines = [PostResultInline]
 
     list_display = '__str__', 'schedule', 'status', 'services'
+
     list_filter = 'account', 'name', 'schedule', 'status'
+    search_fields = ['name']
 
     _true = '<img src="/static/admin/img/icon-yes.svg" alt="True">'
     _false = '<img src="/static/admin/img/icon-no.svg" alt="False">'
