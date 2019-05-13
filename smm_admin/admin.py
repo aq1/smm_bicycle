@@ -26,11 +26,22 @@ class AccountAdmin(admin.ModelAdmin):
     )
 
 
+class PostResultInline(admin.TabularInline):
+    model = PostResult
+    extra = 0
+
+    def has_add_permission(self, request, obj=None):
+        return False
+
+
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
-    exclude = 'canvas_json',
+    exclude = ['canvas_json']
+
+    inlines = [PostResultInline]
 
     list_display = '__str__', 'schedule', 'status', 'services'
+    list_filter = 'account', 'name', 'schedule', 'status'
 
     _true = '<img src="/static/admin/img/icon-yes.svg" alt="True">'
     _false = '<img src="/static/admin/img/icon-no.svg" alt="False">'
@@ -49,9 +60,3 @@ class PostAdmin(admin.ModelAdmin):
         return mark_safe(
             '{}<br>{}'.format(obj.artstation, obj.instagram),
         )
-
-
-@admin.register(PostResult)
-class PostResultAdmin(admin.ModelAdmin):
-    list_display = '__str__', 'ok', 'created_at'
-    ordering = ['-created_at']
