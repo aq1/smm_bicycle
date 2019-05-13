@@ -3,6 +3,7 @@ import re
 
 from django.urls import reverse
 
+from easy_thumbnails.files import get_thumbnailer
 import telegram
 
 from .base import Service
@@ -49,7 +50,7 @@ class TelegramService(Service):
     def _make_a_post(self):
         kwargs = dict(
             chat_id='@{}'.format(self.model.data['telegram_channel_id']),
-            photo=self.post.rendered_image.open(),
+            photo=get_thumbnailer(self.post.rendered_image)['1920'].file.open(),
             caption=self._get_caption(),
             parse_mode='HTML',
             disable_notification=True,
@@ -59,6 +60,12 @@ class TelegramService(Service):
             message = self.send_photo(**kwargs)
         except telegram.error.TelegramError as e:
             return self.result.error(str(e))
+
+        if getattr(message, 'ok', None) and not message.ok:
+            return self.result.error(
+                message.text,
+                message,
+            )
 
         return self.result.success(
             self._get_post_link(message),

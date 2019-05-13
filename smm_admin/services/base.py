@@ -63,15 +63,16 @@ class Service:
         if post_id and not post:
             post = Post.get(post_id)
 
-        if not post.rendered_image:
-            return self.result.error('Need a rendered picture to make a post')
-
-        self.post = post
         self.result = PostResult(
             service=self,
             post=post,
             post_id_raw=post.id,
         )
+
+        if not post.rendered_image:
+            return self.result.error('Need a rendered picture to make a post')
+
+        self.post = post
         try:
             self.post.rendered_image.file.seek(0)
         except ValueError:

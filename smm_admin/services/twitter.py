@@ -2,6 +2,7 @@ from django.conf import settings
 from django.urls import reverse
 
 import tweepy
+from easy_thumbnails.files import get_thumbnailer
 
 from .base import Service
 
@@ -62,7 +63,7 @@ class TwitterService(Service):
             result = api.update_with_media(
                 filename=self.post.rendered_image.name,
                 status=self._get_caption(),
-                file=self.post.rendered_image.file,
+                file=get_thumbnailer(self.post.rendered_image)['1920'].file,
             )
         except tweepy.TweepError as e:
             return self.result.error(str(e))
