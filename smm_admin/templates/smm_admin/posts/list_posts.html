@@ -96,22 +96,10 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col m1">
-                                    <button class="btn btn" v-show="page > 1" @click="getPosts(page - 1)">
-                                        <i class="material-icons">navigate_before</i>
-                                    </button>
-                                </div>
-
                                 <div class="col m1" v-for="n in pagesCount()">
                                     <button v-if="pagesCount() > 1" class="btn" :class="{'btn-flat': n != page}"
                                             @click="getPosts(n)">
                                         {{ n }}
-                                    </button>
-                                </div>
-
-                                <div class="col m1">
-                                    <button class="btn" v-show="page < count / pageSize" @click="getPosts(page + 1)">
-                                        <i class="material-icons">navigate_next</i>
                                     </button>
                                 </div>
                             </div>
