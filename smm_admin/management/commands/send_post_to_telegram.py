@@ -1,3 +1,5 @@
+import urllib.parse
+
 from django.core.management.base import BaseCommand
 from django.utils import timezone
 from django.conf import settings
@@ -26,7 +28,8 @@ class Command(BaseCommand):
             delimiter = '_' * 57
             links = [post.artstation]
             if post.instagram:
-                links.insert(0, post.instagram)
+                instagram = urllib.parse.urlparse(post.instagram)
+                links.insert(0, '@{}'.format(instagram.path.replace('/', '')))
             text = [post.name, '\n'.join(links), delimiter]
 
             if post.text_en:
