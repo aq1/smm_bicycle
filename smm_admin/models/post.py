@@ -61,7 +61,6 @@ class Post(models.Model):
 
     artstation = models.CharField(
         max_length=256,
-        blank=True,
     )
 
     instagram = models.CharField(

@@ -1,5 +1,8 @@
 from django.core.management.base import BaseCommand
 from django.utils import timezone
+from django.conf import settings
+
+import telegram
 
 from smm_admin.models import Post
 from smm_admin.services import TELEGRAM
@@ -9,7 +12,9 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         self.stdout.write(self.style.SUCCESS('Working...\n'))
 
+        bot = telegram.Bot(token=settings.TELEGRAM_TOKEN)
         now = timezone.now()
+
         posts_for_instagram = Post.objects.filter(
             status=Post.READY,
             schedule__gte=now.replace(hour=0, minute=0, second=0, microsecond=0),
@@ -19,28 +24,26 @@ class Command(BaseCommand):
         )
 
         for post in posts_for_instagram:
-            telegram_service = post.account.services.filter(type=TELEGRAM).first().service
-
-            telegram_service.send_message(
+            bot.send_message(
                 chat_id=post.account.telegram_id,
                 text=post.name,
             )
 
             for photo, year in ((post.old_work, post.old_work_year), (post.new_work, post.new_work_year)):
-                telegram_service.send_photo(
+                bot.send_photo(
                     chat_id=post.account.telegram_id,
-                    photo=photo.open(),
+                    photo=settings.HOST + photo.url,
                     caption=str(year),
                 )
             if post.text_en:
-                telegram_service.send_message(
+                bot.send_message(
                     chat_id=post.account.telegram_id,
                     text=post.text_en,
                 )
             links = [post.artstation]
             if post.instagram:
                 links.append(post.instagram)
-            telegram_service.send_message(
+            bot.send_message(
                 chat_id=post.account.telegram_id,
                 text='\n'.join(links),
                 disable_web_page_preview=True,

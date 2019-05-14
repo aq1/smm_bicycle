@@ -2,6 +2,7 @@ import urllib.parse
 import re
 
 from django.urls import reverse
+from django.conf import settings
 
 from easy_thumbnails.files import get_thumbnailer
 import telegram
@@ -50,40 +51,18 @@ class TelegramService(Service):
     def _make_a_post(self):
         kwargs = dict(
             chat_id='@{}'.format(self.model.data['telegram_channel_id']),
-            photo=get_thumbnailer(self.post.rendered_image)['1920'].file.open(),
+            photo='{}{}'.format(settings.HOST, get_thumbnailer(self.post.rendered_image)['1920'].url),
             caption=self._get_caption(),
             parse_mode='HTML',
             disable_notification=True,
             disable_web_page_preview=True,
         )
         try:
-            message = self.send_photo(**kwargs)
+            message = telegram.Bot(token=self.model.data['telegram_token']).send_photo(**kwargs)
         except telegram.error.TelegramError as e:
             return self.result.error(str(e))
-
-        if getattr(message, 'ok', None) and not message.ok:
-            return self.result.error(
-                message.text,
-                message,
-            )
 
         return self.result.success(
             self._get_post_link(message),
             message,
         )
-
-    def send_message(self, **kwargs):
-        try:
-            message = telegram.Bot(token=self.model.data['telegram_token']).send_message(**kwargs)
-        except telegram.error.TelegramError as e:
-            return self.result.error(str(e))
-
-        return message
-
-    def send_photo(self, **kwargs):
-        try:
-            message = telegram.Bot(token=self.model.data['telegram_token']).send_photo(**kwargs)
-        except telegram.error.TelegramError as e:
-            return self.result.error(str(e))
-
-        return message

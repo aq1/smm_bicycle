@@ -33,6 +33,9 @@ class PostResultInline(admin.TabularInline):
     def has_add_permission(self, request, obj=None):
         return False
 
+    def has_change_permission(self, request, obj=None):
+        return False
+
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
