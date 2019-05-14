@@ -43,6 +43,7 @@ class Command(BaseCommand):
             telegram_service.send_message(
                 chat_id=post.account.telegram_id,
                 text='\n'.join(links),
+                disable_web_page_preview=True,
             )
             self.stdout.write(self.style.SUCCESS('Sent {}.\n'.format(post.name)))
 
