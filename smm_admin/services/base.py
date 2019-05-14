@@ -76,6 +76,10 @@ class Service:
             # if a service decide to close a file (I've never asked for this)
             self.post.rendered_image.file.open()
 
-        result = self._make_a_post()
+        try:
+            result = self._make_a_post()
+        except Exception as e:
+            result = self.result.error(raw=str(e))
+
         result.save()
         return result
