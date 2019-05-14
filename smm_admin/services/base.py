@@ -12,7 +12,7 @@ class Service:
     def __init__(self, model):
         self.model = model
         self.post = None
-        self.result = None
+        self.result = PostResult(service=self)
 
     def __str__(self):
         return self.name
@@ -63,11 +63,8 @@ class Service:
         if post_id and not post:
             post = Post.get(post_id)
 
-        self.result = PostResult(
-            service=self,
-            post=post,
-            post_id_raw=post.id,
-        )
+        self.result.post = post
+        self.result.post_id_raw = post.id
 
         if not post.rendered_image:
             return self.result.error('Need a rendered picture to make a post')

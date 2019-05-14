@@ -32,10 +32,11 @@ class Command(BaseCommand):
                     photo=photo.open(),
                     caption=str(year),
                 )
-            telegram_service.send_message(
-                chat_id=post.account.telegram_id,
-                text=post.text_en,
-            )
+            if post.text_en:
+                telegram_service.send_message(
+                    chat_id=post.account.telegram_id,
+                    text=post.text_en,
+                )
             self.stdout.write(self.style.SUCCESS('Sent {}.\n'.format(post.name)))
 
         self.stdout.write(self.style.SUCCESS('Done.\n'))
