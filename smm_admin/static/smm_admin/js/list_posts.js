@@ -103,7 +103,10 @@ new Vue({
             if (isNaN(Number(event.key))) {
                 return;
             }
-            this.scheduleChanged(post, new Date(post.schedule));
+
+            if (post.schedule) {
+                this.scheduleChanged(post, new Date(post.schedule));
+            }
         },
         deletePost: function (post) {
             if (!confirm('Delete post ' + post.name + '?')) {
