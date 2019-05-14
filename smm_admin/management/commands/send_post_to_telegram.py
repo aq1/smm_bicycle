@@ -37,6 +37,7 @@ class Command(BaseCommand):
             bot.send_message(
                 chat_id=post.account.telegram_id,
                 text='\n'.join(text),
+                disable_web_page_preview=True,
             )
             for photo, year in ((post.old_work, post.old_work_year), (post.new_work, post.new_work_year)):
                 bot.send_photo(
