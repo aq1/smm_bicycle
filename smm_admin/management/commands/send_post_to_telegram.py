@@ -37,6 +37,13 @@ class Command(BaseCommand):
                     chat_id=post.account.telegram_id,
                     text=post.text_en,
                 )
+            links = [post.artstation]
+            if post.instagram:
+                links.append(post.instagram)
+            telegram_service.send_message(
+                chat_id=post.account.telegram_id,
+                text='\n'.join(links),
+            )
             self.stdout.write(self.style.SUCCESS('Sent {}.\n'.format(post.name)))
 
         self.stdout.write(self.style.SUCCESS('Done.\n'))
