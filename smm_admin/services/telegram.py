@@ -4,7 +4,6 @@ import re
 from django.urls import reverse
 from django.conf import settings
 
-from easy_thumbnails.files import get_thumbnailer
 import telegram
 
 from .base import Service
@@ -51,7 +50,7 @@ class TelegramService(Service):
     def _make_a_post(self):
         kwargs = dict(
             chat_id='@{}'.format(self.model.data['telegram_channel_id']),
-            photo='{}{}'.format(settings.HOST, get_thumbnailer(self.post.rendered_image)['1920'].url),
+            photo='{}{}'.format(settings.HOST, self.post.rendered_image.url),
             caption=self._get_caption(),
             parse_mode='HTML',
             disable_notification=True,
