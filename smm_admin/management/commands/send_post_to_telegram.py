@@ -25,12 +25,12 @@ class Command(BaseCommand):
         )
 
         for post in posts_for_instagram:
+            name = post.name
             delimiter = '_' * 57
-            links = [post.artstation]
             if post.instagram:
                 instagram = urllib.parse.urlparse(post.instagram)
-                links.insert(0, '@{}'.format(instagram.path.replace('/', '')))
-            text = [post.name, '\n'.join(links), delimiter]
+                name = '{} @{}'.format(name, instagram.path.replace('/', ''))
+            text = [name, post.artstation, delimiter]
 
             if post.text_en:
                 text += [post.text_en, delimiter]
