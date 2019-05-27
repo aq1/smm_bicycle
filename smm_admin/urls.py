@@ -1,4 +1,5 @@
 from django.urls import path, include
+from django.views import generic
 
 from rest_framework.routers import DefaultRouter
 
@@ -67,4 +68,10 @@ urlpatterns = [
     path('', auth.login_view, name='login'),
     path('login/', auth.login_post, name='login_post'),
     path('logout/', auth.logout_view, name='logout'),
+
+    path(
+        'facebook_terms/',
+        generic.TemplateView.as_view(template_name='smm_admin/facebook_terms_of_service.html'),
+        name='facebook_terms',
+    ),
 ]
