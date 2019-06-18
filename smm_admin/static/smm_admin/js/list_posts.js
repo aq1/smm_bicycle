@@ -49,7 +49,7 @@ new Vue({
 
             axios.get(
                 '/api/post/',
-                {params: {'page': page}}
+                {params: {'page': page, 'actual_only': true}}
             ).then(function (response) {
                 view.posts = view.cleanPosts(response.data.results);
                 view.count = response.data.count;

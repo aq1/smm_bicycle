@@ -25,6 +25,9 @@ class IsAuthorOrToken(permissions.BasePermission):
 
 
 class PostFilter(filters.FilterSet):
+    actual_only = filters.BooleanFilter(
+        method='filter_actual_only',
+    )
     status = filters.ChoiceFilter(
         choices=Post.STATUSES,
     )
@@ -36,6 +39,12 @@ class PostFilter(filters.FilterSet):
         field_name='schedule',
         lookup_expr='gte',
     )
+
+    @staticmethod
+    def filter_actual_only(queryset, _, value):
+        if value:
+            queryset = queryset.filter(status__lte=Post.NOT_READY)
+        return queryset
 
     class Meta:
         model = Post
