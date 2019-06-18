@@ -138,6 +138,6 @@ class PostViewSet(viewsets.ModelViewSet):
             ).exclude(
                 status=Post.DELETED,
             ).order_by(
-                '-schedule',
+                'schedule',
             )
         return Post.objects.filter(token=self.request.query_params.get('t', ''))
