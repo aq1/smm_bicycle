@@ -43,7 +43,7 @@ class PostFilter(filters.FilterSet):
     @staticmethod
     def filter_actual_only(queryset, _, value):
         if value:
-            queryset = queryset.filter(status__lte=Post.NOT_READY)
+            queryset = queryset.filter(status__lte=Post.READY)
         return queryset
 
     class Meta:
@@ -138,7 +138,6 @@ class PostViewSet(viewsets.ModelViewSet):
             ).exclude(
                 status=Post.DELETED,
             ).order_by(
-                'status',
-                'schedule',
+                '-schedule',
             )
         return Post.objects.filter(token=self.request.query_params.get('t', ''))
