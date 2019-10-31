@@ -55,6 +55,7 @@ class TelegramService(Service):
             parse_mode='HTML',
             disable_notification=True,
             disable_web_page_preview=True,
+            timeout=120,
         )
         try:
             message = telegram.Bot(token=self.model.data['telegram_token']).send_photo(**kwargs)
