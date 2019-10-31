@@ -47,6 +47,7 @@ class Command(BaseCommand):
                     chat_id=post.account.telegram_id,
                     photo=settings.HOST + photo.url,
                     caption=str(year),
+                    timeout=120,
                 )
 
             self.stdout.write(self.style.SUCCESS('Sent {}.\n'.format(post.name)))
