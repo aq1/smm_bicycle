@@ -48,7 +48,7 @@ class PostAdmin(admin.ModelAdmin):
 
     list_display = '__str__', 'schedule', 'status', 'services'
 
-    list_filter = 'account', 'name', 'schedule', 'status'
+    list_filter = 'schedule', 'account', 'status', 'name'
     search_fields = 'name', 'schedule'
 
     _true = '<img src="/static/admin/img/icon-yes.svg" alt="True">'
