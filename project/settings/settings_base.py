@@ -20,7 +20,6 @@ INSTALLED_APPS = [
     'easy_thumbnails',
 
     'smm_admin',
-    'utils',
 ]
 
 MIDDLEWARE = [

@@ -9,7 +9,6 @@ from django.contrib.staticfiles.urls import (
 
 urlpatterns = [
     path('a/', admin.site.urls),
-    path('utils/', include('utils.urls')),
     path('', include('smm_admin.urls')),
 ]
 
